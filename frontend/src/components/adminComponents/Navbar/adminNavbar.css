@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
+/* Change the color of custom icons in the navbar */
+body{
+  margin: 0;
+  padding: 0;
+}
+.custom-icon {
+  color: #1474c2; /* Replace with your desired color code */
+}
+
+.custom-text {
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar-container {
+  position: fixed;
+  top: 1px; /* Add the appropriate unit, e.g., pixels */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 99%;
+  max-width: 1800px;
+  z-index: 1000;
+}
+
+
+.adminNavbar{
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  padding-top: 15px;
+}
+
+/* Navbar.css */
+
+.navbar-container {
+  margin-top: 10px; /* Adjust the gap from the top as needed */
+}
+
+.adminNavbar > a[class="p-menubar-button"] {
+    display: none !important;
+}
+
+/* Add any other styles you may need for the navbar */
+
+
+
+/* styles.css */
+.navbar {
+  padding: 1rem;
+  color: #333;
+  background-color: #f0f0f0;
+  /* ... other common styles */
+}
+
+.navbar.dark {
+  color: #fff;
+  background-color: #333;
+  /* ... dark mode styles */
+}

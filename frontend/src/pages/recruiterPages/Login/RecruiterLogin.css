@@ -1,0 +1,32 @@
+@media (min-width: 1025px) {
+    .h-custom-2 {
+      height: 100%;
+      }
+    }
+
+    /* Login.css */
+
+/* Center-align login items */
+.d-flex.ps-5.pt-5.align-items-center.justify-content-center {
+    text-align: center;
+  }
+  
+  .h1.mb-0 {
+    margin-bottom: 0;
+  }
+  
+  .d-flex.flex-column.justify-content-center.h-custom-2.w-75 {
+    margin: auto;
+  }
+  
+  /* Adjust spacing for small screens */
+  @media (max-width: 576px) {
+    .h-custom-2 {
+      height: auto;
+    }
+    
+    .d-flex.flex-column.justify-content-center.h-custom-2.w-75 {
+      width: 100%;
+    }
+  }
+  
