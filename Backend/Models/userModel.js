@@ -29,6 +29,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    companyName: {
+      type: String
+    },
     gender: {
       type: String,
       required: true
@@ -42,6 +45,10 @@ const userSchema = mongoose.Schema(
     isBlocked: {
       type: Boolean,
       default: false,
+    },
+    isAccepted: {
+      type: Boolean,
+      default: true
     },
     profileImg: {
       type: String,

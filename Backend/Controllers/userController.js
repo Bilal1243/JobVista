@@ -155,12 +155,13 @@ const AddjobPreference = asyncHandler(async (req, res) => {
 
     const { userId, jobTitle, jobType, minPay } = req.body
 
+
     const existing = await JobPreference.findOne({ userId: userId })
 
     if (existing) {
         // Add new skills to existing skills
         existing.jobTitle = jobTitle;
-        existing.jobType = jobType;
+        existing.jobType = jobType.val;
         existing.minPay = minPay;
         const updatePreference = await existing.save();
 
@@ -172,7 +173,7 @@ const AddjobPreference = asyncHandler(async (req, res) => {
         const saved = await JobPreference.create({
             userId,
             jobTitle,
-            jobType: jobType,
+            jobType: jobType.val,
             minPay
         })
 

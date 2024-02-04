@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import Recruiters from "../Models/recruiterModel.js";
+import User from "../Models/userModel.js";
+
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -11,7 +12,7 @@ const protect = asyncHandler(async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_CODE);
 
-      const recruiter = await Recruiters.findById(decoded.recruiterId).select("-password");
+      const recruiter = await User.findById(decoded.recruiterId).select("-password");
 
       if (!recruiter) {
         res.status(400);

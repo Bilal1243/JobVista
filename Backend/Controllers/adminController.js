@@ -136,7 +136,7 @@ const unlistSkills = asyncHandler(async (req, res) => {
 
 const getRecruiterRequests = asyncHandler(async (req, res) => {
 
-  const recruiters = await Recruiters.aggregate([
+  const recruiters = await Users.aggregate([
     {
       $match: { isAccepted: false }
     },
@@ -176,7 +176,7 @@ const getRecruiterRequests = asyncHandler(async (req, res) => {
 const acceptRecruiter = asyncHandler(async (req, res) => {
   const { recruiterId } = req.body
 
-  const updateRecruiter = await Recruiters.findByIdAndUpdate(recruiterId, { isAccepted: true, });
+  const updateRecruiter = await Users.findByIdAndUpdate(recruiterId, { isAccepted: true, });
 
   if (updateRecruiter) {
     res.status(201).json({ message: 'updated successfully' })
@@ -192,6 +192,11 @@ const acceptRecruiter = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
 
   const users = await Users.aggregate([
+    {
+      $match: {
+        roles: { $nin: ['recruiter'] }
+      }
+    },
     {
       $lookup: {
         from: 'industries',  // Replace with the actual name of your Industries collection
@@ -338,7 +343,12 @@ const editIndustryType = asyncHandler(async (req, res) => {
 
 const getRecruiters = asyncHandler(async (req, res) => {
 
-  const users = await Recruiters.aggregate([
+  const users = await Users.aggregate([
+    {
+      $match: {
+        roles: { $in: ['recruiter'] }
+      }
+    },
     {
       $lookup: {
         from: 'industries',  // Replace with the actual name of your Industries collection
@@ -375,7 +385,7 @@ const blockRecruiter = asyncHandler(async (req, res) => {
 
   const { recruiterId } = req.body
 
-  const findUser = await Recruiters.findByIdAndUpdate(recruiterId, { isBlocked: true })
+  const findUser = await Users.findByIdAndUpdate(recruiterId, { isBlocked: true })
 
   if (findUser) {
     res.status(201).json({ success: true, message: 'Blocked successfully' })
@@ -391,7 +401,7 @@ const unblockRecruiter = asyncHandler(async (req, res) => {
 
   const { recruiterId } = req.body
 
-  const findUser = await Recruiters.findByIdAndUpdate(recruiterId, { isBlocked: false })
+  const findUser = await Users.findByIdAndUpdate(recruiterId, { isBlocked: false })
 
   if (findUser) {
     res.status(201).json({ success: true, message: 'Blocked successfully' })

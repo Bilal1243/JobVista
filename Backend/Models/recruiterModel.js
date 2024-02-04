@@ -47,9 +47,6 @@ const recruiterSchema = mongoose.Schema(
     profileImg: {
       type: String
     },
-    about: {
-      type: String
-    },
     password: {
       type: String,
       required: true,

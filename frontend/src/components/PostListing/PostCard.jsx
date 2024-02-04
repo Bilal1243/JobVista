@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
-import "./Profile.css";
-import "./Actions.css";
-import { POST_IMAGES_PATH } from "../../../Utils/URL";
-import defualtProfile from "../../../assets/defualtProfile.jpg";
-import TimeAgo from "../../../Utils/TimeAgo.jsx";
+import "./Style.css";
+import { POST_IMAGES_PATH } from "../../Utils/URL";
+import defualtProfile from "../../assets/defualtProfile.jpg";
+import TimeAgo from "../../Utils/TimeAgo.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector } from "react-redux";
 import {
   useLikePostMutation,
   usePostCommentMutation,
   useDeleteCommentMutation,
-  useDeletePostMutation,
-  useEditPostMutation,
-} from "../../../redux/userSlices/userApiSlice.js";
+} from "../../redux/userSlices/userApiSlice.js";
 import InputEmoji from "react-input-emoji";
-import { PROFILE_PATH } from "../../../Utils/URL.js";
-import { toast } from "react-toastify";
-import { Dialog } from "primereact/dialog";
-import { MDBValidation, MDBBtn, MDBTextArea } from "mdb-react-ui-kit";
+import { PROFILE_PATH } from "../../Utils/URL.js";
 
 import EmojiPicker from "emoji-picker-react";
 
-function PostCard({ post, forPostCard }) {
+function PostCard({ post,loadPosts }) {
   const { userData } = useSelector((state) => state.auth);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -30,25 +24,10 @@ function PostCard({ post, forPostCard }) {
   const [comment, setComment] = useState("");
   const [displayedComments, setDisplayedComments] = useState(2);
   const [commentsExpanded, setCommentsExpanded] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [description, setDescription] = useState(post.description);
-
-  const [isEmojiPickerOpen, setEmojiPicker] = useState(false);
-
-  const handleEmojiPickerToggle = () => {
-    setEmojiPicker((prev) => !prev);
-  };
-
-  const handleEmojiSelected = (emoji) => {
-    setDescription((prev) => prev + emoji.emoji);
-    setEmojiPicker(false);
-  };
 
   const [likePost] = useLikePostMutation();
   const [postComment] = usePostCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
-  const [deletePost] = useDeletePostMutation();
-  const [editPost] = useEditPostMutation();
 
   useEffect(() => {
     if (post.likes.users.includes(userData._id)) {
@@ -104,41 +83,14 @@ function PostCard({ post, forPostCard }) {
         content: comment,
       }).unwrap();
       setComment("");
-      forPostCard();
+      loadPosts()
     } catch (error) {}
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
       const deleted = await deleteComment({ commentId: commentId });
-      forPostCard();
-    } catch (error) {
-      console.log(error?.data?.message || error?.data);
-    }
-  };
-
-  const handleDeletePost = async (postId) => {
-    try {
-      const response = await deletePost({ postId: postId });
-      if (response.data.success) {
-        toast.success("post removed successfully");
-        forPostCard();
-      }
-    } catch (error) {
-      console.log(error?.data?.message || error?.data);
-    }
-  };
-
-  const handleEditPost = async () => {
-    try {
-      const response = await editPost({
-        postId: post._id,
-        description: description,
-      });
-      if (response.data.success) {
-        setShowEdit(false);
-        forPostCard();
-      }
+      loadPosts()
     } catch (error) {
       console.log(error?.data?.message || error?.data);
     }
@@ -154,18 +106,20 @@ function PostCard({ post, forPostCard }) {
     <div class="card-body">
       <div class="border-top-0 border-right-0 border-bottom-0 ui-bordered pl-3 mt-2 mb-2">
         <div class="media mb-3 d-flex  justify-content-between">
-          <div className="media mb-3 d-flex">
+          <div className="media mb-1 d-flex">
             <img
               src={
-                userData.image !== null
-                  ? PROFILE_PATH + userData.image
+                post.ownerDetails[0].profileImg
+                  ? PROFILE_PATH + post.ownerDetails[0].profileImg
                   : defualtProfile
               }
               class="d-block ui-w-40 rounded-circle"
               alt=""
             />
             <div class="media-body ml-2">
-              {userData.firstName + " " + userData.lastName}
+              {post.ownerDetails[0].firstName +
+                " " +
+                post.ownerDetails[0].lastName}
               <div>
                 <TimeAgo createdAt={post.createdAt}></TimeAgo>
               </div>
@@ -173,13 +127,11 @@ function PostCard({ post, forPostCard }) {
           </div>
           <div>
             <span
-              className="pi pi-trash"
+              className="pi pi-bookmark"
               style={{
                 cursor: "pointer",
-                fontSize: "10px",
-                color: "red",
+                fontSize: "17px",
               }}
-              onClick={() => handleDeletePost(post._id)}
             ></span>
           </div>
         </div>
@@ -228,17 +180,6 @@ function PostCard({ post, forPostCard }) {
           <small class="align-middle" style={{ cursor: "pointer" }}>
             <strong>{post.comments.length}</strong>{" "}
             <i className="pi pi-comments"></i>
-          </small>
-        </div>
-        <div className="d-inline-block text-muted ml-4">
-          <small class="align-middle" style={{ cursor: "pointer" }}>
-            <strong
-              onClick={() => {
-                setShowEdit(true);
-              }}
-            >
-              <i class="pi pi-pencil align-middle"></i>&nbsp;edit
-            </strong>{" "}
           </small>
         </div>
         <div className="mt-2">
@@ -323,110 +264,6 @@ function PostCard({ post, forPostCard }) {
           )}
         </div>
       </div>
-
-      <Dialog
-        header={<h6>edit post</h6>}
-        visible={showEdit}
-        className="createPost"
-        style={isMobile ? { height: "90%", width: "100%" } : { height: "90%" }}
-        onHide={() => setShowEdit(false)}
-      >
-        <div
-          style={{
-            flex: 1,
-            maxWidth: "100%",
-            height: "100%",
-            margin: "0 10px",
-            position: "relative",
-          }}
-        >
-          <MDBValidation
-            noValidate
-            className="row"
-            encType="multipart/form-data"
-            onSubmit={() => handleEditPost()}
-          >
-            <div className="col-md-12">
-              <MDBTextArea
-                label="What do you want to talk about?"
-                placeholder="What do you want to talk about?"
-                rows="4"
-                className="description mt-2"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></MDBTextArea>
-            </div>
-
-            <div className="col-12">
-              <p
-                className="emojiBtn"
-                style={{
-                  fontSize: "40px",
-                  cursor: "pointer",
-                }}
-                onClick={handleEmojiPickerToggle}
-              >
-                ☺
-              </p>
-
-              {/* EmojiPicker button/icon */}
-              <div className="emoji d-flex">
-                {isEmojiPickerOpen && (
-                  <EmojiPicker
-                    onEmojiClick={handleEmojiSelected}
-                    className="emojiPicker"
-                    style={{ zIndex: 2 }} // Set a higher z-index for the EmojiPicker
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="ui-rect ui-bg-cover position-relative">
-              {isVideo ? (
-                <video
-                  src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
-                  autoPlay
-                  controls
-                  style={{ width: "100%", height: "100%" }}
-                ></video>
-              ) : (
-                <img
-                  src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
-                  alt=""
-                  style={{ width: "100%", height: "100%" }}
-                />
-              )}
-              {post.mediaItems.length > 1 && (
-                <>
-                  <button onClick={prevImage} className="carousel-arrow left">
-                    <i className="pi pi-chevron-left"></i>
-                  </button>
-                  <button onClick={nextImage} className="carousel-arrow right">
-                    <i className="pi pi-chevron-right"></i>
-                  </button>
-                </>
-              )}
-            </div>
-
-            <div className="col-12 d-flex justify-content-end ps-5 pe-3">
-              <MDBBtn
-                style={{
-                  width: "100px",
-                  borderRadius: "50px",
-                  backgroundColor: "#387F8E",
-                  color: "white",
-                }}
-                className="mt-2"
-                disabled={description.length === 0}
-                type="submit"
-                onClick={() => handleEditPost()}
-              >
-                post
-              </MDBBtn>
-            </div>
-          </MDBValidation>
-        </div>
-      </Dialog>
     </div>
   );
 }

@@ -213,6 +213,52 @@ const editPost = asyncHandler(async (req, res) => {
 })
 
 
+const listAllPosts = asyncHandler(async (req, res) => {
+
+    // Fetch posts for the user
+    const posts = await Posts.aggregate([
+        {
+            $lookup : {
+                from : 'users',
+                localField : 'userId',
+                foreignField : '_id',
+                as : 'ownerDetails'
+            }
+        }
+    ])
+
+    // Create an array to store detailed posts (with comments)
+    const detailedPosts = [];
+
+    // Iterate through each post and fetch comments with user details
+    for (const post of posts) {
+        const detailedPost = { ...post };
+
+        // Fetch comments for the current post
+        const comments = await Comment.aggregate([
+            {
+                $match: { postId: post._id },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'ownerId',
+                    foreignField: '_id',
+                    as: 'ownerDetails',
+                },
+            },
+        ]);
+
+        // Add comments to the detailed post
+        detailedPost.comments = comments;
+
+        // Add the detailed post to the array
+        detailedPosts.push(detailedPost);
+    }
+
+    res.json(detailedPosts)
+})
+
 
 export {
     CreatePost,

@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler'
 
-import Recruiters from '../Models/recruiterModel.js'
 import Users from '../Models/userModel.js'
 import Industries from '../Models/industriesModel.js'
 import Skills from '../Models/skillsModel.js'
@@ -17,7 +16,7 @@ const createJob = asyncHandler(async (req, res) => {
 
     const { recruiterId, skills, openings, jobRole, jobType, rate, industryType, experience, qualification, company, location, salaryRange, deadline, description, contactAllowed, questions } = req.body
 
-    const findRecruiter = await Recruiters.findOne({ _id: recruiterId })
+    const findRecruiter = await Users.findOne({ _id: recruiterId })
 
     const email = contactAllowed ? findRecruiter.email : null
 

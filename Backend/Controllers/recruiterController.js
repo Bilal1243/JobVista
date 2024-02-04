@@ -4,7 +4,7 @@ import OTP from '../Models/otpModel.js'
 import nodeMailer from 'nodemailer'
 import generateOtp from 'generate-otp'
 
-import Recruiters from '../Models/recruiterModel.js'
+import Users from '../Models/userModel.js'
 import Industries from '../Models/industriesModel.js'
 import Skills from '../Models/skillsModel.js'
 import Jobs from '../Models/jobsModel.js'
@@ -17,7 +17,7 @@ const { ObjectId } = mongoose.Types
 const recruiterAuth = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    const findRecruiter = await Recruiters.findOne({ email: email })
+    const findRecruiter = await Users.findOne({ email: email })
 
     if (!findRecruiter) {
         res.status(400);
@@ -55,12 +55,12 @@ const registerRecruiter = asyncHandler(async (req, res) => {
 
     const { email, mobile } = req.body
 
-    const findEmail = await Recruiters.findOne({ email })
+    const findEmail = await Users.findOne({ email })
     if (findEmail) {
         res.status(400)
         throw new Error('Email already exists')
     }
-    const findMobile = await Recruiters.findOne({ mobile })
+    const findMobile = await Users.findOne({ mobile })
     if (findMobile) {
         res.status(400)
         throw new Error('mobile number already in use')
@@ -113,8 +113,8 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
         throw new Error('invalid OTP')
     }
 
-    const findEmail = await Recruiters.find({ email: email })
-    const findNum = await Recruiters.find({ mobile: mobile })
+    const findEmail = await Users.find({ email: email })
+    const findNum = await Users.find({ mobile: mobile })
 
     if (findEmail.length > 0) {
         res.status(400)
@@ -125,7 +125,7 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
         throw new Error('Mobile Number already existing')
     }
 
-    const recruiter = await Recruiters.create({
+    const recruiter = await Users.create({
         firstName,
         lastName,
         email,
@@ -137,6 +137,8 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
         gender,
         education,
         profileImg: images,
+        isAccepted: false,
+        roles: ['recruiter'],
         password,
     });
     if (recruiter) {
@@ -215,7 +217,7 @@ const recruiterloadMyProfile = asyncHandler(async (req, res) => {
     const recruiterId = req.query.recruiterId;
 
 
-    const data = await Recruiters.aggregate([
+    const data = await Users.aggregate([
         {
             $match: {
                 _id: new ObjectId(recruiterId)
@@ -269,7 +271,7 @@ const recruiterEditProfile = asyncHandler(async (req, res) => {
     const images = req.file && req.file.filename;
 
 
-    const recruiter = await Recruiters.findOneAndUpdate(
+    const recruiter = await Users.findOneAndUpdate(
         { _id: recruiterId },
         {
             firstName: firstName,

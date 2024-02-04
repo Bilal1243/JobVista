@@ -81,7 +81,7 @@ function SearchBar({ jobs, onSearch }) {
     <>
       <div className="container" style={{ marginTop: "150px" }}>
         <div className="card mb-4 d-flex justify-content-center align-items-center">
-          <div className="col-12 input-group">
+          <div className="col-12">
             <div className="col-12 col-md-4 d-flex align-items-center position-relative">
               <i className="pi pi-search me-2"></i>
               <input
@@ -91,34 +91,6 @@ function SearchBar({ jobs, onSearch }) {
                 value={searchQuery}
                 onChange={(e) => showSuggestions(e.target.value)}
               />
-              {/* {suggestions.length > 0 && (
-                <div
-                  className="suggestion-box"
-                  style={{
-                    backgroundColor: "white",
-                    padding: "10px",
-                    width: "100%",
-                    height: "200px",
-                    overflowY: "auto",
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    zIndex: 100,
-                    boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  {suggestions.map((suggestion) => (
-                    <div
-                      key={suggestion._id}
-                      className="suggestion-item m-3"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleSearchClick(suggestion.jobRole)}
-                    >
-                      {suggestion.jobRole}
-                    </div>
-                  ))}
-                </div>
-              )} */}
             </div>
             <div className="col-12 col-md-4 position-relative">
               <div className="d-flex align-items-center">

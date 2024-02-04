@@ -147,6 +147,10 @@ function PostCard({ post, forPostCard }) {
 
   const isMobile = window.innerWidth <= 767;
 
+  const isCommentOwner = (commentOwnerId) => {
+    return recruiterData._id === commentOwnerId;
+  };
+
   return (
     <div class="card-body">
       <div class="border-top-0 border-right-0 border-bottom-0 ui-bordered pl-3 mt-2 mb-2">
@@ -284,16 +288,18 @@ function PostCard({ post, forPostCard }) {
                         " " +
                         comment.ownerDetails[0].lastName}
                     </strong>
-                    <span
-                      className="pi pi-trash"
-                      style={{
-                        cursor: "pointer",
-                        fontSize: "10px",
-                        color: "red",
-                        marginLeft: "auto", // Align to the right side
-                      }}
-                      onClick={() => handleDeleteComment(comment._id)}
-                    ></span>
+                    {isCommentOwner(comment.ownerDetails[0]._id) && (
+                      <span
+                        className="pi pi-trash"
+                        style={{
+                          cursor: "pointer",
+                          fontSize: "10px",
+                          color: "red",
+                          marginLeft: "auto",
+                        }}
+                        onClick={() => handleDeleteComment(comment._id)}
+                      ></span>
+                    )}
                   </div>
                   <small className="text-muted" style={{ fontSize: "12px" }}>
                     {comment.ownerDetails[0].title}

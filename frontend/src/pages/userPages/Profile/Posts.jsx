@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
-import './Actions.css'
+import "./Actions.css";
 import { Button } from "primereact/button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import defualtProfile from "../../../assets/defualtProfile.jpg";
@@ -48,7 +48,7 @@ function Posts({ activeTab }) {
     setMediaItems(imagesArray);
   };
 
-  const [getMyPosts] = useGetMyPostsMutation(); 
+  const [getMyPosts] = useGetMyPostsMutation();
 
   useEffect(() => {
     fetchPostData();
@@ -89,7 +89,6 @@ function Posts({ activeTab }) {
     }
   };
 
-
   const header = () => {
     return (
       <div className="card">
@@ -119,6 +118,8 @@ function Posts({ activeTab }) {
     fetchPostData();
   };
 
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       <div
@@ -133,24 +134,24 @@ function Posts({ activeTab }) {
             Create Post
           </Button>
         </div>
-          {posts.length > 0 ? (
-            <div className="card">
-              {posts
-                .slice()
-                .reverse()
-                .map((post, index) => (
-                  <PostCard key={index} post={post} forPostCard={forPostCard} />
-                ))}
-            </div>
-          ) : (
-            <>
-              <div className="card-body">
-                <div className=" d-flex align-items-center justify-content-center">
-                  <h5>No Posts Yet</h5>
-                </div>
+        {posts.length > 0 ? (
+          <div className="card">
+            {posts
+              .slice()
+              .reverse()
+              .map((post, index) => (
+                <PostCard key={index} post={post} forPostCard={forPostCard} />
+              ))}
+          </div>
+        ) : (
+          <>
+            <div className="card-body">
+              <div className=" d-flex align-items-center justify-content-center">
+                <h5>No Posts Yet</h5>
               </div>
-            </>
-          )}
+            </div>
+          </>
+        )}
       </div>
 
       <Dialog
@@ -158,6 +159,11 @@ function Posts({ activeTab }) {
         visible={visible}
         className="createPost"
         onHide={() => setVisible(false)}
+        style={
+          isMobile
+            ? { width: "100%", height: "90%" }
+            : { width: "60%", height: "90%" }
+        }
       >
         <div
           style={{

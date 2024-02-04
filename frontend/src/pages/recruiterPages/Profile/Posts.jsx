@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
-import './Actions.css'
+import "./Actions.css";
 import { Button } from "primereact/button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import defualtProfile from "../../../assets/defualtProfile.jpg";
@@ -22,7 +22,6 @@ import PostCard from "./PostCard.jsx";
 import { PROFILE_PATH } from "../../../Utils/URL.js";
 
 function Posts({ activeTab }) {
-  
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [visible, setVisible] = useState(false);
@@ -49,7 +48,7 @@ function Posts({ activeTab }) {
     setMediaItems(imagesArray);
   };
 
-  const [recruiterGetPosts] = useRecruiterGetPostsMutation(); 
+  const [recruiterGetPosts] = useRecruiterGetPostsMutation();
 
   useEffect(() => {
     fetchPostData();
@@ -57,7 +56,10 @@ function Posts({ activeTab }) {
 
   const fetchPostData = async () => {
     try {
-      const responseData = await recruiterGetPosts();
+      const responseData = await recruiterGetPosts({
+        recruiterId: recruiterData._id,
+      });
+      console.log(responseData);
       setProfileData(responseData.data.data[0]);
       setPosts(responseData.data.detailedPosts);
       setIsloading(false);
@@ -78,7 +80,7 @@ function Posts({ activeTab }) {
       });
 
       const response = await recruiterCreatePost(formData);
-      console.log(response)
+      console.log(response);
 
       if (response.data.success) {
         setIsloading(false);
@@ -91,7 +93,6 @@ function Posts({ activeTab }) {
       console.log(error?.data?.message || error?.data);
     }
   };
-
 
   const header = () => {
     return (
@@ -122,6 +123,8 @@ function Posts({ activeTab }) {
     fetchPostData();
   };
 
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       <div
@@ -136,24 +139,24 @@ function Posts({ activeTab }) {
             Create Post
           </Button>
         </div>
-          {posts.length > 0 ? (
-            <div className="card">
-              {posts
-                .slice()
-                .reverse()
-                .map((post, index) => (
-                  <PostCard key={index} post={post} forPostCard={forPostCard} />
-                ))}
-            </div>
-          ) : (
-            <>
-              <div className="card-body">
-                <div className=" d-flex align-items-center justify-content-center">
-                  <h5>No Posts Yet</h5>
-                </div>
+        {posts.length > 0 ? (
+          <div className="card">
+            {posts
+              .slice()
+              .reverse()
+              .map((post, index) => (
+                <PostCard key={index} post={post} forPostCard={forPostCard} />
+              ))}
+          </div>
+        ) : (
+          <>
+            <div className="card-body">
+              <div className=" d-flex align-items-center justify-content-center">
+                <h5>No Posts Yet</h5>
               </div>
-            </>
-          )}
+            </div>
+          </>
+        )}
       </div>
 
       <Dialog
@@ -161,6 +164,11 @@ function Posts({ activeTab }) {
         visible={visible}
         className="createPost"
         onHide={() => setVisible(false)}
+        style={
+          isMobile
+            ? { width: "100%", height: "90%" }
+            : { width: "60%", height: "90%" }
+        }
       >
         <div
           style={{

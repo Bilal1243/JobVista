@@ -1,4 +1,3 @@
-import Recruiters from "../Models/recruiterModel.js";
 import Industries from '../Models/industriesModel.js'
 import userSkills from '../Models/userskillsModel.js'
 import Skills from '../Models/skillsModel.js'
@@ -6,6 +5,7 @@ import JobPreference from '../Models/JobPreferenceModel.js'
 import Followers from '../Models/followersModel.js'
 import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
+import Users from '../Models/userModel.js'
 
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
@@ -13,9 +13,9 @@ const { ObjectId } = mongoose.Types
 
 
 const recruiterMyPosts = asyncHandler(async (req, res) => {
-    const recruiterId = req.recruiter._id;
+    const recruiterId = req.query.recruiterId;
 
-    const data = await Recruiters.aggregate([
+    const data = await Users.aggregate([
         {
             $match: {
                 _id: new ObjectId(recruiterId),
@@ -33,7 +33,7 @@ const recruiterMyPosts = asyncHandler(async (req, res) => {
             $project: {
                 _id: 1,
                 userName: { $concat: ['$firstName', ' ', '$lastName'] },
-                company: 1,
+                companyName: 1,
                 title: 1,
                 email: 1,
                 mobile: 1,
@@ -66,7 +66,7 @@ const recruiterMyPosts = asyncHandler(async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'recruiters',
+                    from: 'users',
                     localField: 'ownerId',
                     foreignField: '_id',
                     as: 'ownerDetails',
@@ -79,14 +79,10 @@ const recruiterMyPosts = asyncHandler(async (req, res) => {
 
         // Add the detailed post to the array
         detailedPosts.push(detailedPost);
-
     }
 
-    // Now, detailedPosts contains posts with comments, along with the username and profileImg of commenters
-    // You can send detailedPosts as the response or process it further as needed
     res.json({ data, detailedPosts });
 });
-
 
 
 
@@ -168,7 +164,6 @@ const recruiterpostComment = asyncHandler(async (req, res) => {
 const recruiterdeleteComment = asyncHandler(async (req, res) => {
     const commentId = req.query.commentId
 
-    console.log(commentId)
 
     const deleted = await Comment.deleteOne({ _id: commentId })
 

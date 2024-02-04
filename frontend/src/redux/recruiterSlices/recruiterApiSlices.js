@@ -115,9 +115,10 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
             })   
         }),
         recruiterGetPosts : builder.mutation({
-            query : ()=>({
+            query : (params)=>({
                 url : `${RECRUITER_URL}/getMyPosts`,
-                method : 'GET'
+                method : 'GET',
+                params
             })   
         }),
         recruiterLikePost : builder.mutation({
