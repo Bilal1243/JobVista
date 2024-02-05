@@ -66,7 +66,7 @@ function SavedJobs({ activeTab }) {
         <>
           {reversedItems.map((item, index) => {
             return (
-              <div className="col-md-12">
+              <div className="col-md-12" key={index}>
                 <div className="card">
                   <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center">

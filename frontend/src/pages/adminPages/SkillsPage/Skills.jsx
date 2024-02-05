@@ -108,11 +108,11 @@ function Skills() {
     try {
       const response = await AdminAddSkill({ skill }).unwrap();
       if (response.success) {
-        toast.success("succefully added");
+        toast.success(response.message);
         setSkill("");
         setVisible(false);
       } else {
-        toast.success("duplicate skill available");
+        toast.success(response.message);
       }
       fetchSkills();
     } catch (error) {

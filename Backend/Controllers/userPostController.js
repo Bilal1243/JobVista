@@ -7,6 +7,7 @@ import JobPreference from '../Models/JobPreferenceModel.js'
 import Followers from '../Models/followersModel.js'
 import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
+import SavedPosts from '../Models/SavedPostsModel.js'
 
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
@@ -214,25 +215,40 @@ const editPost = asyncHandler(async (req, res) => {
 
 
 const listAllPosts = asyncHandler(async (req, res) => {
+    const userId = req.user._id; // Assuming you have the user ID in the request object
 
     // Fetch posts for the user
     const posts = await Posts.aggregate([
         {
-            $lookup : {
-                from : 'users',
-                localField : 'userId',
-                foreignField : '_id',
-                as : 'ownerDetails'
+            $lookup: {
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'ownerDetails'
             }
         }
-    ])
+    ]);
 
-    // Create an array to store detailed posts (with comments)
+    // Fetch saved posts for the user
+    const savedItemsDocument = await SavedPosts.findOne({ userId }).select('savedItems');
+
+    // Create an array to store detailed posts (with comments and isSaved)
     const detailedPosts = [];
+
+    // Check if savedItemsDocument is null or undefined
+    const isSavedItemsPresent = savedItemsDocument && savedItemsDocument.savedItems;
 
     // Iterate through each post and fetch comments with user details
     for (const post of posts) {
         const detailedPost = { ...post };
+
+        // Check if the post is saved by the user
+        if (isSavedItemsPresent) {
+            detailedPost.isSaved = savedItemsDocument.savedItems.includes(post._id.toString());
+        } else {
+            // If no savedItems document is found, assume none of the posts are saved
+            detailedPost.isSaved = false;
+        }
 
         // Fetch comments for the current post
         const comments = await Comment.aggregate([
@@ -256,7 +272,78 @@ const listAllPosts = asyncHandler(async (req, res) => {
         detailedPosts.push(detailedPost);
     }
 
-    res.json(detailedPosts)
+    res.json(detailedPosts);
+});
+
+
+const savePost = asyncHandler(async (req, res) => {
+    const { userId, postId } = req.query;
+
+    const existing = await SavedPosts.findOne({ userId });
+
+    if (existing) {
+        const postExist = await SavedPosts.findOne({ userId, savedItems: new ObjectId(postId) });
+
+        if (postExist) {
+            return res.json({ postExist: true });
+        }
+
+        // Use new keyword with mongoose.Types.ObjectId
+        await SavedPosts.updateOne({ userId }, { $addToSet: { savedItems: new mongoose.Types.ObjectId(postId) } });
+    } else {
+        // Use new keyword with mongoose.Types.ObjectId
+        await SavedPosts.create({ userId, savedItems: [new mongoose.Types.ObjectId(postId)] });
+    }
+
+    res.json({ success: true });
+})
+
+const unsavePost = asyncHandler(async (req, res) => {
+    const { userId, postId } = req.query;
+
+    const alreadySaved = await SavedPosts.findOne({ userId, savedItems: new ObjectId(postId) });
+
+    if (alreadySaved) {
+        await SavedPosts.findOneAndUpdate(
+            { userId, savedItems: new ObjectId(postId) },
+            { $pull: { savedItems: new ObjectId(postId) } }
+        );
+    }
+
+    res.json({ success: true });
+});
+
+const listSavedPosts = asyncHandler(async (req, res) => {
+    const userId = req.user._id
+
+
+    const posts = await SavedPosts.aggregate([
+        {
+            $match: { userId: userId }
+        },
+        {
+            $unwind: '$savedItems'
+        },
+        {
+            $lookup: {
+                from: 'posts',
+                localField: 'savedItems',
+                foreignField: '_id',
+                as: 'post'
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'post.userId',
+                foreignField: '_id',
+                as: 'postOwner'
+            }
+        }
+    ]);
+
+    res.json(posts)
+
 })
 
 
@@ -268,5 +355,8 @@ export {
     deleteComment,
     deletePost,
     editPost,
-    listAllPosts
+    listAllPosts,
+    savePost,
+    unsavePost,
+    listSavedPosts
 }

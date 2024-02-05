@@ -25,7 +25,7 @@ import {
 }
     from '../Controllers/userController.js'
 
-import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts } from '../Controllers/userPostController.js'
+import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts, savePost, unsavePost, listSavedPosts } from '../Controllers/userPostController.js'
 import { SearchJob, applyJob, getJob, listJobs, saveJob, unsaveJob } from '../Controllers/userJobControler.js'
 
 userRoute.post('/auth', authUser)
@@ -39,6 +39,9 @@ userRoute.get('/getSkills', listSkills)
 userRoute.get('/getIndustries', listIndustries)
 
 userRoute.get('/listPosts',protect,listAllPosts)
+userRoute.put('/savepost', protect, savePost)
+userRoute.put('/unSavepost', protect, unsavePost)
+
 
 userRoute.get('/myProfile', protect, loadMyProfile)
 userRoute.post('/editProfile', protect, ProfileUpload.single("profileImg"), editProfile);
@@ -54,6 +57,7 @@ userRoute.put('/removeSkill', protect, removeSkill)
 userRoute.get('/savedJobs',protect,listSavedJobs)
 userRoute.put('/changePassword',protect,changePassword)
 userRoute.get('/getJobStatus',protect,jobStatusList)
+userRoute.get('/SavedPosts',protect,listSavedPosts)
 
 
 userRoute.get('/listJobs', protect, listJobs)

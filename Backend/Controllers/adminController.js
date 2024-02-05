@@ -63,9 +63,9 @@ const addSkills = asyncHandler(async (req, res) => {
     });
 
     if (savedSkill) {
-      res.status(201).json({ message: 'Skill added successfully' });
+      res.status(201).json({success : true, message: 'Skill added successfully' });
     } else {
-      res.status(400).json({ message: 'Failed to add new skill' });
+      res.status(400).json({success : false, message: 'Failed to add new skill' });
     }
   }
 });

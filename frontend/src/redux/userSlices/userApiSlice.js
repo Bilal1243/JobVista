@@ -193,6 +193,26 @@ export const userSlice = userApiSlice.injectEndpoints({
         method : 'GET'
       })
     }),
+    userSavePost : builder.mutation({
+      query : (params)=>({
+        url : `${USERS_URL}/savepost`,
+        method : 'PUT',
+        params
+      })
+    }),
+    userUnsavePost : builder.mutation({
+      query : (params)=>({
+        url : `${USERS_URL}/unSavepost`,
+        method : 'PUT',
+        params
+      })
+    }),
+    userlistSavedPosts : builder.mutation({
+      query : ()=>({
+        url : `${USERS_URL}/SavedPosts`,
+        method : 'GET'
+      })
+    }),
     userLogout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -231,5 +251,8 @@ export const {
   useUserChangePasswordMutation,
   useUserlistJobStatusMutation,
   useUserlistPostsMutation,
+  useUserSavePostMutation,
+  useUserUnsavePostMutation,
+  useUserlistSavedPostsMutation,
   useUserLogoutMutation
 } = userSlice

@@ -9,13 +9,13 @@ import {
   useLikePostMutation,
   usePostCommentMutation,
   useDeleteCommentMutation,
+  useUserSavePostMutation,
+  useUserUnsavePostMutation,
 } from "../../redux/userSlices/userApiSlice.js";
 import InputEmoji from "react-input-emoji";
 import { PROFILE_PATH } from "../../Utils/URL.js";
 
-import EmojiPicker from "emoji-picker-react";
-
-function PostCard({ post,loadPosts }) {
+function PostCard({ post, loadPosts }) {
   const { userData } = useSelector((state) => state.auth);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -28,6 +28,8 @@ function PostCard({ post,loadPosts }) {
   const [likePost] = useLikePostMutation();
   const [postComment] = usePostCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
+  const [userSavePost] = useUserSavePostMutation();
+  const [userUnsavePost] = useUserUnsavePostMutation();
 
   useEffect(() => {
     if (post.likes.users.includes(userData._id)) {
@@ -83,18 +85,39 @@ function PostCard({ post,loadPosts }) {
         content: comment,
       }).unwrap();
       setComment("");
-      loadPosts()
+      loadPosts();
     } catch (error) {}
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
       const deleted = await deleteComment({ commentId: commentId });
-      loadPosts()
+      loadPosts();
     } catch (error) {
       console.log(error?.data?.message || error?.data);
     }
   };
+
+  const savepost = async () => {
+    try {
+      if (post.isSaved) {
+        const response = await userUnsavePost({
+          userId: userData._id,
+          postId: post._id,
+        }).unwrap();
+        loadPosts();
+      } else {
+        const response = await userSavePost({
+          userId: userData._id,
+          postId: post._id,
+        }).unwrap();
+        loadPosts();
+      }
+    } catch (error) {
+      console.log(error?.data?.message || error?.data);
+    }
+  };
+
 
   const isMobile = window.innerWidth <= 767;
 
@@ -126,13 +149,27 @@ function PostCard({ post,loadPosts }) {
             </div>
           </div>
           <div>
-            <span
-              className="pi pi-bookmark"
-              style={{
-                cursor: "pointer",
-                fontSize: "17px",
-              }}
-            ></span>
+            {post.isSaved ? (
+              <span
+                className="pi pi-bookmark-fill"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "17px",
+                }}
+                onClick={()=>savepost()}
+              ></span>
+            ) : (
+              <span
+                className="pi pi-bookmark"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "17px",
+                }}
+                onClick={() => {
+                  savepost();
+                }}
+              ></span>
+            )}
           </div>
         </div>
         <p style={{ whiteSpace: "pre-line" }}>{post.description}</p>
@@ -206,54 +243,57 @@ function PostCard({ post,loadPosts }) {
           )}
         </div>
         <div class="comments-section">
-          {post.comments.slice(0, displayedComments).map((comment, index) => (
-            <div className="col-12 d-flex flex-row justify-content-start mb-3">
-              <img
-                src={
-                  comment.ownerDetails[0].profileImg
-                    ? PROFILE_PATH + comment.ownerDetails[0].profileImg
-                    : defualtProfile
-                }
-                alt="avatar 1"
-                style={{ width: "35px", height: "100%", borderRadius: "50%" }}
-              />
-              <div
-                className="p-2 ms-2"
-                style={{
-                  width: "100%",
-                  borderRadius: "15px",
-                  backgroundColor: "rgba(57, 192, 237,.2)",
-                }}
-              >
-                <div className="d-flex flex-column">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <strong>
-                      {comment.ownerDetails[0].firstName +
-                        " " +
-                        comment.ownerDetails[0].lastName}
-                    </strong>
-                    {isCommentOwner(comment.ownerDetails[0]._id) && (
-                      <span
-                        className="pi pi-trash"
-                        style={{
-                          cursor: "pointer",
-                          fontSize: "10px",
-                          color: "red",
-                          marginLeft: "auto",
-                        }}
-                        onClick={() => handleDeleteComment(comment._id)}
-                      ></span>
-                    )}
+          {post.comments
+            .slice(0, displayedComments)
+            .reverse()
+            .map((comment, index) => (
+              <div className="col-12 d-flex flex-row justify-content-start mb-3">
+                <img
+                  src={
+                    comment.ownerDetails[0].profileImg
+                      ? PROFILE_PATH + comment.ownerDetails[0].profileImg
+                      : defualtProfile
+                  }
+                  alt="avatar 1"
+                  style={{ width: "35px", height: "100%", borderRadius: "50%" }}
+                />
+                <div
+                  className="p-2 ms-2"
+                  style={{
+                    width: "100%",
+                    borderRadius: "15px",
+                    backgroundColor: "rgba(57, 192, 237,.2)",
+                  }}
+                >
+                  <div className="d-flex flex-column">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <strong>
+                        {comment.ownerDetails[0].firstName +
+                          " " +
+                          comment.ownerDetails[0].lastName}
+                      </strong>
+                      {isCommentOwner(comment.ownerDetails[0]._id) && (
+                        <span
+                          className="pi pi-trash"
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "10px",
+                            color: "red",
+                            marginLeft: "auto",
+                          }}
+                          onClick={() => handleDeleteComment(comment._id)}
+                        ></span>
+                      )}
+                    </div>
+                    <small className="text-muted" style={{ fontSize: "12px" }}>
+                      {comment.ownerDetails[0].title}
+                    </small>
+                    <p className="mt-2">{comment.content}</p>
                   </div>
-                  <small className="text-muted" style={{ fontSize: "12px" }}>
-                    {comment.ownerDetails[0].title}
-                  </small>
-                  <p className="mt-2">{comment.content}</p>
+                  {/* Add a delete icon here */}
                 </div>
-                {/* Add a delete icon here */}
               </div>
-            </div>
-          ))}
+            ))}
           {post.comments.length > 2 && (
             <small
               className="show-more-button"
