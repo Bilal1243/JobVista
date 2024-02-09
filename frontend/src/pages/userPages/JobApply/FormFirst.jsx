@@ -8,15 +8,19 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-function FormFirst({ resume, handleFileChange, setActiveForm }) {
+function FormFirst({ resume, handleFileChange, setActiveForm, questions }) {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const handlesubmit = () => {
     try {
-      if (resume !== null) {
+      if (resume && Array.isArray(questions) && questions.length > 0) {
         setActiveForm("second");
       } else {
-        setErrorMsg("provide resume for the recruiter");
+        if (!resume) {
+          setErrorMsg("Please provide a resume for the recruiter.");
+        } else if (!Array.isArray(questions) || questions.length === 0) {
+          setActiveForm("experience");
+        }
       }
     } catch (error) {
       console.log(error);

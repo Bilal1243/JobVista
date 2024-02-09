@@ -31,6 +31,7 @@ import countrydata from "../../../Utils/Countries.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/recruiterSlices/recruiterAuthSlice.js";
 import { PROFILE_PATH } from "../../../Utils/URL.js";
+import SavedPosts from "./SavedPosts.jsx";
 
 function RecruiterProfile() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
@@ -176,7 +177,7 @@ function RecruiterProfile() {
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>
               <div>
-                <Link to="/followers">{followers.length} Followers</Link>
+                <Link to="/followers">{followers.length} Connection</Link>
               </div>
             </div>
           </div>
@@ -221,6 +222,9 @@ function RecruiterProfile() {
               <div className="card-body tab-content">
                 {activeTab === "profile" && (
                   <Posts activeTab={activeTab}></Posts>
+                )}
+                {activeTab === "saved-posts" && (
+                  <SavedPosts activeTab={activeTab}></SavedPosts>
                 )}
               </div>
             </div>

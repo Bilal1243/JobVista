@@ -121,7 +121,6 @@ const Register = () => {
         email,
       }).unwrap();
       if (res) {
-        console.log(res);
         setVisible(true);
         setTimer(60);
         startTimer();

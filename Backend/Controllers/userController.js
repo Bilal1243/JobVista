@@ -4,7 +4,7 @@ import userSkills from '../Models/userskillsModel.js'
 import Skills from '../Models/skillsModel.js'
 import JobPreference from '../Models/JobPreferenceModel.js'
 import jobApplications from '../Models/applicationModel.js'
-import Followers from '../Models/followersModel.js'
+import Connections from '../Models/connestionsModel.js'
 import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
 import SavedJobs from "../Models/SavedJobsModel.js";
@@ -156,12 +156,13 @@ const AddjobPreference = asyncHandler(async (req, res) => {
     const { userId, jobTitle, jobType, minPay } = req.body
 
 
+
     const existing = await JobPreference.findOne({ userId: userId })
 
     if (existing) {
         // Add new skills to existing skills
         existing.jobTitle = jobTitle;
-        existing.jobType = jobType.val;
+        existing.jobType = jobType;
         existing.minPay = minPay;
         const updatePreference = await existing.save();
 
@@ -300,7 +301,7 @@ const loadMyProfile = asyncHandler(async (req, res) => {
         }
     ]);
 
-    const followers = await Followers.find({ userId: userId })
+    const followers = await Connections.find({ userId: userId })
     const jobPreference = await JobPreference.findOne({ userId: userId })
 
     res.status(201).json({ data: data[0], followers: followers, jobPreference: jobPreference });

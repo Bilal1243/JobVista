@@ -135,27 +135,26 @@ function JobApply() {
                       resume={resume}
                       handleFileChange={handleFileChange}
                       setActiveForm={setActiveForm}
+                      questions={questions}
                     ></FormFirst>
                   )}
-
-                  {questions.length > 0 && activeForm === "second" ? (
+                  {activeForm === "second" && (
                     <FormTwo
                       setActiveForm={setActiveForm}
                       questions={questions}
                       userAnswers={userAnswers}
                       setUserAnswers={setUserAnswers}
                     />
-                  ) : (
-                    activeForm === "experience" && (
-                      <FormThree
-                        setActiveForm={setActiveForm}
-                        title={title}
-                        setTitle={setTitle}
-                        company={company}
-                        setCompany={setCompany}
-                        handleSubmit={handleSubmit}
-                      />
-                    )
+                  )}
+                  {activeForm === "experience" && (
+                    <FormThree
+                      setActiveForm={setActiveForm}
+                      title={title}
+                      setTitle={setTitle}
+                      company={company}
+                      setCompany={setCompany}
+                      handleSubmit={handleSubmit}
+                    />
                   )}
                 </div>
               </div>

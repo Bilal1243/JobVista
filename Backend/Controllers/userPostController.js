@@ -1,10 +1,9 @@
 import users from "../Models/userModel.js";
-import Recruiters from "../Models/recruiterModel.js";
 import Industries from '../Models/industriesModel.js'
 import userSkills from '../Models/userskillsModel.js'
 import Skills from '../Models/skillsModel.js'
 import JobPreference from '../Models/JobPreferenceModel.js'
-import Followers from '../Models/followersModel.js'
+import Connections from '../Models/connestionsModel.js'
 import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
 import SavedPosts from '../Models/SavedPostsModel.js'
@@ -314,8 +313,7 @@ const unsavePost = asyncHandler(async (req, res) => {
 });
 
 const listSavedPosts = asyncHandler(async (req, res) => {
-    const userId = req.user._id
-
+    const userId = req.user._id;
 
     const posts = await SavedPosts.aggregate([
         {
@@ -342,9 +340,37 @@ const listSavedPosts = asyncHandler(async (req, res) => {
         }
     ]);
 
-    res.json(posts)
+    const detailedPosts = [];
 
-})
+    for (const post of posts) {
+        const detailedPost = { ...post };
+
+
+        // Fetch comments for the current post
+        const comments = await Comment.aggregate([
+            {
+                $match: { postId: post.savedItems },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'ownerId',
+                    foreignField: '_id',
+                    as: 'ownerDetails',
+                },
+            },
+        ]);
+
+        // Add comments to the detailed post
+        detailedPost.comments = comments;
+
+        // Add the detailed post to the array
+        detailedPosts.push(detailedPost);
+    }
+
+    res.json(detailedPosts);
+});
+
 
 
 export {

@@ -15,6 +15,7 @@ import JobListing from './pages/userPages/Jobs/JobListing.jsx'
 import ViewJob from './pages/userPages/Jobs/ViewJob.jsx'
 import JobApply from './pages/userPages/JobApply/JobApply.jsx'
 import SuccessPage from './pages/userPages/JobApply/SuccessPage.jsx'
+import MyNetwork from './pages/userPages/myNetwork/MyNetwork.jsx'
 
 
 
@@ -68,6 +69,7 @@ function App() {
         <Route path='/viewJob/:jobId' element={<UserPrivateRoute element={<ViewJob></ViewJob>}></UserPrivateRoute>}></Route>
         <Route path='/applyJob/:jobId' element={<UserPrivateRoute element={<JobApply></JobApply>}></UserPrivateRoute>}></Route>
         <Route path='/applied/:jobId' element={<UserPrivateRoute element={<SuccessPage></SuccessPage>}></UserPrivateRoute>}></Route>
+        <Route path='/MyNetwork' element={<UserPrivateRoute element={<MyNetwork></MyNetwork>}></UserPrivateRoute>}></Route>
         
 
 

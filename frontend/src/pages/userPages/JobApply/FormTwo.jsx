@@ -22,10 +22,9 @@ const inputController = (
   if (questionType === "User Input") {
     return (
       <MDBInput
-        label="Email(optional)"
         type="email"
         name="email"
-        placeholder="Email"
+        placeholder="enter answer"
         required
         value={previousAnswer ? previousAnswer.answer : ""}
         onChange={(e) =>

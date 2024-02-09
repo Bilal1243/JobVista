@@ -57,7 +57,7 @@ function NavbarUi() {
         <Button
           label="My Network"
           icon="pi pi-fw pi-users"
-          onClick={() => navigate("/Jobs")}
+          onClick={() => navigate("/MyNetwork")}
           style={{
             textDecoration: "none",
             color: "inherit",

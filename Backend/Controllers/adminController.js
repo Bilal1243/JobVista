@@ -2,7 +2,6 @@ import Admin from '../Models/adminModel.js'
 import Users from '../Models/userModel.js'
 import Skills from '../Models/skillsModel.js'
 import industries from '../Models/industriesModel.js'
-import Recruiters from '../Models/recruiterModel.js'
 import Jobs from '../Models/jobsModel.js'
 
 import asyncHandler from 'express-async-handler'

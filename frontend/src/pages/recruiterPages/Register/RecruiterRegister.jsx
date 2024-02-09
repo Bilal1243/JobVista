@@ -53,6 +53,9 @@ const RecruiterRegister = () => {
   const [highestEducations, setHighestEducations] = useState([]);
   const [industries, setIndustries] = useState([]);
 
+  const [timer, setTimer] = useState(60);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
   const [recruiterGetIndustryTypes] = useRecruiterGetIndustryTypesMutation();
   const [recruiterRegister] = useRecruiterRegisterMutation();
   const [recruiterVerifyregisteration] =
@@ -120,10 +123,28 @@ const RecruiterRegister = () => {
         const res = await recruiterRegister({ email, mobile }).unwrap();
         if (res) {
           setVisible(true);
+          setTimer(60);
+          startTimer();
         }
       }
     } catch (error) {
       toast.error(error?.data?.message || error?.data);
+    }
+  };
+
+  const resendOtp = async () => {
+    try {
+      const res = await recruiterRegister({
+        mobile,
+        email,
+      }).unwrap();
+      if (res) {
+        setVisible(true);
+        setTimer(60);
+        startTimer();
+      }
+    } catch (error) {
+      console.log(error?.data?.message || error?.message);
     }
   };
 
@@ -151,7 +172,6 @@ const RecruiterRegister = () => {
           formData
         );
 
-        console.log(responseFromApiCall)
         if (responseFromApiCall.data.success) {
           toast.success("Registration successful");
           navigate("/recruiterLogin");
@@ -210,6 +230,26 @@ const RecruiterRegister = () => {
       </div>
     );
   };
+
+  const startTimer = () => {
+    setIsTimerRunning(true);
+  };
+
+  useEffect(() => {
+    let interval;
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      setIsTimerRunning(false);
+    }
+  }, [timer]);
 
   return (
     <div>
@@ -462,6 +502,19 @@ const RecruiterRegister = () => {
                         >
                           Verify OTP
                         </MDBBtn>
+                      </div>
+                      <div className="col-12">
+                        <Link
+                          onClick={resendOtp}
+                          className="mt-2"
+                          disabled={isTimerRunning}
+                          style={{
+                            pointerEvents: isTimerRunning ? "none" : "auto",
+                            color: isTimerRunning ? "gray" : "inherit",
+                          }}
+                        >
+                          Resend OTP {isTimerRunning && `(${timer}s)`}
+                        </Link>
                       </div>
                     </MDBValidation>
                   </MDBCardBody>

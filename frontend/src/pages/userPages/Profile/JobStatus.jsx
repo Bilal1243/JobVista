@@ -31,35 +31,37 @@ function JobStatus({ activeTab }) {
     return <Loader></Loader>;
   }
 
-  console.log(jobs)
-
   return (
     <div
       className={`tab-pane ${activeTab === "job-status" ? "active" : ""}`}
       id="saved-posts"
     >
-      <div className="col-md-12">
-        {[...jobs].reverse().map((job, index) => {
-          return (
-            <div className="card">
-              <div className="card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5>{job.jobDetails[0].jobRole}</h5>
-                </div>
-                <p>{job.jobDetails[0].company}</p>
-                <p>Total Applicants : {job.jobDetails[0].applicationCount}</p>
-                <div
-                  className="badge"
-                  style={{ backgroundColor: "#3dd966", padding: "10px"}}
-                >
-                  <i className="pi pi-check"></i> {job.applicationStatus}{" "}
-                  <TimeAgo createdAt={job.updatedAt}></TimeAgo>
+      {jobs.length > 0 ? (
+        <div className="col-md-12">
+          {[...jobs].reverse().map((job, index) => {
+            return (
+              <div className="card">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5>{job.jobDetails[0].jobRole}</h5>
+                  </div>
+                  <p>{job.jobDetails[0].company}</p>
+                  <p>Total Applicants : {job.jobDetails[0].applicationCount}</p>
+                  <div
+                    className="badge"
+                    style={{ backgroundColor: "#3dd966", padding: "10px" }}
+                  >
+                    <i className="pi pi-check"></i> {job.applicationStatus}{" "}
+                    <TimeAgo createdAt={job.updatedAt}></TimeAgo>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="text-center">You are not applied for any jobs yet !!</p>
+      )}
     </div>
   );
 }

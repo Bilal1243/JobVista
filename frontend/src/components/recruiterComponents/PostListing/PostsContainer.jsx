@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  useUserlistPostsMutation,
-  useGetProfileMutation,
-  useUserLogoutMutation,
-  useCreatePostMutation,
-} from "../../redux/userSlices/userApiSlice";
-import { logout } from "../../redux/userSlices/userAuthSlice";
+  useRecruiterListPostsMutation,
+  useRecruiterMyProfileMutation,
+  useRecruiterLogoutMutation,
+  useRecruiterCreatePostMutation,
+} from "../../../redux/recruiterSlices/recruiterApiSlices";
+import { logout } from "../../../redux/recruiterSlices/recruiterAuthSlice.js";
 
 import PostCard from "./PostCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { PROFILE_PATH } from "../../Utils/URL";
-import defualtProfile from "../../assets/defualtProfile.jpg";
+import { PROFILE_PATH } from "../../../Utils/URL";
+import defualtProfile from "../../../assets/defualtProfile.jpg";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,11 +22,10 @@ import { Dialog } from "primereact/dialog";
 import { MDBValidation, MDBBtn, MDBTextArea, MDBInput } from "mdb-react-ui-kit";
 import EmojiPicker from "emoji-picker-react";
 import { Tooltip } from "primereact/tooltip";
-
-import Loader from "../Loader";
+import Loader from "../../Loader.jsx";
 
 function PostsContainer() {
-  const { userData } = useSelector((state) => state.auth);
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [profileData, setProfileData] = useState({});
   const [followers, setFollowers] = useState("");
@@ -36,10 +35,10 @@ function PostsContainer() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [userlistPosts] = useUserlistPostsMutation();
-  const [createPost] = useCreatePostMutation();
-  const [getProfile] = useGetProfileMutation();
-  const [userLogout] = useUserLogoutMutation();
+  const [recruiterListPosts] = useRecruiterListPostsMutation();
+  const [recruiterCreatePost] = useRecruiterCreatePostMutation();
+  const [recruiterMyProfile] = useRecruiterMyProfileMutation();
+  const [recruiterLogout] = useRecruiterLogoutMutation();
 
   const [visible, setVisible] = useState(false);
   const [description, setDescription] = useState("");
@@ -67,7 +66,9 @@ function PostsContainer() {
 
   const fetchProfileData = async () => {
     try {
-      const responseData = await getProfile({ userId: userData._id }).unwrap();
+      const responseData = await recruiterMyProfile({
+        recruiterId: recruiterData._id,
+      }).unwrap();
       setProfileData(responseData.data);
       setFollowers(responseData.followers.length);
     } catch (error) {
@@ -77,7 +78,7 @@ function PostsContainer() {
 
   const fetchPosts = async () => {
     try {
-      const response = await userlistPosts().unwrap();
+      const response = await recruiterListPosts().unwrap();
       setPosts(response);
       setIsloading(false);
     } catch (error) {
@@ -88,13 +89,13 @@ function PostsContainer() {
   const submitForm = async () => {
     try {
       const formData = new FormData();
-      formData.append("userId", profileData._id);
+      formData.append("recruiterId", profileData._id);
       formData.append("description", description);
       mediaItems.forEach((image, index) => {
         formData.append(`mediaItems`, image);
       });
 
-      const response = await createPost(formData);
+      const response = await recruiterCreatePost(formData);
       if (response.data.success) {
         setIsloading(false);
         setVisible(false);
@@ -121,7 +122,7 @@ function PostsContainer() {
 
   const logoutUser = async () => {
     try {
-      await userLogout().unwrap();
+      await recruiterLogout().unwrap();
       dispatch(logout());
       navigate("/login");
     } catch (error) {
@@ -162,7 +163,7 @@ function PostsContainer() {
   }
 
   return (
-    <>
+    <div style={{ marginTop: "150px" }}>
       <div className="container">
         <div className="row gutters-sm">
           <div className="col-md-2 d-none d-md-block">
@@ -171,8 +172,8 @@ function PostsContainer() {
                 <div className="d-flex align-items-center justify-content-center">
                   <img
                     src={
-                      userData.image !== null
-                        ? PROFILE_PATH + userData.image
+                      recruiterData.image !== null
+                        ? PROFILE_PATH + recruiterData.image
                         : defualtProfile
                     }
                     alt=""
@@ -190,7 +191,7 @@ function PostsContainer() {
                 </div>
                 <div
                   className="d-flex align-items-center justify-content-center"
-                  style={{ fontSize: "13px" }}
+                  style={{ fontSize: "12px" }}
                 >
                   <p>{profileData.title}</p>
                 </div>
@@ -210,7 +211,7 @@ function PostsContainer() {
                     icon="pi pi-pencil"
                     outlined
                     onClick={() => {
-                      navigate("/profile");
+                      navigate("/Recruiter-Profile");
                     }}
                   />
                 </div>
@@ -365,7 +366,7 @@ function PostsContainer() {
           </MDBValidation>
         </div>
       </Dialog>
-    </>
+    </div>
   );
 }
 

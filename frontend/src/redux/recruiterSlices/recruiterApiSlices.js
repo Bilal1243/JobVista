@@ -156,6 +156,32 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })   
         }),
+        recruiterListPosts : builder.mutation({
+            query : ()=>({
+                url : `${RECRUITER_URL}/recruiterListPosts`,
+                method : 'GET'
+            })   
+        }),
+        recruitersavePost : builder.mutation({
+            query : (params)=>({
+                url : `${RECRUITER_URL}/recruiterSavePost`,
+                method : 'PUT',
+                params
+            })   
+        }),
+        recruiterunSavePost : builder.mutation({
+            query : (params)=>({
+                url : `${RECRUITER_URL}/recruiterUnSavePost`,
+                method : 'PUT',
+                params
+            })   
+        }),
+        recruiterListSavedPosts : builder.mutation({
+            query : ()=>({
+                url : `${RECRUITER_URL}/recruiterSavedPosts`,
+                method : 'GET',
+            })   
+        }),
     }),
 })
 
@@ -181,5 +207,9 @@ export const {
     useRecruiterDeletePostMutation,
     useRecruiterEditPostMutation,
     useRecruiterLikePostMutation,
+    useRecruiterListPostsMutation,
+    useRecruiterListSavedPostsMutation,
+    useRecruitersavePostMutation,
+    useRecruiterunSavePostMutation,
     useRecruiterLogoutMutation
 } = recruiterSlice

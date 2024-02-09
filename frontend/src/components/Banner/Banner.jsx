@@ -26,6 +26,7 @@ function Banner() {
             <Button
               className="btn btn-outline-light btn-lg"
               style={btnTransparent}
+              onClick={()=>navigate('/jobs')}
             >
               find jobs
             </Button>

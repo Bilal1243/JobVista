@@ -10,6 +10,6 @@ const followersSchema = mongoose.Schema({
     }
 })
 
-const Followers = mongoose.model('Followers',followersSchema)
+const Connections = mongoose.model('Connections',followersSchema)
 
-export default Followers
+export default Connections

@@ -2,10 +2,10 @@ import Industries from '../Models/industriesModel.js'
 import userSkills from '../Models/userskillsModel.js'
 import Skills from '../Models/skillsModel.js'
 import JobPreference from '../Models/JobPreferenceModel.js'
-import Followers from '../Models/followersModel.js'
 import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
 import Users from '../Models/userModel.js'
+import SavedPosts from '../Models/SavedPostsModel.js'
 
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
@@ -211,6 +211,165 @@ const recruitereditPost = asyncHandler(async (req, res) => {
 
 })
 
+const recruiterlistAllPosts = asyncHandler(async (req, res) => {
+    const userId = req.recruiter._id; // Assuming you have the user ID in the request object
+
+    // Fetch posts for the user
+    const posts = await Posts.aggregate([
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'ownerDetails'
+            }
+        }
+    ]);
+
+    // Fetch saved posts for the user
+    const savedItemsDocument = await SavedPosts.findOne({ userId }).select('savedItems');
+
+    // Create an array to store detailed posts (with comments and isSaved)
+    const detailedPosts = [];
+
+    // Check if savedItemsDocument is null or undefined
+    const isSavedItemsPresent = savedItemsDocument && savedItemsDocument.savedItems;
+
+    // Iterate through each post and fetch comments with user details
+    for (const post of posts) {
+        const detailedPost = { ...post };
+
+        // Check if the post is saved by the user
+        if (isSavedItemsPresent) {
+            detailedPost.isSaved = savedItemsDocument.savedItems.includes(post._id.toString());
+        } else {
+            // If no savedItems document is found, assume none of the posts are saved
+            detailedPost.isSaved = false;
+        }
+
+        // Fetch comments for the current post
+        const comments = await Comment.aggregate([
+            {
+                $match: { postId: post._id },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'ownerId',
+                    foreignField: '_id',
+                    as: 'ownerDetails',
+                },
+            },
+        ]);
+
+        // Add comments to the detailed post
+        detailedPost.comments = comments;
+
+        // Add the detailed post to the array
+        detailedPosts.push(detailedPost);
+    }
+
+    res.json(detailedPosts);
+});
+
+
+const recruitersavePost = asyncHandler(async (req, res) => {
+    const { recruiterId, postId } = req.query;
+
+    const existing = await SavedPosts.findOne({ userId: recruiterId });
+
+    if (existing) {
+        const postExist = await SavedPosts.findOne({ userId: recruiterId, savedItems: new ObjectId(postId) });
+
+        if (postExist) {
+            return res.json({ postExist: true });
+        }
+
+        // Use new keyword with mongoose.Types.ObjectId
+        await SavedPosts.updateOne({ userId: recruiterId }, { $addToSet: { savedItems: new mongoose.Types.ObjectId(postId) } });
+    } else {
+        // Use new keyword with mongoose.Types.ObjectId
+        await SavedPosts.create({ userId: recruiterId, savedItems: [new mongoose.Types.ObjectId(postId)] });
+    }
+
+    res.json({ success: true });
+})
+
+const recruiterunsavePost = asyncHandler(async (req, res) => {
+    const { recruiterId, postId } = req.query;
+
+    const alreadySaved = await SavedPosts.findOne({ userId: recruiterId, savedItems: new ObjectId(postId) });
+
+    if (alreadySaved) {
+        await SavedPosts.findOneAndUpdate(
+            { userId: recruiterId, savedItems: new ObjectId(postId) },
+            { $pull: { savedItems: new ObjectId(postId) } }
+        );
+    }
+
+    res.json({ success: true });
+});
+
+const recruiterlistSavedPosts = asyncHandler(async (req, res) => {
+    const userId = req.recruiter._id;
+
+
+    const posts = await SavedPosts.aggregate([
+        {
+            $match: { userId: userId }
+        },
+        {
+            $unwind: '$savedItems'
+        },
+        {
+            $lookup: {
+                from: 'posts',
+                localField: 'savedItems',
+                foreignField: '_id',
+                as: 'post'
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'post.userId',
+                foreignField: '_id',
+                as: 'postOwner'
+            }
+        }
+    ]);
+
+    const detailedPosts = [];
+
+    for (const post of posts) {
+        const detailedPost = { ...post };
+
+
+        // Fetch comments for the current post
+        const comments = await Comment.aggregate([
+            {
+                $match: { postId: post.savedItems },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'ownerId',
+                    foreignField: '_id',
+                    as: 'ownerDetails',
+                },
+            },
+        ]);
+
+        // Add comments to the detailed post
+        detailedPost.comments = comments;
+
+        // Add the detailed post to the array
+        detailedPosts.push(detailedPost);
+    }
+
+    res.json(detailedPosts);
+});
+
 
 export {
     recruiterCreatePost,
@@ -219,5 +378,9 @@ export {
     recruiterpostComment,
     recruiterdeleteComment,
     recruiterdeletePost,
-    recruitereditPost
+    recruitereditPost,
+    recruiterlistAllPosts,
+    recruiterlistSavedPosts,
+    recruitersavePost,
+    recruiterunsavePost
 }

@@ -9,7 +9,7 @@ import Industries from '../Models/industriesModel.js'
 import Skills from '../Models/skillsModel.js'
 import Jobs from '../Models/jobsModel.js'
 import jobApplications from '../Models/applicationModel.js'
-import Followers from '../Models/followersModel.js'
+import Connections from '../Models/connestionsModel.js'
 
 import mongoose from 'mongoose'
 const { ObjectId } = mongoose.Types
@@ -253,7 +253,7 @@ const recruiterloadMyProfile = asyncHandler(async (req, res) => {
         }
     ]);
 
-    const followers = await Followers.find({ userId: recruiterId })
+    const followers = await Connections.find({ userId: recruiterId })
 
     res.status(201).json({ data: data[0], followers: followers });
 });
@@ -303,6 +303,17 @@ const recruiterEditProfile = asyncHandler(async (req, res) => {
 
 })
 
+const logoutRecruiter = asyncHandler(async (req, res) => {
+
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        expires: new Date(0),
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
+
+});
+
 
 
 export {
@@ -315,5 +326,6 @@ export {
     searchJob,
     filterJobByLocation,
     recruiterloadMyProfile,
-    recruiterEditProfile
+    recruiterEditProfile,
+    logoutRecruiter
 }

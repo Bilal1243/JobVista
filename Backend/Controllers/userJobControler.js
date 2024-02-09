@@ -3,7 +3,6 @@ import Industries from "../Models/industriesModel.js";
 import userSkills from "../Models/userskillsModel.js";
 import Skills from "../Models/skillsModel.js";
 import JobPreference from "../Models/JobPreferenceModel.js";
-import Followers from "../Models/followersModel.js";
 import Posts from "../Models/postsModel.js";
 import Comment from "../Models/commentsModel.js";
 import Jobs from "../Models/jobsModel.js";
@@ -58,7 +57,7 @@ const listJobs = asyncHandler(async (req, res) => {
             // Customize the logic based on your preferences and job data
             // Here, I'm assuming `userPreference` has a `jobTitle` property
             const isTitleMatch = userPreference.jobTitle === job.jobRole;
-            const isTypeMatch = userPreference.jobType === job.jobType;
+            const isTypeMatch = job.jobType.includes(userPreference.jobType)
             const isMinPayMatch =
                 userPreference.minPay > job.salaryRange.starting ||
                 userPreference.minPay < job.salaryRange.ending;
@@ -245,7 +244,6 @@ const SearchJob = asyncHandler(async (req, res) => {
     let jobs
 
     if (searchQuery.length === 0 || locationQuery.length === 0) {
-        console.log('if1')
         jobs = await Jobs.find({
             $and: [
                 { deadline: { $gt: currentDateTime } }, // Check if the job is not expired
@@ -259,7 +257,6 @@ const SearchJob = asyncHandler(async (req, res) => {
         }).sort({ createdAt: -1 });
     }
     else if (searchQuery.length === 0 && locationQuery.length === 0) {
-        console.log('here')
         jobs = await Jobs.find({
             $and: [
                 { deadline: { $gt: currentDateTime } }, // Check if the job is not expired,
@@ -267,7 +264,6 @@ const SearchJob = asyncHandler(async (req, res) => {
         }).sort({ createdAt: -1 });
     }
     else {
-        console.log('else')
         jobs = await Jobs.find({
             $and: [
                 { deadline: { $gt: currentDateTime } }, // Check if the job is not expired

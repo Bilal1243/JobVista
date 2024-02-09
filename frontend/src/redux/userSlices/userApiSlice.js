@@ -213,6 +213,20 @@ export const userSlice = userApiSlice.injectEndpoints({
         method : 'GET'
       })
     }),
+    userlistMyNetwork : builder.mutation({
+      query : (params)=>({
+        url : `${USERS_URL}/MyNetwork`,
+        method : 'GET',
+        params
+      })
+    }),
+    userConnect : builder.mutation({
+      query : (params)=>({
+        url : `${USERS_URL}/connect`,
+        method : 'PUT',
+        params
+      })
+    }),
     userLogout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -254,5 +268,7 @@ export const {
   useUserSavePostMutation,
   useUserUnsavePostMutation,
   useUserlistSavedPostsMutation,
+  useUserlistMyNetworkMutation,
+  useUserConnectMutation,
   useUserLogoutMutation
 } = userSlice

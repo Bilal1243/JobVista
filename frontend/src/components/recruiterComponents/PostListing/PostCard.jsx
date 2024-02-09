@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from "react";
-import "./Card.css";
-import { POST_IMAGES_PATH } from "../../Utils/URL";
-import defualtProfile from "../../assets/defualtProfile.jpg";
-import TimeAgo from "../../Utils/TimeAgo.jsx";
+import "./Style.css";
+import { POST_IMAGES_PATH } from "../../../Utils/URL";
+import defualtProfile from "../../../assets/defualtProfile.jpg";
+import TimeAgo from "../../../Utils/TimeAgo.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector } from "react-redux";
 import {
-  useLikePostMutation,
-  usePostCommentMutation,
-  useDeleteCommentMutation,
-  useUserUnsavePostMutation,
-} from "../../redux/userSlices/userApiSlice.js";
+  useRecruiterLikePostMutation,
+  useRecruiterAddCommentMutation,
+  useRecruiterDeleteCommentMutation,
+  useRecruitersavePostMutation,
+  useRecruiterunSavePostMutation,
+} from "../../../redux/recruiterSlices/recruiterApiSlices.js";
 import InputEmoji from "react-input-emoji";
-import { PROFILE_PATH } from "../../Utils/URL.js";
+import { PROFILE_PATH } from "../../../Utils/URL.js";
 
-function PostCard({ postDetails, loadPosts }) {
-  const { userData } = useSelector((state) => state.auth);
-
-  const [post, setPosts] = useState();
-  const [postOwner, setPostOwner] = useState();
-  const [comments, setComments] = useState([]);
+function PostCard({ post, loadPosts }) {
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -28,22 +25,17 @@ function PostCard({ postDetails, loadPosts }) {
   const [displayedComments, setDisplayedComments] = useState(2);
   const [commentsExpanded, setCommentsExpanded] = useState(false);
 
-  const [likePost] = useLikePostMutation();
-  const [postComment] = usePostCommentMutation();
-  const [deleteComment] = useDeleteCommentMutation();
-  const [userUnsavePost] = useUserUnsavePostMutation();
+  const [recruiterLikePost] = useRecruiterLikePostMutation();
+  const [recruiterAddComment] = useRecruiterAddCommentMutation();
+  const [recruiterDeleteComment] = useRecruiterDeleteCommentMutation();
+  const [recruitersavePost] = useRecruitersavePostMutation();
+  const [recruiterunSavePost] = useRecruiterunSavePostMutation();
 
   useEffect(() => {
-    setPosts(postDetails.post[0]);
-    setPostOwner(postDetails.postOwner[0]);
-    setComments(postDetails.comments);
-  }, []);
-
-  useEffect(() => {
-    if (post?.likes.users.includes(userData._id)) {
+    if (post.likes.users.includes(recruiterData._id)) {
       setIsLiked(true);
     }
-    setLikesCount(post?.likes.count);
+    setLikesCount(post.likes.count);
   }, [post]);
 
   const handleShowMore = () => {
@@ -59,7 +51,7 @@ function PostCard({ postDetails, loadPosts }) {
   const handleLikeClick = async () => {
     try {
       // Make the API request to like/unlike the post
-      const response = await likePost({ postId: post._id });
+      const response = await recruiterLikePost({ postId: post._id });
 
       // Update the likes count based on the response
       setLikesCount(response.data.likes.count);
@@ -73,23 +65,23 @@ function PostCard({ postDetails, loadPosts }) {
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex < post?.mediaItems.length - 1 ? prevIndex + 1 : 0
+      prevIndex < post.mediaItems.length - 1 ? prevIndex + 1 : 0
     );
   };
 
   const prevImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : post?.mediaItems.length - 1
+      prevIndex > 0 ? prevIndex - 1 : post.mediaItems.length - 1
     );
   };
 
-  const isVideo = post?.mediaItems[currentImageIndex].endsWith(".mp4"); // Assuming videos end with '.mp4'
+  const isVideo = post.mediaItems[currentImageIndex].endsWith(".mp4"); // Assuming videos end with '.mp4'
 
   const addComment = async () => {
     try {
-      const responseData = await postComment({
+      const responseData = await recruiterAddComment({
         postId: post._id,
-        ownerId: userData._id,
+        ownerId: recruiterData._id,
         content: comment,
       }).unwrap();
       setComment("");
@@ -99,7 +91,7 @@ function PostCard({ postDetails, loadPosts }) {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const deleted = await deleteComment({ commentId: commentId });
+      const deleted = await recruiterDeleteComment({ commentId: commentId });
       loadPosts();
     } catch (error) {
       console.log(error?.data?.message || error?.data);
@@ -108,11 +100,19 @@ function PostCard({ postDetails, loadPosts }) {
 
   const savepost = async () => {
     try {
-      const response = await userUnsavePost({
-        userId: userData._id,
-        postId: post._id,
-      }).unwrap();
-      loadPosts();
+      if (post.isSaved) {
+        const response = await recruiterunSavePost({
+          recruiterId: recruiterData._id,
+          postId: post._id,
+        }).unwrap();
+        loadPosts();
+      } else {
+        const response = await recruitersavePost({
+          recruiterId: recruiterData._id,
+          postId: post._id,
+        }).unwrap();
+        loadPosts();
+      }
     } catch (error) {
       console.log(error?.data?.message || error?.data);
     }
@@ -121,7 +121,7 @@ function PostCard({ postDetails, loadPosts }) {
   const isMobile = window.innerWidth <= 767;
 
   const isCommentOwner = (commentOwnerId) => {
-    return userData._id === commentOwnerId;
+    return recruiterData._id === commentOwnerId;
   };
 
   return (
@@ -131,48 +131,63 @@ function PostCard({ postDetails, loadPosts }) {
           <div className="media mb-1 d-flex">
             <img
               src={
-                postOwner?.profileImg
-                  ? PROFILE_PATH + postOwner.profileImg
+                post.ownerDetails[0].profileImg
+                  ? PROFILE_PATH + post.ownerDetails[0].profileImg
                   : defualtProfile
               }
               class="d-block ui-w-40 rounded-circle"
               alt=""
             />
             <div class="media-body ml-2">
-              {postOwner?.firstName + " " + postOwner?.lastName}
+              {post.ownerDetails[0].firstName +
+                " " +
+                post.ownerDetails[0].lastName}
               <div>
-                <TimeAgo createdAt={post?.createdAt}></TimeAgo>
+                <TimeAgo createdAt={post.createdAt}></TimeAgo>
               </div>
             </div>
           </div>
           <div>
-            <span
-              className="pi pi-bookmark-fill"
-              style={{
-                cursor: "pointer",
-                fontSize: "17px",
-              }}
-              onClick={() => savepost()}
-            ></span>
+            {post.isSaved ? (
+              <span
+                className="pi pi-bookmark-fill"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "17px",
+                }}
+                onClick={() => savepost()}
+              ></span>
+            ) : (
+              <span
+                className="pi pi-bookmark"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "17px",
+                }}
+                onClick={() => {
+                  savepost();
+                }}
+              ></span>
+            )}
           </div>
         </div>
-        <p style={{ whiteSpace: "pre-line" }}>{post?.description}</p>
+        <p style={{ whiteSpace: "pre-line" }}>{post.description}</p>
         <div className="ui-rect ui-bg-cover position-relative">
           {isVideo ? (
             <video
-              src={POST_IMAGES_PATH + post?.mediaItems[currentImageIndex]}
+              src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
               autoPlay
               controls
               style={{ width: "100%", height: "100%" }}
             ></video>
           ) : (
             <img
-              src={POST_IMAGES_PATH + post?.mediaItems[currentImageIndex]}
+              src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
               alt=""
               style={{ width: "100%", height: "100%" }}
             />
           )}
-          {post?.mediaItems.length > 1 && (
+          {post.mediaItems.length > 1 && (
             <>
               <button onClick={prevImage} className="carousel-arrow left">
                 <i className="pi pi-chevron-left"></i>
@@ -199,7 +214,7 @@ function PostCard({ postDetails, loadPosts }) {
         </div>
         <div className="d-inline-block text-muted ml-4">
           <small class="align-middle" style={{ cursor: "pointer" }}>
-            <strong>{comments.length}</strong>{" "}
+            <strong>{post.comments.length}</strong>{" "}
             <i className="pi pi-comments"></i>
           </small>
         </div>
@@ -207,8 +222,8 @@ function PostCard({ postDetails, loadPosts }) {
           <div className="col-12 d-flex flex-row align-items-center justify-content-start">
             <img
               src={
-                userData.image !== null
-                  ? PROFILE_PATH + userData.image
+                recruiterData.image !== null
+                  ? PROFILE_PATH + recruiterData.image
                   : defualtProfile
               }
               alt="avatar 1"
@@ -227,14 +242,11 @@ function PostCard({ postDetails, loadPosts }) {
           )}
         </div>
         <div class="comments-section">
-          {comments
+          {post.comments
             .slice(0, displayedComments)
             .reverse()
             .map((comment, index) => (
-              <div
-                className="col-12 d-flex flex-row justify-content-start mb-3"
-                key={index}
-              >
+              <div className="col-12 d-flex flex-row justify-content-start mb-3">
                 <img
                   src={
                     comment.ownerDetails[0].profileImg
@@ -281,7 +293,7 @@ function PostCard({ postDetails, loadPosts }) {
                 </div>
               </div>
             ))}
-          {comments.length > 2 && (
+          {post.comments.length > 2 && (
             <small
               className="show-more-button"
               onClick={commentsExpanded ? handleShowLess : handleShowMore}

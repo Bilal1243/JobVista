@@ -59,7 +59,6 @@ function Posts({ activeTab }) {
       const responseData = await recruiterGetPosts({
         recruiterId: recruiterData._id,
       });
-      console.log(responseData);
       setProfileData(responseData.data.data[0]);
       setPosts(responseData.data.detailedPosts);
       setIsloading(false);

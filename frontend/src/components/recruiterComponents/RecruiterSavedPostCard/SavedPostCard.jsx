@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "./Card.css";
-import { POST_IMAGES_PATH } from "../../Utils/URL";
-import defualtProfile from "../../assets/defualtProfile.jpg";
-import TimeAgo from "../../Utils/TimeAgo.jsx";
+import { POST_IMAGES_PATH } from "../../../Utils/URL";
+import defualtProfile from "../../../assets/defualtProfile.jpg";
+import TimeAgo from "../../../Utils/TimeAgo.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector } from "react-redux";
 import {
-  useLikePostMutation,
-  usePostCommentMutation,
-  useDeleteCommentMutation,
-  useUserUnsavePostMutation,
-} from "../../redux/userSlices/userApiSlice.js";
+  useRecruiterLikePostMutation,
+  useRecruiterAddCommentMutation,
+  useRecruiterDeleteCommentMutation,
+  useRecruiterunSavePostMutation,
+} from "../../../redux/recruiterSlices/recruiterApiSlices.js";
 import InputEmoji from "react-input-emoji";
-import { PROFILE_PATH } from "../../Utils/URL.js";
+import { PROFILE_PATH } from "../../../Utils/URL.js";
 
 function PostCard({ postDetails, loadPosts }) {
-  const { userData } = useSelector((state) => state.auth);
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [post, setPosts] = useState();
   const [postOwner, setPostOwner] = useState();
@@ -28,10 +28,10 @@ function PostCard({ postDetails, loadPosts }) {
   const [displayedComments, setDisplayedComments] = useState(2);
   const [commentsExpanded, setCommentsExpanded] = useState(false);
 
-  const [likePost] = useLikePostMutation();
-  const [postComment] = usePostCommentMutation();
-  const [deleteComment] = useDeleteCommentMutation();
-  const [userUnsavePost] = useUserUnsavePostMutation();
+  const [recruiterLikePost] = useRecruiterLikePostMutation();
+  const [recruiterAddComment] = useRecruiterAddCommentMutation();
+  const [recruiterDeleteComment] = useRecruiterDeleteCommentMutation();
+  const [recruiterunSavePost] = useRecruiterunSavePostMutation();
 
   useEffect(() => {
     setPosts(postDetails.post[0]);
@@ -40,7 +40,7 @@ function PostCard({ postDetails, loadPosts }) {
   }, []);
 
   useEffect(() => {
-    if (post?.likes.users.includes(userData._id)) {
+    if (post?.likes.users.includes(recruiterData._id)) {
       setIsLiked(true);
     }
     setLikesCount(post?.likes.count);
@@ -59,7 +59,7 @@ function PostCard({ postDetails, loadPosts }) {
   const handleLikeClick = async () => {
     try {
       // Make the API request to like/unlike the post
-      const response = await likePost({ postId: post._id });
+      const response = await recruiterLikePost({ postId: post._id });
 
       // Update the likes count based on the response
       setLikesCount(response.data.likes.count);
@@ -87,9 +87,9 @@ function PostCard({ postDetails, loadPosts }) {
 
   const addComment = async () => {
     try {
-      const responseData = await postComment({
+      const responseData = await recruiterAddComment({
         postId: post._id,
-        ownerId: userData._id,
+        ownerId: recruiterData._id,
         content: comment,
       }).unwrap();
       setComment("");
@@ -99,7 +99,7 @@ function PostCard({ postDetails, loadPosts }) {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const deleted = await deleteComment({ commentId: commentId });
+      const deleted = await recruiterDeleteComment({ commentId: commentId });
       loadPosts();
     } catch (error) {
       console.log(error?.data?.message || error?.data);
@@ -108,8 +108,8 @@ function PostCard({ postDetails, loadPosts }) {
 
   const savepost = async () => {
     try {
-      const response = await userUnsavePost({
-        userId: userData._id,
+      const response = await recruiterunSavePost({
+        recruiterId: recruiterData._id,
         postId: post._id,
       }).unwrap();
       loadPosts();
@@ -121,7 +121,7 @@ function PostCard({ postDetails, loadPosts }) {
   const isMobile = window.innerWidth <= 767;
 
   const isCommentOwner = (commentOwnerId) => {
-    return userData._id === commentOwnerId;
+    return recruiterData._id === commentOwnerId;
   };
 
   return (
@@ -207,8 +207,8 @@ function PostCard({ postDetails, loadPosts }) {
           <div className="col-12 d-flex flex-row align-items-center justify-content-start">
             <img
               src={
-                userData.image !== null
-                  ? PROFILE_PATH + userData.image
+                recruiterData.image !== null
+                  ? PROFILE_PATH + recruiterData.image
                   : defualtProfile
               }
               alt="avatar 1"
