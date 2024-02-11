@@ -27,7 +27,7 @@ import {
 
 import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts, savePost, unsavePost, listSavedPosts } from '../Controllers/userPostController.js'
 import { SearchJob, applyJob, getJob, listJobs, saveJob, unsaveJob } from '../Controllers/userJobControler.js'
-import { connectUser, listUsers } from '../Controllers/MyNetworkController.js'
+import { ListConnections, acceptRequest, connectUser, listRequests, listUsers } from '../Controllers/MyNetworkController.js'
 
 userRoute.post('/auth', authUser)
 userRoute.post('/register', registerUser)
@@ -39,12 +39,16 @@ userRoute.post('/addSkills', saveSkills)
 userRoute.get('/getSkills', listSkills)
 userRoute.get('/getIndustries', listIndustries)
 
-userRoute.get('/listPosts',protect,listAllPosts)
+userRoute.get('/listPosts', protect, listAllPosts)
 userRoute.put('/savepost', protect, savePost)
 userRoute.put('/unSavepost', protect, unsavePost)
 
-userRoute.get('/MyNetwork',protect,listUsers)
-userRoute.put('/connect',protect,connectUser)
+userRoute.get('/networkRequest', protect, listRequests)
+userRoute.get('/MyNetwork', protect, listUsers)
+userRoute.put('/connect', protect, connectUser)
+userRoute.put('/acceptRequest',protect,acceptRequest)
+
+userRoute.get('/listConnections',protect,ListConnections)
 
 
 userRoute.get('/myProfile', protect, loadMyProfile)
@@ -58,10 +62,10 @@ userRoute.get('/deletePost', protect, deletePost)
 userRoute.put('/editPost', protect, editPost)
 userRoute.get('/jobPreferencePage', protect, listjobPreferencePage)
 userRoute.put('/removeSkill', protect, removeSkill)
-userRoute.get('/savedJobs',protect,listSavedJobs)
-userRoute.put('/changePassword',protect,changePassword)
-userRoute.get('/getJobStatus',protect,jobStatusList)
-userRoute.get('/SavedPosts',protect,listSavedPosts)
+userRoute.get('/savedJobs', protect, listSavedJobs)
+userRoute.put('/changePassword', protect, changePassword)
+userRoute.get('/getJobStatus', protect, jobStatusList)
+userRoute.get('/SavedPosts', protect, listSavedPosts)
 
 
 userRoute.get('/listJobs', protect, listJobs)
@@ -69,7 +73,7 @@ userRoute.put('/saveJob', protect, saveJob)
 userRoute.put('/unSaveJob', protect, unsaveJob)
 userRoute.get('/viewJob', protect, getJob)
 userRoute.get('/searchJob', protect, SearchJob)
-userRoute.post('/applyJob', protect, ResumeUpload.single("resume"),applyJob)
+userRoute.post('/applyJob', protect, ResumeUpload.single("resume"), applyJob)
 
 
 

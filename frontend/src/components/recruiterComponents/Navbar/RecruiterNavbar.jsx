@@ -6,17 +6,38 @@ import { Link } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
-
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { Badge } from 'primereact/badge';
 
 import "primeicons/primeicons.css";
 import jobVistaLogo from "../../../assets/jobVista.png";
 
 import "./RecruiterNavbar.css";
 import { PROFILE_PATH } from "../../../Utils/URL";
+import { useRecruiterRequestCountMutation } from "../../../redux/recruiterSlices/recruiterApiSlices";
 
 function RecruiterNavbar() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
+  const [recruiterRequestCount] = useRecruiterRequestCountMutation();
+  const [requests, setRequests] = useState(0);
+
+  const fetchRequests = async () => {
+    try {
+      const response = await recruiterRequestCount({
+        userId: recruiterData._id,
+      }).unwrap();
+
+      setRequests(response.length);
+    } catch (error) {
+      console.log(error?.data?.message || error?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (recruiterData !== null) {
+      fetchRequests();
+    }
+  }, []);
+
   const navigate = useNavigate();
   const items = [
     {
@@ -56,6 +77,7 @@ function RecruiterNavbar() {
         <Button
           label="My Network"
           icon="pi pi-fw pi-users"
+          badge={requests !== 0 ? requests : null}
           onClick={() => navigate("/Recruiter-Network")}
           style={{
             textDecoration: "none",
@@ -64,6 +86,7 @@ function RecruiterNavbar() {
             backgroundColor: "transparent",
             height: "1px",
           }}
+          className="navbar-button"
         />
       ),
     },

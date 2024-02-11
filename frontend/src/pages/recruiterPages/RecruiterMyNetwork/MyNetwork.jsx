@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import NetworkCard from "../../../components/NetworkCard/NetworkCard";
-import NavbarUi from "../../../components/Navbars/Navbar";
-import { useUserlistMyNetworkMutation } from "../../../redux/userSlices/userApiSlice";
+import { useRecruiterlistMyNetworkMutation } from "../../../redux/recruiterSlices/recruiterApiSlices";
 import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader";
+import RecruiterNetworkCard from "../../../components/recruiterComponents/RecruiterNetwork/NetworkCard";
+import RecruiterNavbar from "../../../components/recruiterComponents/Navbar/RecruiterNavbar";
 
-function MyNetwork() {
-  const { userData } = useSelector((state) => state.auth);
+function RecruiterNetwork() {
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsloading] = useState(true);
   const [requests, setRequests] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
 
-  const [userlistMyNetwork] = useUserlistMyNetworkMutation();
+  const [recruiterlistMyNetwork] = useRecruiterlistMyNetworkMutation();
 
   const fetchUsers = async () => {
     try {
-      const responseData = await userlistMyNetwork({
-        userId: userData._id,
+      const responseData = await recruiterlistMyNetwork({
+        userId: recruiterData._id,
       }).unwrap();
       setUsers(responseData.result);
       setRequests(responseData.requests);
@@ -37,18 +37,18 @@ function MyNetwork() {
 
   return (
     <>
-      <NavbarUi></NavbarUi>
+      <RecruiterNavbar></RecruiterNavbar>
       {isLoading ? (
         <Loader></Loader>
       ) : (
-        <NetworkCard
+        <RecruiterNetworkCard
           users={users}
           requests={requests}
           reFetchusers={reFetchusers}
-        ></NetworkCard>
+        ></RecruiterNetworkCard>
       )}
     </>
   );
 }
 
-export default MyNetwork;
+export default RecruiterNetwork;

@@ -178,7 +178,7 @@ function Profile() {
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>
               <div>
-                <Link to="/followers">{followers.length} Connection</Link>
+                <Link to="/connections">{followers.length} Connection</Link>
               </div>
             </div>
           </div>

@@ -16,6 +16,7 @@ import ViewJob from './pages/userPages/Jobs/ViewJob.jsx'
 import JobApply from './pages/userPages/JobApply/JobApply.jsx'
 import SuccessPage from './pages/userPages/JobApply/SuccessPage.jsx'
 import MyNetwork from './pages/userPages/myNetwork/MyNetwork.jsx'
+import UserConnections from './pages/userPages/ConnectionList/UserConnections.jsx'
 
 
 
@@ -40,6 +41,7 @@ import MyJobs from './pages/recruiterPages/My_Jobs/MyJobs.jsx'
 import ListApplicants from './pages/recruiterPages/ListApplicants/ListApplicants.jsx'
 import RecruiterProfile from './pages/recruiterPages/Profile/Profile.jsx'
 import PostJob from './pages/recruiterPages/postJob/PostJob.jsx'
+import RecruiterNetwork from './pages/recruiterPages/RecruiterMyNetwork/MyNetwork.jsx'
 
 function App() {
 
@@ -70,7 +72,7 @@ function App() {
         <Route path='/applyJob/:jobId' element={<UserPrivateRoute element={<JobApply></JobApply>}></UserPrivateRoute>}></Route>
         <Route path='/applied/:jobId' element={<UserPrivateRoute element={<SuccessPage></SuccessPage>}></UserPrivateRoute>}></Route>
         <Route path='/MyNetwork' element={<UserPrivateRoute element={<MyNetwork></MyNetwork>}></UserPrivateRoute>}></Route>
-        
+        <Route path='/connections' element={<UserPrivateRoute element={<UserConnections></UserConnections>}></UserPrivateRoute>}></Route>
 
 
 
@@ -97,6 +99,7 @@ function App() {
         <Route path='/createJob' element={<RecruiterPrivateRoutes element={<PostJob></PostJob>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/Recruiter-Profile' element={<RecruiterPrivateRoutes element={<RecruiterProfile></RecruiterProfile>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/viewApplications/:jobId' element={<RecruiterPrivateRoutes element={<ListApplicants></ListApplicants>}></RecruiterPrivateRoutes>}></Route>
+        <Route path='/Recruiter-Network' element={<RecruiterPrivateRoutes element={<RecruiterNetwork></RecruiterNetwork>}></RecruiterPrivateRoutes>}></Route>
 
 
       </Routes>

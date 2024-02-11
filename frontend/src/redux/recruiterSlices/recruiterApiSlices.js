@@ -38,52 +38,52 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 method: 'GET'
             })
         }),
-        recruiterPostJob : builder.mutation({
-            query : (data)=>({
-                url : `${RECRUITER_URL}/postJob`,
-                method : 'POST',
-                body : data
+        recruiterPostJob: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/postJob`,
+                method: 'POST',
+                body: data
             })
         }),
-        recruiterListJobs : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/getMyjobs`,
-                method : 'Get',
+        recruiterListJobs: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/getMyjobs`,
+                method: 'Get',
                 params
             })
         }),
-        recruiterSearchJob : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/searchJob`,
-                method : 'Get',
+        recruiterSearchJob: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/searchJob`,
+                method: 'Get',
                 params
             })
         }),
-        recruiterFilterLocation : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/filterByLocation`,
-                method : 'Get',
+        recruiterFilterLocation: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/filterByLocation`,
+                method: 'Get',
                 params
             })
         }),
-        recruiterViewJobDetails : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/viewJobDetails`,
-                method : 'Get',
+        recruiterViewJobDetails: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/viewJobDetails`,
+                method: 'Get',
                 params
             })
         }),
-        recruiterChangeStatus : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/changeStatus`,
-                method : 'PUT',
+        recruiterChangeStatus: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/changeStatus`,
+                method: 'PUT',
                 params
             })
         }),
-        recruitergetResume : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/loadResume`,
-                method : 'GET',
+        recruitergetResume: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/loadResume`,
+                method: 'GET',
                 params
             })
         }),
@@ -93,94 +93,122 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        recruiterMyProfile : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/loadMyProfile`,
-                method : 'GET',
+        recruiterMyProfile: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/loadMyProfile`,
+                method: 'GET',
                 params
             })
         }),
-        recruitereditProfile : builder.mutation({
-            query : (data)=>({
-                url : `${RECRUITER_URL}/recruiterEditProfile`,
-                method : 'POST',
-                body : data
-            })   
+        recruitereditProfile: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/recruiterEditProfile`,
+                method: 'POST',
+                body: data
+            })
         }),
-        recruiterCreatePost : builder.mutation({
-            query : (data)=>({
-                url : `${RECRUITER_URL}/createPost`,
-                method : 'POST',
-                body : data
-            })   
+        recruiterCreatePost: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/createPost`,
+                method: 'POST',
+                body: data
+            })
         }),
-        recruiterGetPosts : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/getMyPosts`,
-                method : 'GET',
+        recruiterGetPosts: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/getMyPosts`,
+                method: 'GET',
                 params
-            })   
+            })
         }),
-        recruiterLikePost : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/likePost`,
-                method : 'PUT',
+        recruiterLikePost: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/likePost`,
+                method: 'PUT',
                 params
-            })   
+            })
         }),
-        recruiterAddComment : builder.mutation({
-            query : (data)=>({
-                url : `${RECRUITER_URL}/addComment`,
-                method : 'POST',
-                body : data
-            })   
+        recruiterAddComment: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/addComment`,
+                method: 'POST',
+                body: data
+            })
         }),
-        recruiterDeleteComment : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/deleteComment`,
-                method : 'GET',
+        recruiterDeleteComment: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/deleteComment`,
+                method: 'GET',
                 params
-            })   
+            })
         }),
-        recruiterDeletePost : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/deletePost`,
-                method : 'GET',
+        recruiterDeletePost: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/deletePost`,
+                method: 'GET',
                 params
-            })   
+            })
         }),
-        recruiterEditPost : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/editPost`,
-                method : 'PUT',
+        recruiterEditPost: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/editPost`,
+                method: 'PUT',
                 params
-            })   
+            })
         }),
-        recruiterListPosts : builder.mutation({
-            query : ()=>({
-                url : `${RECRUITER_URL}/recruiterListPosts`,
-                method : 'GET'
-            })   
+        recruiterListPosts: builder.mutation({
+            query: () => ({
+                url: `${RECRUITER_URL}/recruiterListPosts`,
+                method: 'GET'
+            })
         }),
-        recruitersavePost : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/recruiterSavePost`,
-                method : 'PUT',
+        recruitersavePost: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/recruiterSavePost`,
+                method: 'PUT',
                 params
-            })   
+            })
         }),
-        recruiterunSavePost : builder.mutation({
-            query : (params)=>({
-                url : `${RECRUITER_URL}/recruiterUnSavePost`,
-                method : 'PUT',
+        recruiterunSavePost: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/recruiterUnSavePost`,
+                method: 'PUT',
                 params
-            })   
+            })
         }),
-        recruiterListSavedPosts : builder.mutation({
-            query : ()=>({
-                url : `${RECRUITER_URL}/recruiterSavedPosts`,
-                method : 'GET',
-            })   
+        recruiterListSavedPosts: builder.mutation({
+            query: () => ({
+                url: `${RECRUITER_URL}/recruiterSavedPosts`,
+                method: 'GET',
+            })
+        }),
+        recruiterlistMyNetwork: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/MyNetwork`,
+                method: 'GET',
+                params
+            })
+        }),
+        recruiterConnect: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/connect`,
+                method: 'PUT',
+                params
+            })
+        }),
+        recruiterRequestCount: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/networkRequest`,
+                method: 'GET',
+                params
+            })
+        }),
+        recruiterAcceptRequest: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/acceptRequest`,
+                method: 'PUT',
+                params
+            })
         }),
     }),
 })
@@ -211,5 +239,9 @@ export const {
     useRecruiterListSavedPostsMutation,
     useRecruitersavePostMutation,
     useRecruiterunSavePostMutation,
+    useRecruiterlistMyNetworkMutation,
+    useRecruiterConnectMutation,
+    useRecruiterRequestCountMutation,
+    useRecruiterAcceptRequestMutation,
     useRecruiterLogoutMutation
 } = recruiterSlice

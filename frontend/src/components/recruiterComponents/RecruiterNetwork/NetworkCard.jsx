@@ -2,27 +2,28 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NetworkCard.css";
 import { useSelector } from "react-redux";
-import { PROFILE_PATH } from "../../Utils/URL";
-import defualtProfile from "../../assets/defualtProfile.jpg";
+import { PROFILE_PATH } from "../../../Utils/URL";
+import defualtProfile from "../../../assets/defualtProfile.jpg";
 import { Button } from "primereact/button";
 import {
-  useUserConnectMutation,
-  useUserAcceptRequestMutation,
-} from "../../redux/userSlices/userApiSlice";
+  useRecruiterConnectMutation,
+  useRecruiterAcceptRequestMutation,
+} from "../../../redux/recruiterSlices/recruiterApiSlices";
+
 import { toast } from "react-toastify";
 
-function NetworkCard({ users, requests , reFetchusers}) {
-  const { userData } = useSelector((state) => state.auth);
+function RecruiterNetworkCard({ users, requests , reFetchusers}) {
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
   const [pendingUsers, setPendingUsers] = useState([]);
 
-  const [userConnect] = useUserConnectMutation();
-  const [userAcceptRequest] = useUserAcceptRequestMutation();
+  const [recruiterConnect] = useRecruiterConnectMutation();
+  const [recruiterAcceptRequest] = useRecruiterAcceptRequestMutation();
 
   const ConnectUser = async (connectId, index) => {
     try {
-      const responseData = await userConnect({
+      const responseData = await recruiterConnect({
         connectId,
-        userId: userData._id,
+        userId: recruiterData._id,
       }).unwrap();
       if (responseData.success) {
         const updatedPendingUsers = [...pendingUsers, responseData.id];
@@ -35,13 +36,13 @@ function NetworkCard({ users, requests , reFetchusers}) {
 
   const acceptUser = async (connectId) => {
     try {
-      const response = await userAcceptRequest({
+      const response = await recruiterAcceptRequest({
         connectId,
-        userId: userData._id,
+        userId: recruiterData._id,
       }).unwrap();
       if (response.success) {
         toast.success("connection request accepted");
-        reFetchusers();
+        reFetchusers()
       }
     } catch (error) {
       console.log(error?.data?.message || error?.message);
@@ -94,10 +95,11 @@ function NetworkCard({ users, requests , reFetchusers}) {
             ))}
           </div>
         </div>
+
         <div className="row gutters mt-4 pt-3">
           <p>People you may know based on your recent activity</p>
           {users.map((user, index) => (
-            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4" key={index}>
+            <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6" key={index}>
               <figure className="user-card green">
                 <figcaption>
                   <img
@@ -143,4 +145,4 @@ function NetworkCard({ users, requests , reFetchusers}) {
   );
 }
 
-export default NetworkCard;
+export default RecruiterNetworkCard;

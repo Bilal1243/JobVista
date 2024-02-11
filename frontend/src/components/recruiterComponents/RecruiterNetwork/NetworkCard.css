@@ -8,8 +8,8 @@ figure.user-card {
     transition: box-shadow .5s ease-in-out;
 }
 
-figure.user-card:hover{
-    box-shadow: 0px 10px 7px -6px rgba(0,0,0,0.1);
+figure.user-card:hover {
+    box-shadow: 0px 10px 7px -6px rgba(0, 0, 0, 0.1);
 }
 
 

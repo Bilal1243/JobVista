@@ -4,6 +4,8 @@ import { PROFILE_PATH, RESUME_PATH } from "../../../Utils/URL";
 import defualtProfile from "../../../assets/defualtProfile.jpg";
 import { Dropdown } from "primereact/dropdown";
 import Loader from "../../Loader";
+import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 
 function ApplicantView({ selectedApplicant, changeStatus, handleChange }) {
   return (
@@ -13,7 +15,7 @@ function ApplicantView({ selectedApplicant, changeStatus, handleChange }) {
           <div className="card">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center">
+                <div className="d-flex justify-content-center">
                   <img
                     src={
                       selectedApplicant.ownerDetails.profileImg
@@ -36,6 +38,7 @@ function ApplicantView({ selectedApplicant, changeStatus, handleChange }) {
                       {selectedApplicant.ownerDetails.lastName}
                     </h5>
                     <p>{selectedApplicant.ownerDetails.title}</p>
+                    <Link>visit applicant</Link>
                   </div>
                 </div>
                 <div>

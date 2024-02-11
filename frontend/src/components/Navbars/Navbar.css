@@ -52,3 +52,14 @@ body{
   background-color: #333;
   /* ... dark mode styles */
 }
+
+/* Custom styling for the badge */
+.navbar-button .p-badge {
+  background-color: #09828d;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}

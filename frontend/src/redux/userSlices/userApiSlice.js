@@ -187,43 +187,64 @@ export const userSlice = userApiSlice.injectEndpoints({
         method: 'GET'
       })
     }),
-    userlistPosts : builder.mutation({
-      query : ()=>({
-        url : `${USERS_URL}/listPosts`,
-        method : 'GET'
+    userlistPosts: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/listPosts`,
+        method: 'GET'
       })
     }),
-    userSavePost : builder.mutation({
-      query : (params)=>({
-        url : `${USERS_URL}/savepost`,
-        method : 'PUT',
+    userSavePost: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/savepost`,
+        method: 'PUT',
         params
       })
     }),
-    userUnsavePost : builder.mutation({
-      query : (params)=>({
-        url : `${USERS_URL}/unSavepost`,
-        method : 'PUT',
+    userUnsavePost: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/unSavepost`,
+        method: 'PUT',
         params
       })
     }),
-    userlistSavedPosts : builder.mutation({
-      query : ()=>({
-        url : `${USERS_URL}/SavedPosts`,
-        method : 'GET'
+    userlistSavedPosts: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/SavedPosts`,
+        method: 'GET'
       })
     }),
-    userlistMyNetwork : builder.mutation({
-      query : (params)=>({
-        url : `${USERS_URL}/MyNetwork`,
-        method : 'GET',
+    userlistMyNetwork: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/MyNetwork`,
+        method: 'GET',
         params
       })
     }),
-    userConnect : builder.mutation({
-      query : (params)=>({
-        url : `${USERS_URL}/connect`,
-        method : 'PUT',
+    userConnect: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/connect`,
+        method: 'PUT',
+        params
+      })
+    }),
+    userRequestCount: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/networkRequest`,
+        method: 'GET',
+        params
+      })
+    }),
+    userAcceptRequest: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/acceptRequest`,
+        method: 'PUT',
+        params
+      })
+    }),
+    userListConnections: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/listConnections`,
+        method: 'GET',
         params
       })
     }),
@@ -270,5 +291,8 @@ export const {
   useUserlistSavedPostsMutation,
   useUserlistMyNetworkMutation,
   useUserConnectMutation,
+  useUserRequestCountMutation,
+  useUserAcceptRequestMutation,
+  useUserListConnectionsMutation,
   useUserLogoutMutation
 } = userSlice
