@@ -210,6 +210,13 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })
         }),
+        recruiterListConnections: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/listConnections`,
+                method: 'GET',
+                params
+            })
+        }),
     }),
 })
 
@@ -243,5 +250,6 @@ export const {
     useRecruiterConnectMutation,
     useRecruiterRequestCountMutation,
     useRecruiterAcceptRequestMutation,
+    useRecruiterListConnectionsMutation,
     useRecruiterLogoutMutation
 } = recruiterSlice

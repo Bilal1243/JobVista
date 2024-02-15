@@ -11,7 +11,7 @@ import { protect } from '../Middlewares/recruiterAuthMiddleware.js'
 import {  filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecruiter, recruiterAuth, recruiterEditProfile, recruiterloadMyProfile, registerRecruiter, searchJob, verifyRecruiter } from '../Controllers/recruiterController.js'
 import { changeStatus, createJob, getResume, viewApplications } from '../Controllers/recruiterJobController.js'
 import { recruiterCreatePost, recruiterMyPosts, recruiterdeleteComment, recruiterdeletePost, recruitereditPost, recruiterlikePost, recruiterlistAllPosts, recruiterlistSavedPosts, recruiterpostComment, recruitersavePost, recruiterunsavePost } from '../Controllers/recruiterPostController.js'
-import { acceptRequest, connectUser, listRequests, listUsers } from '../Controllers/MyNetworkController.js'
+import { ListConnections, acceptRequest, connectUser, listRequests, listUsers } from '../Controllers/MyNetworkController.js'
 
 
 recruiterRoute.post('/recruiterAuth', recruiterAuth)
@@ -26,6 +26,9 @@ recruiterRoute.get('/networkRequest',protect,listRequests)
 recruiterRoute.get('/MyNetwork',protect,listUsers)
 recruiterRoute.put('/connect',protect,connectUser)
 recruiterRoute.put('/acceptRequest',protect,acceptRequest)
+
+recruiterRoute.get('/listConnections',protect,ListConnections)
+
 
 recruiterRoute.post('/postJob', protect, createJob)
 recruiterRoute.get('/recruiterListPosts',protect,recruiterlistAllPosts)

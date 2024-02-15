@@ -10,13 +10,16 @@ import {
   useUserAcceptRequestMutation,
 } from "../../redux/userSlices/userApiSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-function NetworkCard({ users, requests , reFetchusers}) {
+function NetworkCard({ users, requests, reFetchusers }) {
   const { userData } = useSelector((state) => state.auth);
   const [pendingUsers, setPendingUsers] = useState([]);
 
   const [userConnect] = useUserConnectMutation();
   const [userAcceptRequest] = useUserAcceptRequestMutation();
+
+  const navigate = useNavigate();
 
   const ConnectUser = async (connectId, index) => {
     try {
@@ -100,20 +103,24 @@ function NetworkCard({ users, requests , reFetchusers}) {
             <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4" key={index}>
               <figure className="user-card green">
                 <figcaption>
-                  <img
-                    src={
-                      user.profileImg
-                        ? PROFILE_PATH + user.profileImg
-                        : defualtProfile
-                    }
-                    alt="profile image"
-                    className="profile"
-                  />
-                  <h5>
-                    {user.firstName} {user.lastName}
-                  </h5>
-                  <h6>{user.title}</h6>
-                  <p>0 Connection</p>
+                  <div
+                    onClick={() => navigate(`/visitProfile/${user._id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={
+                        user.profileImg
+                          ? PROFILE_PATH + user.profileImg
+                          : defualtProfile
+                      }
+                      alt="profile image"
+                      className="profile"
+                    />
+                    <h5>
+                      {user.firstName} {user.lastName}
+                    </h5>
+                    <h6>{user.title}</h6>
+                  </div>
                   <div className="clearfix">
                     <Button
                       type="button"

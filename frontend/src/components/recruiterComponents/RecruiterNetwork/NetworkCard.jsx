@@ -115,7 +115,6 @@ function RecruiterNetworkCard({ users, requests , reFetchusers}) {
                     {user.firstName} {user.lastName}
                   </h5>
                   <h6>{user.title}</h6>
-                  <p>0 Connection</p>
                   <div className="clearfix">
                     <Button
                       type="button"

@@ -27,7 +27,7 @@ import {
 
 import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts, savePost, unsavePost, listSavedPosts } from '../Controllers/userPostController.js'
 import { SearchJob, applyJob, getJob, listJobs, saveJob, unsaveJob } from '../Controllers/userJobControler.js'
-import { ListConnections, acceptRequest, connectUser, listRequests, listUsers } from '../Controllers/MyNetworkController.js'
+import { ListConnections, acceptRequest, connectUser, listRequests, listUsers, visitProfile } from '../Controllers/MyNetworkController.js'
 
 userRoute.post('/auth', authUser)
 userRoute.post('/register', registerUser)
@@ -49,6 +49,7 @@ userRoute.put('/connect', protect, connectUser)
 userRoute.put('/acceptRequest',protect,acceptRequest)
 
 userRoute.get('/listConnections',protect,ListConnections)
+userRoute.get('/visitProfile',protect,visitProfile)
 
 
 userRoute.get('/myProfile', protect, loadMyProfile)

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import NavbarUi from "../../../components/Navbars/Navbar";
+import RecruiterNavbar from "../../../components/recruiterComponents/Navbar/RecruiterNavbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./UserConnections.css";
-import { useUserListConnectionsMutation } from "../../../redux/userSlices/userApiSlice";
+import "./RecruiterConnections.css";
+import { useRecruiterListConnectionsMutation } from "../../../redux/recruiterSlices/recruiterApiSlices";
 import { useSelector } from "react-redux";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
@@ -11,22 +11,22 @@ import defualtProfile from "../../../assets/defualtProfile.jpg";
 import { InputText } from "primereact/inputtext";
 import { Paginator } from "primereact/paginator";
 
-function UserConnections() {
-  const { userData } = useSelector((state) => state.auth);
+function RecruiterConnections() {
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [connections, setConnections] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(5); // Number of rows per page
 
-  const [userListConnections] = useUserListConnectionsMutation();
+  const [recruiterListConnections] = useRecruiterListConnectionsMutation();
 
   const navigate = useNavigate();
 
   const fetchConnections = async () => {
     try {
-      const connectionsData = await userListConnections({
-        userId: userData._id,
+      const connectionsData = await recruiterListConnections({
+        userId: recruiterData._id,
       }).unwrap();
       setConnections(connectionsData);
     } catch (error) {
@@ -55,7 +55,7 @@ function UserConnections() {
 
   return (
     <>
-      <NavbarUi />
+      <RecruiterNavbar />
       <link
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
         rel="stylesheet"
@@ -64,7 +64,7 @@ function UserConnections() {
         <div className="card">
           <div className="card-body d-flex justify-content-between align-items-center">
             <div>
-              <Button onClick={() => navigate("/profile")}>Go Back</Button>
+              <Button onClick={() => navigate("/Recruiter-Profile")}>Go Back</Button>
             </div>
             <div>
               <span className="p-input-icon-left">
@@ -88,7 +88,6 @@ function UserConnections() {
                   <div
                     className="inner-body d-flex align-items-center"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/visitProfile/${connection.user[0]._id}`)}
                   >
                     <img
                       src={
@@ -129,4 +128,4 @@ function UserConnections() {
   );
 }
 
-export default UserConnections;
+export default RecruiterConnections;

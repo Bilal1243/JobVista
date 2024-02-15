@@ -17,7 +17,7 @@ import JobApply from './pages/userPages/JobApply/JobApply.jsx'
 import SuccessPage from './pages/userPages/JobApply/SuccessPage.jsx'
 import MyNetwork from './pages/userPages/myNetwork/MyNetwork.jsx'
 import UserConnections from './pages/userPages/ConnectionList/UserConnections.jsx'
-
+import UserProfileVisit from './pages/userPages/UserProfileVisit/UserProfileVisit.jsx'
 
 
 
@@ -42,6 +42,7 @@ import ListApplicants from './pages/recruiterPages/ListApplicants/ListApplicants
 import RecruiterProfile from './pages/recruiterPages/Profile/Profile.jsx'
 import PostJob from './pages/recruiterPages/postJob/PostJob.jsx'
 import RecruiterNetwork from './pages/recruiterPages/RecruiterMyNetwork/MyNetwork.jsx'
+import RecruiterConnetions from './pages/recruiterPages/ConnectionList/RecruiterConnections.jsx'
 
 function App() {
 
@@ -73,7 +74,7 @@ function App() {
         <Route path='/applied/:jobId' element={<UserPrivateRoute element={<SuccessPage></SuccessPage>}></UserPrivateRoute>}></Route>
         <Route path='/MyNetwork' element={<UserPrivateRoute element={<MyNetwork></MyNetwork>}></UserPrivateRoute>}></Route>
         <Route path='/connections' element={<UserPrivateRoute element={<UserConnections></UserConnections>}></UserPrivateRoute>}></Route>
-
+        <Route path='/visitProfile/:id' element={<UserPrivateRoute element={<UserProfileVisit></UserProfileVisit>}></UserPrivateRoute>}></Route>
 
 
 
@@ -100,7 +101,7 @@ function App() {
         <Route path='/Recruiter-Profile' element={<RecruiterPrivateRoutes element={<RecruiterProfile></RecruiterProfile>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/viewApplications/:jobId' element={<RecruiterPrivateRoutes element={<ListApplicants></ListApplicants>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/Recruiter-Network' element={<RecruiterPrivateRoutes element={<RecruiterNetwork></RecruiterNetwork>}></RecruiterPrivateRoutes>}></Route>
-
+        <Route path='/recruiter-connections' element={<RecruiterPrivateRoutes element={<RecruiterConnetions></RecruiterConnetions>}></RecruiterPrivateRoutes>}></Route>
 
       </Routes>
     </>

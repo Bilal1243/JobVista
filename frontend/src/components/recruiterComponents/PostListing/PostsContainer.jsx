@@ -70,7 +70,9 @@ function PostsContainer() {
         recruiterId: recruiterData._id,
       }).unwrap();
       setProfileData(responseData.data);
-      setFollowers(responseData.followers.length);
+      responseData.followers[0]?.followersList.length
+        ? setFollowers(responseData.followers[0].followersList.length)
+        : setFollowers(0);
     } catch (error) {
       console.log(error?.data?.message || error?.data);
     }
@@ -199,7 +201,7 @@ function PostsContainer() {
                   className="d-flex align-items-center justify-content-center"
                   style={{ fontSize: "13px" }}
                 >
-                  <p>followers : {followers}</p>
+                  <p>Connections : {followers}</p>
                 </div>
                 <div
                   className="d-flex align-items-center justify-content-center"

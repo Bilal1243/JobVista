@@ -14,6 +14,7 @@ import {
 } from "../../redux/userSlices/userApiSlice.js";
 import InputEmoji from "react-input-emoji";
 import { PROFILE_PATH } from "../../Utils/URL.js";
+import { useNavigate } from "react-router-dom";
 
 function PostCard({ post, loadPosts }) {
   const { userData } = useSelector((state) => state.auth);
@@ -30,6 +31,8 @@ function PostCard({ post, loadPosts }) {
   const [deleteComment] = useDeleteCommentMutation();
   const [userSavePost] = useUserSavePostMutation();
   const [userUnsavePost] = useUserUnsavePostMutation();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (post.likes.users.includes(userData._id)) {
@@ -118,7 +121,6 @@ function PostCard({ post, loadPosts }) {
     }
   };
 
-
   const isMobile = window.innerWidth <= 767;
 
   const isCommentOwner = (commentOwnerId) => {
@@ -129,7 +131,17 @@ function PostCard({ post, loadPosts }) {
     <div class="card-body">
       <div class="border-top-0 border-right-0 border-bottom-0 ui-bordered pl-3 mt-2 mb-2">
         <div class="media mb-3 d-flex  justify-content-between">
-          <div className="media mb-1 d-flex">
+          <div
+            className="media mb-1 d-flex"
+            onClick={
+              post.ownerDetails[0]._id === userData._id
+                ? () => navigate(`/profile`)
+                : () => navigate(`/visitProfile/${post.ownerDetails[0]._id}`)
+            }
+            style={{
+              cursor: "pointer",
+            }}
+          >
             <img
               src={
                 post.ownerDetails[0].profileImg
@@ -156,7 +168,7 @@ function PostCard({ post, loadPosts }) {
                   cursor: "pointer",
                   fontSize: "17px",
                 }}
-                onClick={()=>savepost()}
+                onClick={() => savepost()}
               ></span>
             ) : (
               <span

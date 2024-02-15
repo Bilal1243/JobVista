@@ -69,7 +69,7 @@ function PostsContainer() {
     try {
       const responseData = await getProfile({ userId: userData._id }).unwrap();
       setProfileData(responseData.data);
-      setFollowers(responseData.followers.length);
+      setFollowers(responseData.followers[0].followersList.length);
     } catch (error) {
       console.log(error?.data?.message || error?.data);
     }
@@ -198,7 +198,7 @@ function PostsContainer() {
                   className="d-flex align-items-center justify-content-center"
                   style={{ fontSize: "13px" }}
                 >
-                  <p>followers : {followers}</p>
+                  <p>Connections : {followers}</p>
                 </div>
                 <div
                   className="d-flex align-items-center justify-content-center"

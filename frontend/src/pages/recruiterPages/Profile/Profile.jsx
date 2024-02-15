@@ -69,7 +69,7 @@ function RecruiterProfile() {
         recruiterId: recruiterData._id,
       }).unwrap();
       setProfileData(responseData.data);
-      setFollowers(responseData.followers);
+      setFollowers(responseData.followers[0].followersList.length);
       setLocation(responseData.data.location);
       setFirstName(responseData.data.firstName);
       setLastName(responseData.data.lastName);
@@ -177,7 +177,7 @@ function RecruiterProfile() {
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>
               <div>
-                <Link to="/followers">{followers.length} Connection</Link>
+                <Link to="/recruiter-connections">{followers} Connections</Link>
               </div>
             </div>
           </div>

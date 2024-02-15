@@ -25,8 +25,8 @@ import {
 import Posts from "./Posts.jsx";
 import Personalinformation from "./Personalinformation.jsx";
 import SavedPosts from "./SavedPosts.jsx";
-import SavedJobs from './Saved_Jobs.jsx'
-import JobStatus from './JobStatus.jsx'
+import SavedJobs from "./Saved_Jobs.jsx";
+import JobStatus from "./JobStatus.jsx";
 import Settings from "./Settings.jsx";
 import QuickActions from "./QuickActions.jsx";
 import QuickSmall from "./QuickSmall.jsx";
@@ -68,14 +68,14 @@ function Profile() {
 
   const fetchProfileData = async () => {
     try {
-      const responseData = await getProfile({ userId: userData._id });
-      setProfileData(responseData.data.data);
-      setFollowers(responseData.data.followers);
-      setLocation(responseData.data.data.location);
-      setFirstName(responseData.data.data.firstName);
-      setLastName(responseData.data.data.lastName);
-      setTitle(responseData.data.data.title);
-      setProfileImg(responseData.data.data.profileImg);
+      const responseData = await getProfile({ userId: userData._id }).unwrap();
+      setProfileData(responseData.data);
+      setFollowers(responseData.followers[0].followersList.length);
+      setLocation(responseData.data.location);
+      setFirstName(responseData.data.firstName);
+      setLastName(responseData.data.lastName);
+      setTitle(responseData.data.title);
+      setProfileImg(responseData.data.profileImg);
       setIsloading(false);
     } catch (error) {
       console.log(error?.data?.message || error?.data);
@@ -135,6 +135,8 @@ function Profile() {
     fetchProfileData();
   };
 
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       <NavbarUi />
@@ -178,7 +180,7 @@ function Profile() {
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>
               <div>
-                <Link to="/connections">{followers.length} Connection</Link>
+                <Link to="/connections">{followers} Connections</Link>
               </div>
             </div>
           </div>
@@ -187,7 +189,7 @@ function Profile() {
         <Dialog
           header={profileData.userName}
           visible={showContact}
-          style={{ width: "90%" }}
+          style={isMobile ? { width: "90%" } : { width: "50%" }}
           onHide={() => setShowContact(false)}
         >
           <div
@@ -250,7 +252,7 @@ function Profile() {
         header={"edit intro"}
         visible={showEdit}
         onHide={() => setShowEdit(false)}
-        className="editProfile"
+        style={isMobile ? { width: "90%" } : { width: "50%" }}
       >
         <div
           style={{

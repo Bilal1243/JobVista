@@ -248,6 +248,13 @@ export const userSlice = userApiSlice.injectEndpoints({
         params
       })
     }),
+    userVisitProfile: builder.mutation({
+      query: (params) => ({
+        url: `${USERS_URL}/visitProfile`,
+        method: 'GET',
+        params
+      })
+    }),
     userLogout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -294,5 +301,6 @@ export const {
   useUserRequestCountMutation,
   useUserAcceptRequestMutation,
   useUserListConnectionsMutation,
+  useUserVisitProfileMutation,
   useUserLogoutMutation
 } = userSlice
