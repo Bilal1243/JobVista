@@ -210,6 +210,34 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })
         }),
+        recruiterGetChats : builder.mutation({
+            query : (params) => ({
+              url : `${RECRUITER_URL}/getChats`,
+              method : 'GET',
+              params
+            })
+          }),
+          recruiterCreateChat : builder.mutation({
+            query : (data) => ({
+              url : `${RECRUITER_URL}/createChat`,
+              method : 'POST',
+              body : data
+            })
+          }),
+          recruitersendMessage : builder.mutation({
+            query : (data) => ({
+              url : `${RECRUITER_URL}/sendMessage`,
+              method : 'POST',
+              body : data
+            })
+          }),
+          recruiterGetMessages : builder.mutation({
+            query : (data) => ({
+              url : `${RECRUITER_URL}/getMessages`,
+              method : 'POST',
+              body : data
+            })
+          }),
         recruiterListConnections: builder.mutation({
             query: (params) => ({
                 url: `${RECRUITER_URL}/listConnections`,
@@ -251,5 +279,9 @@ export const {
     useRecruiterRequestCountMutation,
     useRecruiterAcceptRequestMutation,
     useRecruiterListConnectionsMutation,
+    useRecruiterCreateChatMutation,
+    useRecruiterGetChatsMutation,
+    useRecruiterGetMessagesMutation,
+    useRecruitersendMessageMutation,
     useRecruiterLogoutMutation
 } = recruiterSlice

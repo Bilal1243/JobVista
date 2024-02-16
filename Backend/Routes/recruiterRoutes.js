@@ -12,6 +12,7 @@ import {  filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecru
 import { changeStatus, createJob, getResume, viewApplications } from '../Controllers/recruiterJobController.js'
 import { recruiterCreatePost, recruiterMyPosts, recruiterdeleteComment, recruiterdeletePost, recruitereditPost, recruiterlikePost, recruiterlistAllPosts, recruiterlistSavedPosts, recruiterpostComment, recruitersavePost, recruiterunsavePost } from '../Controllers/recruiterPostController.js'
 import { ListConnections, acceptRequest, connectUser, listRequests, listUsers } from '../Controllers/MyNetworkController.js'
+import { chatSend, createRoom, getMessages, getRooms } from '../Controllers/ChatController.js'
 
 
 recruiterRoute.post('/recruiterAuth', recruiterAuth)
@@ -52,6 +53,12 @@ recruiterRoute.get('/deleteComment',protect,recruiterdeleteComment)
 recruiterRoute.get('/deletePost',protect,recruiterdeletePost)
 recruiterRoute.put('/editPost',protect,recruitereditPost)
 recruiterRoute.get('/recruiterSavedPosts',protect,recruiterlistSavedPosts)
+
+
+recruiterRoute.get('/getChats',protect,getRooms)
+recruiterRoute.post('/createChat',protect,createRoom)
+recruiterRoute.post('/sendMessage',protect,chatSend)
+recruiterRoute.post('/getMessages',protect,getMessages)
 
 recruiterRoute.get('/logout',protect,logoutRecruiter)
 

@@ -98,7 +98,7 @@ function NavbarUi() {
         <Button
           label="Messaging"
           icon="pi pi-fw pi-comments"
-          onClick={() => navigate("/Jobs")}
+          onClick={() => navigate("/messages")}
           style={{
             textDecoration: "none",
             color: "inherit",

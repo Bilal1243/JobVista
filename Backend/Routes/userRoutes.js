@@ -28,6 +28,7 @@ import {
 import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts, savePost, unsavePost, listSavedPosts } from '../Controllers/userPostController.js'
 import { SearchJob, applyJob, getJob, listJobs, saveJob, unsaveJob } from '../Controllers/userJobControler.js'
 import { ListConnections, acceptRequest, connectUser, listRequests, listUsers, visitProfile } from '../Controllers/MyNetworkController.js'
+import {chatSend, createRoom, getMessages, getRooms} from '../Controllers/ChatController.js'
 
 userRoute.post('/auth', authUser)
 userRoute.post('/register', registerUser)
@@ -75,6 +76,11 @@ userRoute.put('/unSaveJob', protect, unsaveJob)
 userRoute.get('/viewJob', protect, getJob)
 userRoute.get('/searchJob', protect, SearchJob)
 userRoute.post('/applyJob', protect, ResumeUpload.single("resume"), applyJob)
+
+userRoute.get('/getChats',protect,getRooms)
+userRoute.post('/createChat',protect,createRoom)
+userRoute.post('/sendMessage',protect,chatSend)
+userRoute.post('/getMessages',protect,getMessages)
 
 
 

@@ -255,6 +255,34 @@ export const userSlice = userApiSlice.injectEndpoints({
         params
       })
     }),
+    userGetChats : builder.mutation({
+      query : (params) => ({
+        url : `${USERS_URL}/getChats`,
+        method : 'GET',
+        params
+      })
+    }),
+    userCreateChat : builder.mutation({
+      query : (data) => ({
+        url : `${USERS_URL}/createChat`,
+        method : 'POST',
+        body : data
+      })
+    }),
+    usersendMessage : builder.mutation({
+      query : (data) => ({
+        url : `${USERS_URL}/sendMessage`,
+        method : 'POST',
+        body : data
+      })
+    }),
+    userGetMessages : builder.mutation({
+      query : (data) => ({
+        url : `${USERS_URL}/getMessages`,
+        method : 'POST',
+        body : data
+      })
+    }),
     userLogout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -302,5 +330,9 @@ export const {
   useUserAcceptRequestMutation,
   useUserListConnectionsMutation,
   useUserVisitProfileMutation,
+  useUserGetChatsMutation,
+  useUserCreateChatMutation,
+  useUsersendMessageMutation,
+  useUserGetMessagesMutation,
   useUserLogoutMutation
 } = userSlice

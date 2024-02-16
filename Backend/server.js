@@ -35,6 +35,50 @@ app.use(notFound);
 app.use(errorHandler);
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`server started on port ${port}`)
+})
+
+import { Server, Socket } from "socket.io";
+
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
+
+io.on('connection', (Socket) => {
+  console.log('connected to socket.io')
+
+  Socket.on("setup", (userData) => {
+    Socket.join(userData._id);
+    Socket.emit("connected");
+  });
+
+  Socket.on("join chat", (room) => {
+    Socket.join(room);
+    console.log("User Joined Room: " + room);
+  });
+
+  Socket.on('typing',(room)=>Socket.in(room).emit('typing'))
+  Socket.on('stop typing',(room)=>Socket.in(room).emit('stop typing'))
+
+  Socket.on("new message", (newMessageRecieved) => {
+    var chat = newMessageRecieved.chat;
+
+    if (!chat.users) return console.log("chat.users not defined");
+
+    chat.users.forEach((user) => {
+      if (user._id == newMessageRecieved.sender._id) return;
+
+      Socket.in(user._id).emit("message recieved", newMessageRecieved);
+    });
+  });
+
+  Socket.off('setup',()=>{
+    console.log('user disconnected')
+    Socket.leave(userData._id)
+  })
+
 })

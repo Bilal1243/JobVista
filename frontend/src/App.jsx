@@ -18,6 +18,7 @@ import SuccessPage from './pages/userPages/JobApply/SuccessPage.jsx'
 import MyNetwork from './pages/userPages/myNetwork/MyNetwork.jsx'
 import UserConnections from './pages/userPages/ConnectionList/UserConnections.jsx'
 import UserProfileVisit from './pages/userPages/UserProfileVisit/UserProfileVisit.jsx'
+import UserChat from './pages/userPages/UserChat/UserChat.jsx'
 
 
 
@@ -43,6 +44,7 @@ import RecruiterProfile from './pages/recruiterPages/Profile/Profile.jsx'
 import PostJob from './pages/recruiterPages/postJob/PostJob.jsx'
 import RecruiterNetwork from './pages/recruiterPages/RecruiterMyNetwork/MyNetwork.jsx'
 import RecruiterConnetions from './pages/recruiterPages/ConnectionList/RecruiterConnections.jsx'
+import RecruiterChat from './pages/recruiterPages/RecruiterChat/RecruiterChat.jsx'
 
 function App() {
 
@@ -75,6 +77,7 @@ function App() {
         <Route path='/MyNetwork' element={<UserPrivateRoute element={<MyNetwork></MyNetwork>}></UserPrivateRoute>}></Route>
         <Route path='/connections' element={<UserPrivateRoute element={<UserConnections></UserConnections>}></UserPrivateRoute>}></Route>
         <Route path='/visitProfile/:id' element={<UserPrivateRoute element={<UserProfileVisit></UserProfileVisit>}></UserPrivateRoute>}></Route>
+        <Route path='/messages' element={<UserPrivateRoute element={<UserChat></UserChat>}></UserPrivateRoute>}></Route>
 
 
 
@@ -102,6 +105,7 @@ function App() {
         <Route path='/viewApplications/:jobId' element={<RecruiterPrivateRoutes element={<ListApplicants></ListApplicants>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/Recruiter-Network' element={<RecruiterPrivateRoutes element={<RecruiterNetwork></RecruiterNetwork>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/recruiter-connections' element={<RecruiterPrivateRoutes element={<RecruiterConnetions></RecruiterConnetions>}></RecruiterPrivateRoutes>}></Route>
+        <Route path='/Recruiter-Messages' element={<RecruiterPrivateRoutes element={<RecruiterChat></RecruiterChat>}></RecruiterPrivateRoutes>}></Route>
 
       </Routes>
     </>
