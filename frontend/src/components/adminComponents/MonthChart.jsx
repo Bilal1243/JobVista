@@ -8,38 +8,46 @@ import {
   Tooltip,
 } from "recharts";
 
-function ChartUi({ details }) {
+function PieChartUi({ details }) {
+  console.log(details);
   const aggregateData = () => {
     const aggregatedData = [];
-
+  
     // Check if details is defined and is an object
     if (!details || typeof details !== "object") {
       return aggregatedData; // Return empty array if details is not valid
     }
-
+  
     const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
-
+  
+    // Create a map to store aggregated counts for each category
+    const aggregatedCounts = {
+      users: 0,
+      recruiters: 0,
+      posts: 0,
+      jobs: 0,
+    };
+  
     // Aggregate data for current month
-    const aggregated = {};
     Object.keys(details).forEach((key) => {
       const data = details[key];
       data.forEach((item) => {
         const date = new Date(item.createdAt);
-        const monthName = date.toLocaleString("en-US", { month: "long" });
         if (date.getMonth() === currentMonth) {
-          if (!aggregated[key]) {
-            aggregated[key] = { name: `${key}`, count: 0 };
-          }
-          aggregated[key].count++;
+          aggregatedCounts[key]++;
         }
       });
     });
-
-    // Push aggregated data to the aggregatedData array
-    Object.values(aggregated).forEach((entry) => aggregatedData.push(entry));
-
+  
+    // Convert aggregated counts map to an array of objects
+    Object.keys(aggregatedCounts).forEach((key) => {
+      // Always include the category, even if count is 0
+      aggregatedData.push({ name: key, count: aggregatedCounts[key] });
+    });
+  
     return aggregatedData;
   };
+  
 
   const data = aggregateData();
 
@@ -102,4 +110,4 @@ function ChartUi({ details }) {
   );
 }
 
-export default ChartUi;
+export default PieChartUi;
