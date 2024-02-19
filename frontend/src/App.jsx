@@ -45,9 +45,10 @@ import PostJob from './pages/recruiterPages/postJob/PostJob.jsx'
 import RecruiterNetwork from './pages/recruiterPages/RecruiterMyNetwork/MyNetwork.jsx'
 import RecruiterConnetions from './pages/recruiterPages/ConnectionList/RecruiterConnections.jsx'
 import RecruiterChat from './pages/recruiterPages/RecruiterChat/RecruiterChat.jsx'
+import RecruiterProfileVisit from './pages/recruiterPages/RecruiterProfileVisit/RecruiterProfileVisit.jsx'
 
 function App() {
-
+ 
   return (
     <>
       <ToastContainer
@@ -106,6 +107,7 @@ function App() {
         <Route path='/Recruiter-Network' element={<RecruiterPrivateRoutes element={<RecruiterNetwork></RecruiterNetwork>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/recruiter-connections' element={<RecruiterPrivateRoutes element={<RecruiterConnetions></RecruiterConnetions>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/Recruiter-Messages' element={<RecruiterPrivateRoutes element={<RecruiterChat></RecruiterChat>}></RecruiterPrivateRoutes>}></Route>
+        <Route path='/visitsprofile/:id' element={<RecruiterPrivateRoutes element={<RecruiterProfileVisit></RecruiterProfileVisit>}></RecruiterPrivateRoutes>}></Route>
 
       </Routes>
     </>

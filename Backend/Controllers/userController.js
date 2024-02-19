@@ -9,6 +9,7 @@ import Posts from '../Models/postsModel.js'
 import Comment from '../Models/commentsModel.js'
 import SavedJobs from "../Models/SavedJobsModel.js";
 import Jobs from "../Models/jobsModel.js";
+import Experiences from '../Models/experiencesModel.js'
 
 
 
@@ -474,6 +475,43 @@ const jobStatusList = asyncHandler(async (req, res) => {
 })
 
 
+const addExperience = asyncHandler(async (req, res) => {
+    const { userId, experience } = req.body
+
+    const isExisting = await Experiences.findOne({ userId: userId })
+
+    if (isExisting) {
+        isExisting.experiences = [...isExisting.experiences, experience];
+        const updatedUser = await isExisting.save()
+        res.json({ status: true })
+    }
+    else {
+        const newExperience = await Experiences.create({
+            userId,
+            experiences: [experience]
+        })
+
+        if (newExperience) {
+            res.json({ status: true })
+        }
+        else {
+            throw new Error('internal server error')
+        }
+    }
+
+})
+
+const listExperience = asyncHandler(async (req, res) => {
+    const userId = req.query.userId
+    const findExperience = await Experiences.findOne({ userId: userId })
+    if(findExperience){
+        res.json(findExperience)
+    }
+    else{
+        res.json(null)
+    }
+})
+
 const logoutUser = asyncHandler(async (req, res) => {
 
     res.cookie("jwt", "", {
@@ -502,5 +540,7 @@ export {
     listSavedJobs,
     changePassword,
     jobStatusList,
+    listExperience,
+    addExperience,
     logoutUser
 }

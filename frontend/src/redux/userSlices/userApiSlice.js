@@ -283,6 +283,20 @@ export const userSlice = userApiSlice.injectEndpoints({
         body : data
       })
     }),
+    userAddExperience : builder.mutation({
+      query : (data) => ({
+        url : `${USERS_URL}/addExperience`,
+        method : 'POST',
+        body : data
+      })
+    }),
+    userlistExperience : builder.mutation({
+      query : (params) => ({
+        url : `${USERS_URL}/listExperience`,
+        method : 'GET',
+        params
+      })
+    }),
     userLogout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -334,5 +348,7 @@ export const {
   useUserCreateChatMutation,
   useUsersendMessageMutation,
   useUserGetMessagesMutation,
+  useUserlistExperienceMutation,
+  useUserAddExperienceMutation,
   useUserLogoutMutation
 } = userSlice

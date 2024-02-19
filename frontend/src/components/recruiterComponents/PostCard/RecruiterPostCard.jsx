@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Style.css";
+import "./RecruiterPostCard.css";
 import { POST_IMAGES_PATH } from "../../../Utils/URL";
 import defualtProfile from "../../../assets/defualtProfile.jpg";
 import TimeAgo from "../../../Utils/TimeAgo.jsx";
@@ -14,9 +14,8 @@ import {
 } from "../../../redux/recruiterSlices/recruiterApiSlices.js";
 import InputEmoji from "react-input-emoji";
 import { PROFILE_PATH } from "../../../Utils/URL.js";
-import { useNavigate } from "react-router-dom";
 
-function PostCard({ post, loadPosts }) {
+function RecruiterPostCard({ user, post, loadPosts }) {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -31,8 +30,6 @@ function PostCard({ post, loadPosts }) {
   const [recruiterDeleteComment] = useRecruiterDeleteCommentMutation();
   const [recruitersavePost] = useRecruitersavePostMutation();
   const [recruiterunSavePost] = useRecruiterunSavePostMutation();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (post.likes.users.includes(recruiterData._id)) {
@@ -131,28 +128,18 @@ function PostCard({ post, loadPosts }) {
     <div class="card-body">
       <div class="border-top-0 border-right-0 border-bottom-0 ui-bordered pl-3 mt-2 mb-2">
         <div class="media mb-3 d-flex  justify-content-between">
-          <div
-            className="media mb-1 d-flex"
-            onClick={
-              post.ownerDetails[0]._id === recruiterData._id
-                ? () => navigate(`/Recruiter-Profile`)
-                : () => navigate(`/visitsprofile/${post.ownerDetails[0]._id}`)
-            }
-            style={{ cursor: "pointer" }}
-          >
+          <div className="media mb-1 d-flex">
             <img
               src={
-                post.ownerDetails[0].profileImg
-                  ? PROFILE_PATH + post.ownerDetails[0].profileImg
+                user.profileImg
+                  ? PROFILE_PATH + user.profileImg
                   : defualtProfile
               }
               class="d-block ui-w-40 rounded-circle"
               alt=""
             />
             <div class="media-body ml-2">
-              {post.ownerDetails[0].firstName +
-                " " +
-                post.ownerDetails[0].lastName}
+              {user.firstName + " " + user.lastName}
               <div>
                 <TimeAgo createdAt={post.createdAt}></TimeAgo>
               </div>
@@ -318,4 +305,4 @@ function PostCard({ post, loadPosts }) {
   );
 }
 
-export default PostCard;
+export default RecruiterPostCard;

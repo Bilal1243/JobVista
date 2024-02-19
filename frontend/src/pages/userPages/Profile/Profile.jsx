@@ -30,6 +30,7 @@ import JobStatus from "./JobStatus.jsx";
 import Settings from "./Settings.jsx";
 import QuickActions from "./QuickActions.jsx";
 import QuickSmall from "./QuickSmall.jsx";
+import Experience from "./Experience.jsx";
 
 import countrydata from "../../../Utils/Countries.js";
 
@@ -69,8 +70,14 @@ function Profile() {
   const fetchProfileData = async () => {
     try {
       const responseData = await getProfile({ userId: userData._id }).unwrap();
+      console.log(responseData)
       setProfileData(responseData.data);
-      setFollowers(responseData.followers[0].followersList.length);
+      if(responseData.followers.length === 0){
+        setFollowers(0)
+      }
+      else{
+        setFollowers(responseData.followers[0].followersList.length);
+      }
       setLocation(responseData.data.location);
       setFirstName(responseData.data.firstName);
       setLastName(responseData.data.lastName);
@@ -78,7 +85,7 @@ function Profile() {
       setProfileImg(responseData.data.profileImg);
       setIsloading(false);
     } catch (error) {
-      console.log(error?.data?.message || error?.data);
+      console.log(error?.data?.message || error?.data || error);
     }
   };
 
@@ -231,6 +238,9 @@ function Profile() {
                     activeTab={activeTab}
                     profileData={profileData}
                   ></Personalinformation>
+                )}
+                {activeTab === "experience" && (
+                  <Experience activeTab={activeTab}></Experience>
                 )}
                 {activeTab === "saved-posts" && (
                   <SavedPosts activeTab={activeTab}></SavedPosts>

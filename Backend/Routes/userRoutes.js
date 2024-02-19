@@ -8,10 +8,12 @@ import ResumeUpload from '../config/ResumeMulter.js'
 
 import {
     AddjobPreference,
+    addExperience,
     authUser,
     changePassword,
     editProfile,
     jobStatusList,
+    listExperience,
     listIndustries,
     listSavedJobs,
     listSkills,
@@ -68,6 +70,9 @@ userRoute.get('/savedJobs', protect, listSavedJobs)
 userRoute.put('/changePassword', protect, changePassword)
 userRoute.get('/getJobStatus', protect, jobStatusList)
 userRoute.get('/SavedPosts', protect, listSavedPosts)
+
+userRoute.get('/listExperience',protect,listExperience)
+userRoute.post('/addExperience',protect,addExperience)
 
 
 userRoute.get('/listJobs', protect, listJobs)

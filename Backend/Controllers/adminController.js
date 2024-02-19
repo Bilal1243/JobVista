@@ -3,6 +3,7 @@ import Users from '../Models/userModel.js'
 import Skills from '../Models/skillsModel.js'
 import industries from '../Models/industriesModel.js'
 import Jobs from '../Models/jobsModel.js'
+import Post from '../Models/postsModel.js'
 
 import asyncHandler from 'express-async-handler'
 import AdmingenarateToken from '../Utils/adminGenerateToken.js'
@@ -62,9 +63,9 @@ const addSkills = asyncHandler(async (req, res) => {
     });
 
     if (savedSkill) {
-      res.status(201).json({success : true, message: 'Skill added successfully' });
+      res.status(201).json({ success: true, message: 'Skill added successfully' });
     } else {
-      res.status(400).json({success : false, message: 'Failed to add new skill' });
+      res.status(400).json({ success: false, message: 'Failed to add new skill' });
     }
   }
 });
@@ -412,6 +413,51 @@ const unblockRecruiter = asyncHandler(async (req, res) => {
 
 })
 
+const loadDashboard = asyncHandler(async (req, res) => {
+
+  const users = await Users.aggregate([
+    {
+      $match: {
+        roles: 'user'
+      }
+    },
+    {
+      $lookup: {
+        from: 'industries',
+        localField: 'industryType',
+        foreignField: '_id',
+        as: 'industry'
+      }
+    }
+  ]);
+
+
+  const recruiters = await Users.aggregate([
+    {
+      $match: {
+        roles: 'recruiter'
+      }
+    },
+    {
+      $lookup: {
+        from: 'industries',
+        localField: 'industryType',
+        foreignField: '_id',
+        as: 'industry'
+      }
+    }
+  ]);
+
+  const posts = await Post.find()
+
+  const jobs = await Jobs.find()
+
+  const response = {users,recruiters,posts,jobs}
+
+  res.json(response)
+
+})
+
 
 
 export {
@@ -433,5 +479,6 @@ export {
   editIndustryType,
   getRecruiters,
   blockRecruiter,
-  unblockRecruiter
+  unblockRecruiter,
+  loadDashboard
 }

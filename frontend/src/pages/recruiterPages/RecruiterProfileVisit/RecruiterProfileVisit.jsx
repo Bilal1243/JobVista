@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import NavbarUi from "../../../components/Navbars/Navbar";
-import "./UserProfileVisit.css";
+import RecruiterNavbar from "../../../components/recruiterComponents/Navbar/RecruiterNavbar";
+import "./RecruiterProfileVisit.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams, Link } from "react-router-dom";
 import {
-  useUserVisitProfileMutation,
-  useUserConnectMutation,
-} from "../../../redux/userSlices/userApiSlice";
+  useRecruiterVisitProfileMutation,
+  useRecruiterConnectMutation,
+} from "../../../redux/recruiterSlices/recruiterApiSlices";
 import defualtProfile from "../../../assets/defualtProfile.jpg";
 import { PROFILE_PATH, POST_IMAGES_PATH } from "../../../Utils/URL";
 import SkeletonUi from "../../../components/Skeleton";
@@ -15,12 +15,12 @@ import { MDBInput, MDBValidation } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import { Button } from "primereact/button";
 import "primeicons/primeicons.css";
-import PostCard from "../../../components/PostCard/PostCard";
+import RecruiterPostCard from "../../../components/recruiterComponents/PostCard/RecruiterPostCard";
 import { Chip } from "primereact/chip";
 
-function UserProfileVisit() {
+function RecruiterProfileVisit() {
   const { id } = useParams();
-  const { userData } = useSelector((state) => state.auth);
+  const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [profileData, setProfileData] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -31,14 +31,14 @@ function UserProfileVisit() {
   const [isPending, setIsPending] = useState(false);
   const [showAllPosts, setShowAllPosts] = useState(false);
 
-  const [userVisitProfile] = useUserVisitProfileMutation();
-  const [userConnect] = useUserConnectMutation();
+  const [recruiterVisitProfile] = useRecruiterVisitProfileMutation();
+  const [recruiterConnect] = useRecruiterConnectMutation();
 
   const fetchUserDetails = async () => {
     try {
-      const response = await userVisitProfile({
+      const response = await recruiterVisitProfile({
         userId: id,
-        ogId: userData._id,
+        ogId: recruiterData._id,
       }).unwrap();
       console.log(response);
       setProfileData(response.user[0]);
@@ -53,9 +53,9 @@ function UserProfileVisit() {
 
   const connectUser = async (connectId) => {
     try {
-      const requested = await userConnect({
+      const requested = await recruiterConnect({
         connectId: connectId,
-        userId: userData._id,
+        userId: recruiterData._id,
       });
       setIsPending(true);
     } catch (error) {
@@ -84,7 +84,7 @@ function UserProfileVisit() {
 
   return (
     <>
-      <NavbarUi></NavbarUi>
+      <RecruiterNavbar></RecruiterNavbar>
 
       <div className="container" style={{ marginTop: "140px" }}>
         {isLoading ? (
@@ -204,12 +204,12 @@ function UserProfileVisit() {
                           <h5>Activity</h5>
                         </div>
                         {posts.map((post, index) => (
-                          <PostCard
+                          <RecruiterPostCard
                             post={post}
                             key={index}
                             user={profileData}
                             loadPosts={loadPosts}
-                          ></PostCard>
+                          ></RecruiterPostCard>
                         ))}
                         <div className="mt-3">
                           <Button
@@ -344,4 +344,4 @@ function UserProfileVisit() {
   );
 }
 
-export default UserProfileVisit;
+export default RecruiterProfileVisit;

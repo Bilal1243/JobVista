@@ -3,9 +3,11 @@ import express from 'express'
 const adminRouter = express.Router()
 
 import {protect} from '../Middlewares/adminAuthMiddleware.js'
-import {acceptJobPost, acceptRecruiter, addIndustries, addSkills, auth,blockRecruiter,blockUser,editIndustryType,editSkill,getJobRequests,getRecruiterRequests,getRecruiters,getSkills,getUsers,listIndustries, listSkills, unBlockUser, unblockRecruiter, unlistSkills} from '../Controllers/adminController.js'
+import {acceptJobPost, acceptRecruiter, addIndustries, addSkills, auth,blockRecruiter,blockUser,editIndustryType,editSkill,getJobRequests,getRecruiterRequests,getRecruiters,getSkills,getUsers,listIndustries, listSkills, loadDashboard, unBlockUser, unblockRecruiter, unlistSkills} from '../Controllers/adminController.js'
 
 adminRouter.post('/adminAuth',auth)
+
+adminRouter.get('/',protect,loadDashboard)
 
 adminRouter.get('/getIndustries',protect,listIndustries)
 adminRouter.post('/addIndustry',protect,addIndustries)

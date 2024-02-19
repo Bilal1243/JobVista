@@ -88,6 +88,7 @@ function RecruiterConnections() {
                   <div
                     className="inner-body d-flex align-items-center"
                     style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/visitsProfile/${connection.user[0]._id}`)}
                   >
                     <img
                       src={

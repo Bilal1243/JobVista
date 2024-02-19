@@ -11,13 +11,16 @@ import {
 } from "../../../redux/recruiterSlices/recruiterApiSlices";
 
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-function RecruiterNetworkCard({ users, requests , reFetchusers}) {
+function RecruiterNetworkCard({ users, requests, reFetchusers }) {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
   const [pendingUsers, setPendingUsers] = useState([]);
 
   const [recruiterConnect] = useRecruiterConnectMutation();
   const [recruiterAcceptRequest] = useRecruiterAcceptRequestMutation();
+
+  const navigate = useNavigate()
 
   const ConnectUser = async (connectId, index) => {
     try {
@@ -42,7 +45,7 @@ function RecruiterNetworkCard({ users, requests , reFetchusers}) {
       }).unwrap();
       if (response.success) {
         toast.success("connection request accepted");
-        reFetchusers()
+        reFetchusers();
       }
     } catch (error) {
       console.log(error?.data?.message || error?.message);
@@ -102,19 +105,24 @@ function RecruiterNetworkCard({ users, requests , reFetchusers}) {
             <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6" key={index}>
               <figure className="user-card green">
                 <figcaption>
-                  <img
-                    src={
-                      user.profileImg
-                        ? PROFILE_PATH + user.profileImg
-                        : defualtProfile
-                    }
-                    alt="profile image"
-                    className="profile"
-                  />
-                  <h5>
-                    {user.firstName} {user.lastName}
-                  </h5>
-                  <h6>{user.title}</h6>
+                  <div
+                    onClick={() => navigate(`/visitsProfile/${user._id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={
+                        user.profileImg
+                          ? PROFILE_PATH + user.profileImg
+                          : defualtProfile
+                      }
+                      alt="profile image"
+                      className="profile"
+                    />
+                    <h5>
+                      {user.firstName} {user.lastName}
+                    </h5>
+                    <h6>{user.title}</h6>
+                  </div>
                   <div className="clearfix">
                     <Button
                       type="button"

@@ -31,6 +31,15 @@ function QuickActions({ handleTabChange, activeTab }) {
             </Link>
             <Link
               className={`nav-item nav-link has-icon nav-link-faded ${
+                activeTab === "experience" ? "active" : ""
+              } d-flex align-items-center`}
+              onClick={() => handleTabChange("experience")}
+            >
+              <i className="pi pi-briefcase me-1"></i>
+              Experience
+            </Link>
+            <Link
+              className={`nav-item nav-link has-icon nav-link-faded ${
                 activeTab === "saved-posts" ? "active" : ""
               } d-flex align-items-center`}
               onClick={() => handleTabChange("saved-posts")}

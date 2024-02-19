@@ -28,7 +28,7 @@ function PostsContainer() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [profileData, setProfileData] = useState({});
-  const [followers, setFollowers] = useState("");
+  const [followers, setFollowers] = useState(0);
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsloading] = useState(true);
 

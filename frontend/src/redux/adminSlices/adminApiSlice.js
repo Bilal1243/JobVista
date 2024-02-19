@@ -12,6 +12,12 @@ export const adminSlice = userApiSlice.injectEndpoints({
           body: data,
         }),
       }),
+      AdminLoadDashboard : builder.mutation({
+          query : ()=>({
+            url : `${ADMIN_URL}/`,
+            method : 'GET'
+          })
+      }),
       AdminGetIndustries : builder.mutation({
         query : ()=>({
           url : `${ADMIN_URL}/getIndustries`,
@@ -144,6 +150,7 @@ export const adminSlice = userApiSlice.injectEndpoints({
 export const {
     useAdminloginMutation,
     useAdminlogoutMutation,
+    useAdminLoadDashboardMutation,
     useAdminGetIndustriesMutation,
     useAdminAddIndustriesMutation,
     useAdminEditIndustryMutation,

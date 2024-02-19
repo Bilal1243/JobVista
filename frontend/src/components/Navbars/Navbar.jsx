@@ -10,9 +10,9 @@ import { useNavigate } from "react-router-dom";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 import "primeicons/primeicons.css";
-import jobVistaLogo from "../../assets/jobVista.png";
 import defualtProfile from "../../assets/defualtProfile.jpg";
-import { PROFILE_PATH } from "../../Utils/URL";
+import jobVistaLogo from "../../assets/jobVista.png";
+import { PROFILE_PATH } from "../../Utils/URL"; 
 
 import "./Navbar.css";
 
