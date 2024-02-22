@@ -7,11 +7,15 @@ import ProfileUpload from '../config/ProfileMulter.js'
 import ResumeUpload from '../config/ResumeMulter.js'
 
 import {
+    AddDetails,
     AddjobPreference,
+    AddnewPassword,
     addExperience,
     authUser,
     changePassword,
     editProfile,
+    forgotPassVerify,
+    googleRegister,
     jobStatusList,
     listExperience,
     listIndustries,
@@ -23,6 +27,7 @@ import {
     registerUser,
     removeSkill,
     saveSkills,
+    verifyOtp,
     verifyRegistration
 }
     from '../Controllers/userController.js'
@@ -30,11 +35,18 @@ import {
 import { MyPosts, CreatePost, deleteComment, deletePost, likePost, postComment, editPost, listAllPosts, savePost, unsavePost, listSavedPosts } from '../Controllers/userPostController.js'
 import { SearchJob, applyJob, getJob, listJobs, saveJob, unsaveJob } from '../Controllers/userJobControler.js'
 import { ListConnections, acceptRequest, connectUser, listRequests, listUsers, visitProfile } from '../Controllers/MyNetworkController.js'
-import {chatSend, createRoom, getMessages, getRooms} from '../Controllers/ChatController.js'
+import { chatSend, createRoom, getMessages, getRooms } from '../Controllers/ChatController.js'
 
 userRoute.post('/auth', authUser)
 userRoute.post('/register', registerUser)
+userRoute.post('/googleRegister', ProfileUpload.single('profileImg'), googleRegister)
+userRoute.post('/addDetails', AddDetails)
 userRoute.post('/verifyRegistration', verifyRegistration)
+
+userRoute.get('/forgotEmailVerify', forgotPassVerify)
+userRoute.post('/verifyOtp',verifyOtp)
+userRoute.put('/addNewPass', AddnewPassword)
+
 userRoute.post('/addJobPreference', AddjobPreference)
 userRoute.post('/addSkills', saveSkills)
 
@@ -49,10 +61,10 @@ userRoute.put('/unSavepost', protect, unsavePost)
 userRoute.get('/networkRequest', protect, listRequests)
 userRoute.get('/MyNetwork', protect, listUsers)
 userRoute.put('/connect', protect, connectUser)
-userRoute.put('/acceptRequest',protect,acceptRequest)
+userRoute.put('/acceptRequest', protect, acceptRequest)
 
-userRoute.get('/listConnections',protect,ListConnections)
-userRoute.get('/visitProfile',protect,visitProfile)
+userRoute.get('/listConnections', protect, ListConnections)
+userRoute.get('/visitProfile', protect, visitProfile)
 
 
 userRoute.get('/myProfile', protect, loadMyProfile)
@@ -71,8 +83,8 @@ userRoute.put('/changePassword', protect, changePassword)
 userRoute.get('/getJobStatus', protect, jobStatusList)
 userRoute.get('/SavedPosts', protect, listSavedPosts)
 
-userRoute.get('/listExperience',protect,listExperience)
-userRoute.post('/addExperience',protect,addExperience)
+userRoute.get('/listExperience', protect, listExperience)
+userRoute.post('/addExperience', protect, addExperience)
 
 
 userRoute.get('/listJobs', protect, listJobs)
@@ -82,10 +94,10 @@ userRoute.get('/viewJob', protect, getJob)
 userRoute.get('/searchJob', protect, SearchJob)
 userRoute.post('/applyJob', protect, ResumeUpload.single("resume"), applyJob)
 
-userRoute.get('/getChats',protect,getRooms)
-userRoute.post('/createChat',protect,createRoom)
-userRoute.post('/sendMessage',protect,chatSend)
-userRoute.post('/getMessages',protect,getMessages)
+userRoute.get('/getChats', protect, getRooms)
+userRoute.post('/createChat', protect, createRoom)
+userRoute.post('/sendMessage', protect, chatSend)
+userRoute.post('/getMessages', protect, getMessages)
 
 
 

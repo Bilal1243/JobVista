@@ -18,6 +18,41 @@ export const userSlice = userApiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    googleRegister : builder.mutation({
+      query : (data)=>({
+        url : `${USERS_URL}/googleRegister`,
+        method : 'POST',
+        body : data
+      })
+    }),
+    verifyEmail : builder.mutation({
+      query : (params) =>({
+        url : `${USERS_URL}/forgotEmailVerify`,
+        method : 'GET',
+        params
+      })
+    }),
+    verifyOtp : builder.mutation({
+      query : (data) =>({
+        url : `${USERS_URL}/verifyOtp`,
+        method : 'POST',
+        body : data
+      })
+    }),
+    addNewPassword : builder.mutation({
+      query : (data) =>({
+        url : `${USERS_URL}/addNewPass`,
+        method : 'PUT',
+        body : data
+      })
+    }),
+    addDetails : builder.mutation({
+      query : (data)=>({
+        url : `${USERS_URL}/addDetails`,
+        method : 'POST',
+        body : data
+      })
+    }),
     Verifyregisteration: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/verifyRegistration`,
@@ -309,7 +344,12 @@ export const userSlice = userApiSlice.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useGoogleRegisterMutation,
+  useAddDetailsMutation,
   useVerifyregisterationMutation,
+  useVerifyEmailMutation,
+  useVerifyOtpMutation,
+  useAddNewPasswordMutation,
   useAddJobPreferenceMutation,
   useGetIndustryTypesMutation,
   useAddSkillsMutation,

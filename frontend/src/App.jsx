@@ -19,6 +19,10 @@ import MyNetwork from './pages/userPages/myNetwork/MyNetwork.jsx'
 import UserConnections from './pages/userPages/ConnectionList/UserConnections.jsx'
 import UserProfileVisit from './pages/userPages/UserProfileVisit/UserProfileVisit.jsx'
 import UserChat from './pages/userPages/UserChat/UserChat.jsx'
+import AddDetails from './pages/userPages/register/AddDetails.jsx'
+import ForgotPassword from './pages/userPages/ForgotPass/ForgotPassword.jsx'
+import VerifyOtp from './pages/userPages/ForgotPass/VerifyOtp.jsx'
+import ChangePassword from './pages/userPages/ForgotPass/ChangePassword.jsx'
 
 
 
@@ -68,6 +72,10 @@ function App() {
         <Route path='/' element={<UserHome></UserHome>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/signup' element={<Register></Register>}></Route>
+        <Route path='/forgotPassword' element={<ForgotPassword></ForgotPassword>}></Route>
+        <Route path='/otp' element={<VerifyOtp></VerifyOtp>}></Route>
+        <Route path='/changePassword' element={<ChangePassword></ChangePassword>}></Route>
+        <Route path='/addDetails/:id' element={<AddDetails></AddDetails>}></Route>
         <Route path='/jobPreference/:id' element={<JobPreference></JobPreference>}></Route>
         <Route path='/addSkills/:id' element={<SkillUi></SkillUi>}></Route>
         <Route path='/jobs' element={<UserPrivateRoute element={<JobListing></JobListing>}></UserPrivateRoute>}></Route>

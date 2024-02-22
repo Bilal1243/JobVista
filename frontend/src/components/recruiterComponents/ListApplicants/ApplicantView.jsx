@@ -37,8 +37,10 @@ function ApplicantView({ selectedApplicant, changeStatus, handleChange }) {
                       {selectedApplicant.ownerDetails.firstName}{" "}
                       {selectedApplicant.ownerDetails.lastName}
                     </h5>
-                    <p>{selectedApplicant.ownerDetails.title}</p>
-                    <Link>visit applicant</Link>
+                    {selectedApplicant.ownerDetails.title && (
+                      <p>{selectedApplicant.ownerDetails.title}</p>
+                    )}
+                    <Link to={`/visitsProfile/${selectedApplicant.ownerDetails._id}`}>visit applicant</Link>
                   </div>
                 </div>
                 <div>

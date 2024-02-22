@@ -70,12 +70,11 @@ function Profile() {
   const fetchProfileData = async () => {
     try {
       const responseData = await getProfile({ userId: userData._id }).unwrap();
-      console.log(responseData)
+      console.log(responseData);
       setProfileData(responseData.data);
-      if(responseData.followers.length === 0){
-        setFollowers(0)
-      }
-      else{
+      if (responseData.followers.length === 0) {
+        setFollowers(0);
+      } else {
         setFollowers(responseData.followers[0].followersList.length);
       }
       setLocation(responseData.data.location);
@@ -123,8 +122,15 @@ function Profile() {
       formData.append("userId", profileData._id);
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
-      formData.append("title", title);
-      formData.append("location", location);
+
+      if (title) {
+        formData.append("title", title);
+      }
+
+      if (location?.name !== undefined) {
+        formData.append("location", location?.name);
+      }
+
       formData.append("profileImg", profileImg);
 
       const response = await editProfile(formData).unwrap();
@@ -177,12 +183,34 @@ function Profile() {
             </div>
             <div className="media-body ml-3">
               <h4 className="font-weight-bold mb-2">{profileData.userName}</h4>
-              <h5 className="font-weight-bold mb-1 text-muted">
-                {profileData.title}
-              </h5>
-              <div className="d-flex align-items-center mb-2 mt-2">
-                <div className="text-muted">{profileData.location}</div>
-              </div>
+              <>
+                {profileData.title ? (
+                  <h5 className="font-weight-bold mb-1 text-muted">
+                    {profileData.title}
+                  </h5>
+                ) : (
+                  <div
+                    className="d-flex align-items-center mb-2 mt-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setActiveTab("settings")}
+                  >
+                    <div className="text-muted">add details</div>
+                  </div>
+                )}
+                {profileData.location ? (
+                  <div className="d-flex align-items-center mb-2 mt-2">
+                    <div className="text-muted">{profileData.location}</div>
+                  </div>
+                ) : (
+                  <div
+                    className="d-flex align-items-center mb-2 mt-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setActiveTab("settings")}
+                  >
+                    <div className="text-muted">add details</div>
+                  </div>
+                )}
+              </>
               <div>
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>
@@ -211,9 +239,11 @@ function Profile() {
                 <div className="col-md-12">
                   <MDBInput value={profileData.email} readOnly />
                 </div>
-                <div className="col-md-12">
-                  <MDBInput value={profileData.mobile} readOnly />
-                </div>
+                {profileData.mobile && (
+                  <div className="col-md-12">
+                    <MDBInput value={profileData.mobile} readOnly />
+                  </div>
+                )}
               </MDBValidation>
             </div>
           </div>
@@ -251,7 +281,13 @@ function Profile() {
                 {activeTab === "job-status" && (
                   <JobStatus activeTab={activeTab}></JobStatus>
                 )}
-                {activeTab === "settings" && <Settings activeTab={activeTab} />}
+                {activeTab === "settings" && (
+                  <Settings
+                    activeTab={activeTab}
+                    profileData={profileData}
+                    forChildComponents={forChildComponents}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -315,7 +351,7 @@ function Profile() {
                       onChange={(e) => setLocation(e.value)}
                       options={countries}
                       optionLabel="name"
-                      placeholder={location}
+                      placeholder="select country"
                       filter
                       valueTemplate={selectedCountryTemplate}
                       itemTemplate={countryOptionTemplate}
@@ -346,6 +382,7 @@ function Profile() {
                       Save Changes
                     </MDBBtn>
                   </div>
+                  <p>you can edit or add profile details in account settings</p>
                 </MDBValidation>
               </MDBCardBody>
             </MDBCard>

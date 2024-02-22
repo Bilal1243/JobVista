@@ -110,6 +110,78 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 
+const googleRegister = asyncHandler(async (req, res) => {
+    const { firstName, lastName, email } = req.body;
+
+
+    const images = req.file && req.file.filename;
+
+    const userExists = await users.findOne({ email });
+    if (userExists) {
+
+        generateToken(res, userExists._id);
+
+        res.json({
+            _id: userExists._id,
+            firstName: userExists.firstName,
+            lastName: userExists.lastName,
+            email: userExists.email,
+            mobile: userExists.mobile,
+            isBlocked: userExists.isBlocked,
+            image: (userExists.profileImg ? userExists.profileImg : null),
+        });
+    } else {
+        const user = await users.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            profileImg: images,
+        });
+
+        if (user) {
+
+            generateToken(res, user._id);
+
+            res.status(201).json({
+                status: true,
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                mobile: user.mobile,
+                email: user.email,
+                image: (user.profileImg ? user.profileImg : null),
+            });
+        } else {
+            res.status(400);
+            throw new Error("Invalid user data");
+        }
+    }
+})
+
+
+const AddDetails = asyncHandler(async (req, res) => {
+    const { id, mobile, title, industry, location, gender, education } = req.body
+
+    const user = await users.findByIdAndUpdate({ _id: id },
+        { mobile: mobile, title: title, industryType: industry._id, location: location.name, gender: gender.name, education: education.name })
+
+    if (user) {
+        generateToken(res, user._id);
+
+        res.json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            mobile: user.mobile,
+            image: (user.profileImg ? user.profileImg : null),
+        });
+    } else {
+        res.status(400);
+        throw new Error("Invalid user data");
+    }
+})
+
 
 
 
@@ -148,6 +220,84 @@ const verifyRegistration = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Invalid user data");
     }
+})
+
+const forgotPassVerify = asyncHandler(async (req, res) => {
+    const email = req.query.email
+    const isExisting = await users.findOne({ email: email })
+    if (!isExisting) {
+        return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const otp = generateOtp.generate(6, {
+        digits: true,
+        alphabets: false,
+        upperCase: false,
+        specialChars: false,
+    });
+
+    const transporter = nodeMailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: email,
+        subject: "OTP for Verification",
+        text: `Your OTP for verification is: ${otp}`,
+    };
+
+    try {
+        await OTP.create({ email, otp });
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Message sent: %s", info.messageId);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).json({ success: false, message: "Failed to send OTP" });
+    }
+})
+
+const verifyOtp = asyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const otpDocument = await OTP.findOne({ email, otp });
+
+        if (!otpDocument) {
+            return res.status(400).json({ success: false, message: "Invalid OTP" });
+        }
+        else {
+            res.status(200).json({ success: true })
+        }
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Failed to update password" });
+    }
+});
+
+const AddnewPassword = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await users.findOne({ email });
+
+    if (!user) {
+        res.status(404).json({ success: false, message: "User not found" });
+        return;
+    }
+
+    user.password = password;
+    await user.save();
+
+    res
+        .status(200)
+        .json({ success: true, message: "Password updated successfully" });
 })
 
 
@@ -504,10 +654,10 @@ const addExperience = asyncHandler(async (req, res) => {
 const listExperience = asyncHandler(async (req, res) => {
     const userId = req.query.userId
     const findExperience = await Experiences.findOne({ userId: userId })
-    if(findExperience){
+    if (findExperience) {
         res.json(findExperience)
     }
-    else{
+    else {
         res.json(null)
     }
 })
@@ -527,8 +677,13 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 export {
     authUser,
+    AddDetails,
     registerUser,
+    googleRegister,
     verifyRegistration,
+    forgotPassVerify,
+    verifyOtp,
+    AddnewPassword,
     AddjobPreference,
     saveSkills,
     listIndustries,

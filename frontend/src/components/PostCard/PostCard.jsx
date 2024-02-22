@@ -78,7 +78,9 @@ function PostCard({ user, post, loadPosts }) {
     );
   };
 
-  const isVideo = post.mediaItems[currentImageIndex].endsWith(".mp4"); // Assuming videos end with '.mp4'
+  const isVideo =
+    post.mediaItems.length > 0 &&
+    post.mediaItems[currentImageIndex].endsWith(".mp4"); // Assuming videos end with '.mp4'
 
   const addComment = async () => {
     try {
@@ -174,32 +176,34 @@ function PostCard({ user, post, loadPosts }) {
             </div>
           </div>
           <p style={{ whiteSpace: "pre-line" }}>{post.description}</p>
-          <div className="ui-rect ui-bg-cover position-relative">
-            {isVideo ? (
-              <video
-                src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
-                autoPlay
-                controls
-                style={{ width: "100%", height: "100%" }}
-              ></video>
-            ) : (
-              <img
-                src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
-                alt=""
-                style={{ width: "100%", height: "100%" }}
-              />
-            )}
-            {post.mediaItems.length > 1 && (
-              <>
-                <button onClick={prevImage} className="carousel-arrow left">
-                  <i className="pi pi-chevron-left"></i>
-                </button>
-                <button onClick={nextImage} className="carousel-arrow right">
-                  <i className="pi pi-chevron-right"></i>
-                </button>
-              </>
-            )}
-          </div>
+          {post.mediaItems.length > 0 && (
+            <div className="ui-rect ui-bg-cover position-relative">
+              {isVideo ? (
+                <video
+                  src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
+                  autoPlay
+                  controls
+                  style={{ width: "100%", height: "100%" }}
+                ></video>
+              ) : (
+                <img
+                  src={POST_IMAGES_PATH + post.mediaItems[currentImageIndex]}
+                  alt=""
+                  style={{ width: "100%", height: "100%" }}
+                />
+              )}
+              {post.mediaItems.length > 1 && (
+                <>
+                  <button onClick={prevImage} className="carousel-arrow left">
+                    <i className="pi pi-chevron-left"></i>
+                  </button>
+                  <button onClick={nextImage} className="carousel-arrow right">
+                    <i className="pi pi-chevron-right"></i>
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div class="card-footer">
           <div className="d-inline-block text-muted ml-2">

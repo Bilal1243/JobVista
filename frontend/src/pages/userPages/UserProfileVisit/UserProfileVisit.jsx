@@ -44,7 +44,7 @@ function UserProfileVisit() {
       setProfileData(response.user[0]);
       setFollowers(response.connections.length);
       setPosts(response.detailedPosts);
-      setSkills(response.skills.skills);
+      response.skill && setSkills(response.skills.skills);
       setIsLoading(false);
     } catch (error) {
       console.log(error?.data?.message || error?.message);
@@ -176,7 +176,11 @@ function UserProfileVisit() {
                       <label className="tx-11 font-weight-bold mb-0 text-uppercase">
                         Lives:
                       </label>
-                      <p className="text-muted">{profileData.location}</p>
+                      <p className="text-muted">
+                        {profileData.location
+                          ? profileData.location
+                          : "not added"}
+                      </p>
                     </div>
                     <div className="mt-3">
                       <label className="tx-11 font-weight-bold mb-0 text-uppercase">
@@ -189,7 +193,9 @@ function UserProfileVisit() {
                         Industry:
                       </label>
                       <p className="text-muted">
-                        {profileData?.industry[0]?.industryName}
+                        {profileData?.industry[0]?.industryName
+                          ? profileData.industry[0]?.industryName
+                          : "not added"}
                       </p>
                     </div>
                   </div>
@@ -227,20 +233,26 @@ function UserProfileVisit() {
                           <h5>Activity</h5>
                           {posts.slice(0, 2).map((post, index) => (
                             <div className="items d-flex p-2 mb-2">
-                              <div className="media">
-                                {post.mediaItems[0].endsWith(".mp4") ? (
-                                  <video
-                                    src={POST_IMAGES_PATH + post.mediaItems[0]}
-                                    autoPlay
-                                    style={{ width: "100px", height: "100%" }}
-                                  ></video>
-                                ) : (
-                                  <img
-                                    src={POST_IMAGES_PATH + post.mediaItems[0]}
-                                    style={{ width: "100px", height: "100%" }}
-                                  ></img>
-                                )}
-                              </div>
+                              {post.mediaItems.length > 0 && (
+                                <div className="media">
+                                  {post.mediaItems[0].endsWith(".mp4") ? (
+                                    <video
+                                      src={
+                                        POST_IMAGES_PATH + post.mediaItems[0]
+                                      }
+                                      autoPlay
+                                      style={{ width: "100px", height: "100%" }}
+                                    ></video>
+                                  ) : (
+                                    <img
+                                      src={
+                                        POST_IMAGES_PATH + post.mediaItems[0]
+                                      }
+                                      style={{ width: "100px", height: "100%" }}
+                                    ></img>
+                                  )}
+                                </div>
+                              )}
                               <div className="contents ms-3">
                                 <p style={{ margin: "0" }}>
                                   {post.description}
@@ -281,14 +293,16 @@ function UserProfileVisit() {
                     </div>
                   </>
                 )}
-                <div className="card">
-                  <div className="card-body">
-                    <div>
-                      <h4>Education</h4>
-                      <p>{profileData.education}</p>
+                {profileData.education && (
+                  <div className="card">
+                    <div className="card-body">
+                      <div>
+                        <h4>Education</h4>
+                        <p>{profileData.education}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 {skills && (
                   <>
                     {skills.length > 0 ? (

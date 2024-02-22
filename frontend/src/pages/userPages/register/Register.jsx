@@ -20,6 +20,7 @@ import {
   useRegisterMutation,
   useVerifyregisterationMutation,
   useGetIndustryTypesMutation,
+  useGoogleRegisterMutation,
 } from "../../../redux/userSlices/userApiSlice";
 
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
@@ -27,6 +28,10 @@ import logo from "../../../assets/jobVista.png"; // Import the image
 import "./Register.css";
 import countrydata from "../../../Utils/Countries";
 import highestEducation from "../../../Utils/Educations";
+
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { setCredentials } from "../../../redux/userSlices/userAuthSlice";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -56,6 +61,7 @@ const Register = () => {
   const [register] = useRegisterMutation();
   const [verify] = useVerifyregisterationMutation();
   const [getIndustryTypes] = useGetIndustryTypesMutation();
+  const [googleRegister] = useGoogleRegisterMutation();
 
   const fetchIndustries = async () => {
     try {
@@ -216,12 +222,46 @@ const Register = () => {
     }
   }, [timer]);
 
+  const googelAuth = async (data) => {
+    try {
+      const {
+        email,
+        family_name: lastName,
+        given_name: firstName,
+        picture: profileImageURL,
+      } = data;
+
+      const imageResponse = await fetch(profileImageURL);
+      const imageBlob = await imageResponse.blob();
+      const profileImageFile = new File([imageBlob], "profile.jpg", {
+        type: "image/jpeg",
+      });
+
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("profileImg", profileImageFile);
+
+      const res = await googleRegister(formData).unwrap();
+      if(res?.status){
+        navigate(`/addDetails/${res._id}`)
+      }
+      else{
+        dispatch(setCredentials({...res}))
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Error downloading image:", err);
+    }
+  };
+
   return (
     <div>
       <div style={{ display: "flex" }} className="character">
         {/* Left Side (Form and Logo) */}
         <div style={{ flex: 1, marginTop: "25px" }}>
-          <div style={{ maxWidth: "500px", margin: "auto" }}>
+          <div style={{ maxWidth: "600px", margin: "auto" }}>
             {/* Your logo */}
 
             <MDBCard alignment="center" className="mb-5">
@@ -238,8 +278,9 @@ const Register = () => {
                   onSubmit={submitHandler}
                   noValidate
                   className="row g-3"
+                  encType="multipart/form-data"
                 >
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <MDBInput
                       label="First Name"
                       type="text"
@@ -250,7 +291,7 @@ const Register = () => {
                       validation="Please provide your first name"
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <MDBInput
                       label="Last Name"
                       type="text"
@@ -275,7 +316,7 @@ const Register = () => {
                       invalid
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <MDBValidationItem className="col-md-12">
                       <MDBInput
                         label="Mobile"
@@ -289,7 +330,7 @@ const Register = () => {
                       />
                     </MDBValidationItem>
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <MDBInput
                       label="title"
                       type="text"
@@ -299,7 +340,7 @@ const Register = () => {
                       required
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <Dropdown
                       value={location}
                       onChange={(e) => setLocation(e.value)}
@@ -312,7 +353,7 @@ const Register = () => {
                       className="w-100"
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <Dropdown
                       value={industry}
                       onChange={(e) => setIndustry(e.value)}
@@ -325,7 +366,7 @@ const Register = () => {
                       className="w-100"
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <Dropdown
                       value={gender}
                       onChange={(e) => Setgender(e.value)}
@@ -338,7 +379,7 @@ const Register = () => {
                       className="w-100"
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <Dropdown
                       value={education}
                       onChange={(e) => setEducation(e.value)}
@@ -394,6 +435,28 @@ const Register = () => {
                     <span style={{ color: "#387F8E" }}> Sign in </span>
                   </p>
                 </Link>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <GoogleOAuthProvider clientId="596618503346-q0lkmcu3e5app7bfjduk6mk7sij3ao4m.apps.googleusercontent.com">
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        const decoded = jwtDecode(
+                          credentialResponse.credential
+                        );
+                        googelAuth(decoded);
+                      }}
+                      onError={() => {
+                        toast.error("failed to verify");
+                        console.log("Login Failed");
+                      }}
+                    />
+                  </GoogleOAuthProvider>
+                </div>
               </MDBCardFooter>
             </MDBCard>
           </div>

@@ -210,7 +210,7 @@ const searchJob = asyncHandler(async (req, res) => {
 const filterJobByLocation = asyncHandler(async (req, res) => {
     const recruiterId = req.recruiter._id
     const location = req.query.location
-    const searchResults = await Jobs.find({$and : [{recruiterId : recruiterId},{location: location} ]})
+    const searchResults = await Jobs.find({ $and: [{ recruiterId: recruiterId }, { location: location }] })
     res.json(searchResults)
 })
 

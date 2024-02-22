@@ -19,22 +19,18 @@ const userSchema = mongoose.Schema(
     },
     title: {
       type: String,
-      required: true
     },
     industryType: {
       type: mongoose.Schema.ObjectId,
-      required: true
     },
     location: {
       type: String,
-      required: true
     },
     companyName: {
       type: String
     },
     gender: {
       type: String,
-      required: true
     },
     education: {
       type: String

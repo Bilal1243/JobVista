@@ -69,10 +69,9 @@ function RecruiterProfile() {
         recruiterId: recruiterData._id,
       }).unwrap();
       setProfileData(responseData.data);
-      if(responseData.followers.length === 0){
-        setFollowers(0)
-      }
-      else{
+      if (responseData.followers.length === 0) {
+        setFollowers(0);
+      } else {
         setFollowers(responseData.followers[0].followersList.length);
       }
       setLocation(responseData.data.location);
@@ -122,8 +121,13 @@ function RecruiterProfile() {
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
       formData.append("companyName", company);
-      formData.append("title", title);
-      formData.append("location", location);
+      if (title) {
+        formData.append("title", title);
+      }
+
+      if (location?.name !== undefined) {
+        formData.append("location", location?.name);
+      }
       formData.append("profileImg", profileImg);
 
       const response = await recruitereditProfile(formData).unwrap();
@@ -172,12 +176,34 @@ function RecruiterProfile() {
             </div>
             <div className="media-body ml-3">
               <h4 className="font-weight-bold mb-2">{profileData.userName}</h4>
-              <h5 className="font-weight-bold mb-1 text-muted">
-                {profileData.title}
-              </h5>
-              <div className="d-flex align-items-center mb-2 mt-2">
-                <div className="text-muted">{profileData.location}</div>
-              </div>
+              <>
+                {profileData.title ? (
+                  <h5 className="font-weight-bold mb-1 text-muted">
+                    {profileData.title}
+                  </h5>
+                ) : (
+                  <div
+                    className="d-flex align-items-center mb-2 mt-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setActiveTab("settings")}
+                  >
+                    <div className="text-muted">add details</div>
+                  </div>
+                )}
+                {profileData.location ? (
+                  <div className="d-flex align-items-center mb-2 mt-2">
+                    <div className="text-muted">{profileData.location}</div>
+                  </div>
+                ) : (
+                  <div
+                    className="d-flex align-items-center mb-2 mt-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setActiveTab("settings")}
+                  >
+                    <div className="text-muted">add details</div>
+                  </div>
+                )}
+              </>
               <div>
                 <Link onClick={() => setShowContact(true)}>Contact Info</Link>
               </div>

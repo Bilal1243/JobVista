@@ -16,31 +16,12 @@ import { PROFILE_PATH } from "../../Utils/URL";
 
 import "./Navbar.css";
 
-import { useUserRequestCountMutation } from "../../redux/userSlices/userApiSlice";
 
 function NavbarUi() {
   const { userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [userRequestCount] = useUserRequestCountMutation();
-  const [requests, setRequests] = useState(0);
 
-  const fetchRequests = async () => {
-    try {
-      const response = await userRequestCount({
-        userId: userData._id,
-      }).unwrap();
-      setRequests(response.length);
-    } catch (error) {
-      console.log(error?.data?.message || error?.message);
-    }
-  };
-
-  useEffect(() => {
-    if (userData !== null) {
-      fetchRequests();
-    }
-  }, []);
 
   const items = [
     {
@@ -81,7 +62,6 @@ function NavbarUi() {
           label="My Network"
           icon="pi pi-fw pi-users"
           onClick={() => navigate("/MyNetwork")}
-          badge={requests !== 0 ? requests : null}
           style={{
             textDecoration: "none",
             color: "inherit",

@@ -68,6 +68,7 @@ function PostsContainer() {
   const fetchProfileData = async () => {
     try {
       const responseData = await getProfile({ userId: userData._id }).unwrap();
+      console.log(responseData)
       setProfileData(responseData.data);
       setFollowers(responseData.followers[0].followersList.length);
     } catch (error) {
