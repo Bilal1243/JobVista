@@ -8,7 +8,7 @@ import PostUpload from '../config/createPostMulter.js'
 
 
 import { protect } from '../Middlewares/recruiterAuthMiddleware.js'
-import {  filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecruiter, recruiterAuth, recruiterEditProfile, recruiterloadMyProfile, registerRecruiter, searchJob, verifyRecruiter } from '../Controllers/recruiterController.js'
+import {  filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecruiter, recruiterAddnewPassword, recruiterAuth, recruiterEditProfile, recruiterforgotPassVerify, recruiterloadMyProfile, recruiterverifyOtp, registerRecruiter, searchJob, verifyRecruiter } from '../Controllers/recruiterController.js'
 import { changeStatus, createJob, getResume, viewApplications } from '../Controllers/recruiterJobController.js'
 import { recruiterCreatePost, recruiterMyPosts, recruiterdeleteComment, recruiterdeletePost, recruitereditPost, recruiterlikePost, recruiterlistAllPosts, recruiterlistSavedPosts, recruiterpostComment, recruitersavePost, recruiterunsavePost } from '../Controllers/recruiterPostController.js'
 import { ListConnections, acceptRequest, connectUser, listRequests, listUsers, visitProfile } from '../Controllers/MyNetworkController.js'
@@ -18,6 +18,10 @@ import { chatSend, createRoom, getMessages, getRooms } from '../Controllers/Chat
 recruiterRoute.post('/recruiterAuth', recruiterAuth)
 recruiterRoute.post('/sendOtp', registerRecruiter)
 recruiterRoute.post('/verifyRecruiter', ProfileUpload.single("profileImg"), verifyRecruiter)
+
+recruiterRoute.get('/recruiterEmailVerify', recruiterforgotPassVerify)
+recruiterRoute.post('/recruiterverifyOtp',recruiterverifyOtp)
+recruiterRoute.put('/recruiteraddNewPass', recruiterAddnewPassword)
 
 recruiterRoute.get('/getIndustries', listIndustries)
 

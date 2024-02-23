@@ -52,6 +52,27 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })
         }),
+        recruiterForgotEmailVerify: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/recruiterEmailVerify`,
+                method: 'GET',
+                params
+            })
+        }),
+        recruiterVerifyOtp: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/recruiterverifyOtp`,
+                method: 'POST',
+                body: data
+            })
+        }),
+        recruiterAddNewPass: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/recruiteraddNewPass`,
+                method: 'PUT',
+                body : data
+            })
+        }),
         recruiterSearchJob: builder.mutation({
             query: (params) => ({
                 url: `${RECRUITER_URL}/searchJob`,
@@ -259,6 +280,9 @@ export const {
     useRecruiterLoginMutation,
     useRecruiterRegisterMutation,
     useRecruiterVerifyregisterationMutation,
+    useRecruiterAddNewPassMutation,
+    useRecruiterForgotEmailVerifyMutation,
+    useRecruiterVerifyOtpMutation,
     useRecruiterGetIndustryTypesMutation,
     useRecruiterGetSkillsMutation,
     useRecruiterPostJobMutation,

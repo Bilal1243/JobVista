@@ -105,7 +105,7 @@ function RecruiterLogin() {
                                 </div>
                                 <MDBBtn className="mb-4 px-5 mx-l-5 mx-0 w-100" color='info' size='lg' style={{ color: 'white' }}>Login</MDBBtn>
                             </MDBValidation>
-                            <p className="small mb-2 pb-lg-3 ms-l-5 ms-0"><a className="text-muted">Forgot password?</a></p>
+                            <p className="small mb-2 pb-lg-3 ms-l-5 ms-0"><Link to="/recruiterForgotPass" className="text-muted">Forgot password?</Link></p>
                             <Link to='/recruiterRegister'>
                                 <p className='ms-l-5 ms-0'>Don't have an account? <span className='link-info'>Register here</span></p>
                             </Link>

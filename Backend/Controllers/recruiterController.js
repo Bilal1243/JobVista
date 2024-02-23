@@ -156,6 +156,84 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
     }
 })
 
+const recruiterforgotPassVerify = asyncHandler(async (req, res) => {
+    const email = req.query.email
+    const isExisting = await Users.findOne({ $and: [{ email: email }, { roles: 'recruiter' }] })
+    if (!isExisting) {
+        return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const otp = generateOtp.generate(6, {
+        digits: true,
+        alphabets: false,
+        upperCase: false,
+        specialChars: false,
+    });
+
+    const transporter = nodeMailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: email,
+        subject: "OTP for Verification",
+        text: `Your OTP for verification is: ${otp}`,
+    };
+
+    try {
+        await OTP.create({ email, otp });
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Message sent: %s", info.messageId);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).json({ success: false, message: "Failed to send OTP" });
+    }
+})
+
+const recruiterverifyOtp = asyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const otpDocument = await OTP.findOne({ email, otp });
+
+        if (!otpDocument) {
+            return res.status(400).json({ success: false, message: "Invalid OTP" });
+        }
+        else {
+            res.status(200).json({ success: true })
+        }
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Failed to update password" });
+    }
+});
+
+const recruiterAddnewPassword = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await Users.findOne({ email });
+
+    if (!user) {
+        res.status(404).json({ success: false, message: "User not found" });
+        return;
+    }
+
+    user.password = password;
+    await user.save();
+
+    res
+        .status(200)
+        .json({ success: true, message: "Password updated successfully" });
+})
+
 //get industries
 const listIndustries = asyncHandler(async (req, res) => {
     const industries = await Industries.find()
@@ -321,6 +399,9 @@ export {
     recruiterAuth,
     registerRecruiter,
     verifyRecruiter,
+    recruiterforgotPassVerify,
+    recruiterAddnewPassword,
+    recruiterverifyOtp,
     listIndustries,
     listSkills,
     listJobs,

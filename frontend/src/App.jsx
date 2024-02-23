@@ -50,6 +50,9 @@ import RecruiterNetwork from './pages/recruiterPages/RecruiterMyNetwork/MyNetwor
 import RecruiterConnetions from './pages/recruiterPages/ConnectionList/RecruiterConnections.jsx'
 import RecruiterChat from './pages/recruiterPages/RecruiterChat/RecruiterChat.jsx'
 import RecruiterProfileVisit from './pages/recruiterPages/RecruiterProfileVisit/RecruiterProfileVisit.jsx'
+import RecruiterForgotPassword from './pages/recruiterPages/ForgotPass/RecruiterForgotPassword.jsx'
+import RecruiterChangePassword from './pages/recruiterPages/ForgotPass/RecruiterChangePassword.jsx'
+import RecruiterVerifyOtp from './pages/recruiterPages/ForgotPass/RecruiterVerifyOtp.jsx'
 
 function App() {
  
@@ -107,6 +110,9 @@ function App() {
 
         <Route path='/recruiterRegister' element={<RecruiterRegister></RecruiterRegister>}></Route>
         <Route path='/recruiterLogin' element={<RecruiterLogin></RecruiterLogin>}></Route>
+        <Route path='/recruiterForgotPass' element={<RecruiterForgotPassword></RecruiterForgotPassword>}></Route>
+        <Route path='/RecruiterOtp' element={<RecruiterVerifyOtp></RecruiterVerifyOtp>}></Route>
+        <Route path='/recruiterChangePassword' element={<RecruiterChangePassword></RecruiterChangePassword>}></Route>
         <Route path='/recruiter' element={<RecruiterPrivateRoutes element={<RecruiterHome></RecruiterHome>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/myJobs' element={<RecruiterPrivateRoutes element={<MyJobs></MyJobs>}></RecruiterPrivateRoutes>}></Route>
         <Route path='/createJob' element={<RecruiterPrivateRoutes element={<PostJob></PostJob>}></RecruiterPrivateRoutes>}></Route>
