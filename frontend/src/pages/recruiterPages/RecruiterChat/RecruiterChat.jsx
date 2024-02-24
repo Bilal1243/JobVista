@@ -32,6 +32,8 @@ import {
   isSameSender,
   isSameSenderMargin,
   isSameUser,
+  truncateText,
+  breakTextIntoLines,
 } from "../../../components/ChatLogic";
 
 import io from "socket.io-client";
@@ -41,6 +43,7 @@ import Lottie from "react-lottie";
 import animationData from "../../../components/typing.json";
 import EmojiPicker from "emoji-picker-react";
 import Loader from "../../../components/Loader";
+import ListSkeleton from "../../../components/ListSkeleton";
 
 export default function RecruiterChat() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
@@ -58,6 +61,7 @@ export default function RecruiterChat() {
   const [isTyping, setIsTyping] = useState(false);
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [isMessageLoading, setIsMessageLoading] = useState(true);
+  const [isChatsLoading, setIsChatsLoadings] = useState(true);
 
   const [recruiterGetChats] = useRecruiterGetChatsMutation();
   const [recruiterListConnections] = useRecruiterListConnectionsMutation();
@@ -92,6 +96,7 @@ export default function RecruiterChat() {
         userId: recruiterData._id,
       }).unwrap();
       setConnections(responseConnections);
+      setIsChatsLoadings(false);
     } catch (error) {}
   };
 
@@ -253,68 +258,106 @@ export default function RecruiterChat() {
           <div className="col-lg-4">
             <div className="card">
               <div className="card-body">
-                <div style={{ width: "100%" }}>
-                  <span
-                    className="p-input-icon-left"
-                    style={{ width: "inherit" }}
-                  >
-                    <i className="pi pi-search" />
-                    <InputText
-                      placeholder="Search user"
-                      style={{ width: "inherit" }}
-                      onChange={handleSearching}
-                    />
-                  </span>
-                </div>
-                <div className="mt-2">
-                  {rooms.length > 0 ? (
-                    <>
-                      {rooms.map((chat, index) => (
-                        <div
-                          className="card"
-                          style={{ cursor: "pointer" }}
-                          key={index}
-                          onClick={() => setSelectedRoom(chat)}
-                        >
-                          <div className="card-body">
-                            <h6>
-                              {!chat.isGroupChat
-                                ? getSender(recruiterData, chat.users)
-                                : chat.chatName}
-                            </h6>
-                            <p>
-                              {chat.latestMessage &&
-                                `${
-                                  chat.latestMessage.sender.firstName +
-                                  " " +
-                                  chat.latestMessage.sender.lastName
-                                } : ${chat.latestMessage.content}`}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {connections.map((connection, index) => (
-                        <div
-                          className="card"
-                          style={{ cursor: "pointer" }}
-                          key={index}
-                          onClick={() => createChat(connection.user[0]._id)}
-                        >
-                          <div className="card-body">
-                            <h6>
-                              {connection.user[0].firstName}{" "}
-                              {connection.user[0].lastName}
-                            </h6>
-                            <p>say hi</p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </div>
+                {isChatsLoading ? (
+                  <ListSkeleton></ListSkeleton>
+                ) : (
+                  <>
+                    <div style={{ width: "100%" }}>
+                      <span
+                        className="p-input-icon-left"
+                        style={{ width: "inherit" }}
+                      >
+                        <i className="pi pi-search" />
+                        <InputText
+                          placeholder="Search user"
+                          style={{ width: "inherit" }}
+                          onChange={handleSearching}
+                        />
+                      </span>
+                    </div>
+                    <div className="mt-2">
+                      {rooms.length > 0 ? (
+                        <>
+                          {rooms.map((chat, index) => (
+                            <div
+                              className="card"
+                              style={{ cursor: "pointer" }}
+                              key={index}
+                              onClick={() => setSelectedRoom(chat)}
+                            >
+                              <div className="card-body d-flex align-items-center">
+                                <img
+                                  src={
+                                    PROFILE_PATH +
+                                    getSenderFull(recruiterData, chat.users)
+                                      .profileImg
+                                  }
+                                  alt=""
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: "50%",
+                                    marginRight: "10px", // Add margin-right for spacing
+                                  }}
+                                />
+                                <div className="details">
+                                  <h6 className="mb-0">
+                                    {!chat.isGroupChat
+                                      ? getSender(recruiterData, chat.users)
+                                      : chat.chatName}
+                                  </h6>
+                                  <p className="mb-0">
+                                    {chat.latestMessage &&
+                                      `${
+                                        chat.latestMessage.sender.firstName +
+                                        " " +
+                                        chat.latestMessage.sender.lastName
+                                      } : ${truncateText(
+                                        chat.latestMessage.content
+                                      )}`}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {connections.map((connection, index) => (
+                            <div
+                              className="card"
+                              style={{ cursor: "pointer" }}
+                              key={index}
+                              onClick={() => createChat(connection.user[0]._id)}
+                            >
+                              <div className="card-body d-flex align-items-center">
+                                <img
+                                  src={
+                                    PROFILE_PATH + connection.user[0].profileImg
+                                  }
+                                  alt=""
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: "50%",
+                                    marginRight: "10px", // Add margin-right for spacing
+                                  }}
+                                />
+                                <div className="details">
+                                  <h6 className="mb-0">
+                                    {connection.user[0].firstName}{" "}
+                                    {connection.user[0].lastName}
+                                  </h6>
+                                  <p className="mb-0">say hi</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -380,9 +423,13 @@ export default function RecruiterChat() {
                                       ? "me-3 text-white bg-primary rounded-3 user-message"
                                       : "ms-3 rounded-3 guide-message"
                                   }`}
-                                >
-                                  {chat.content}
-                                </p>
+                                  dangerouslySetInnerHTML={{
+                                    __html: breakTextIntoLines(
+                                      chat.content,
+                                      12
+                                    ),
+                                  }} // Use dangerouslySetInnerHTML to render the HTML with line breaks
+                                ></p>
                                 <p className="small text-muted m-0">
                                   {formatTime(chat.createdAt)}
                                 </p>
@@ -445,6 +492,7 @@ export default function RecruiterChat() {
                             e.preventDefault(); // Prevents a newline character from being inserted
                           }
                         }}
+                        style={{ border: "none" }}
                       ></input>
 
                       <a

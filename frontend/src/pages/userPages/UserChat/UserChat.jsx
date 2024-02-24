@@ -28,10 +28,12 @@ import {
 import {
   getSender,
   getSenderFull,
+  truncateText,
   isLastMessage,
   isSameSender,
   isSameSenderMargin,
   isSameUser,
+  breakTextIntoLines,
 } from "../../../components/ChatLogic";
 import Lottie from "react-lottie";
 
@@ -41,6 +43,7 @@ var socket, selectedChatCompare;
 import animationData from "../../../components/typing.json";
 import Loader from "../../../components/Loader";
 import EmojiPicker from "emoji-picker-react";
+import ListSkeleton from "../../../components/ListSkeleton";
 
 export default function UserChat() {
   const { userData } = useSelector((state) => state.auth);
@@ -53,6 +56,7 @@ export default function UserChat() {
   const [messageSent, setMessageSent] = useState(false);
   const [chats, setChats] = useState([]);
   const [isMessageLoading, setIsMessageLoading] = useState(true);
+  const [isChatsLoading, setIsChatsLoadings] = useState(true);
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -94,6 +98,7 @@ export default function UserChat() {
         userId: userData._id,
       }).unwrap();
       setConnections(responseConnections);
+      setIsChatsLoadings(false);
     } catch (error) {
       console.log(error?.data?.message);
     }
@@ -259,69 +264,106 @@ export default function UserChat() {
           <div className="col-lg-4">
             <div className="card">
               <div className="card-body">
-                <div style={{ width: "100%" }}>
-                  <span
-                    className="p-input-icon-left"
-                    style={{ width: "inherit" }}
-                  >
-                    <i className="pi pi-search" />
-                    <InputText
-                      placeholder="Search user"
-                      style={{ width: "inherit" }}
-                      onChange={handleSearching}
-                    />
-                  </span>
-                </div>
-                <div className="mt-2">
-                  {rooms.length > 0 ? (
-                    <>
-                      {rooms.map((chat, index) => (
-                        <div
-                          className="card"
-                          style={{ cursor: "pointer" }}
-                          key={index}
-                          onClick={() => setSelectedRoom(chat)}
-                        >
-                          <div className="card-body">
-                            <h6>
-                              {!chat.isGroupChat
-                                ? getSender(userData, chat.users)
-                                : chat.chatName}
-                            </h6>
-                            <p>
-                              {chat.latestMessage &&
-                                `${
-                                  chat.latestMessage.sender.firstName +
-                                  " " +
-                                  chat.latestMessage.sender.lastName
-                                } : ${chat.latestMessage.content}`}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {connections.map((connection, index) => (
-                        <div
-                          className="card"
-                          style={{ cursor: "pointer" }}
-                          key={index}
-                          onClick={() => createChat(connection.user[0]._id)}
-                        >
-                          \{" "}
-                          <div className="card-body">
-                            <h6>
-                              {connection.user[0].firstName}{" "}
-                              {connection.user[0].lastName}
-                            </h6>
-                            <p>say hi</p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </div>
+                {isChatsLoading ? (
+                  <ListSkeleton></ListSkeleton>
+                ) : (
+                  <>
+                    <div style={{ width: "100%" }}>
+                      <span
+                        className="p-input-icon-left"
+                        style={{ width: "inherit" }}
+                      >
+                        <i className="pi pi-search" />
+                        <InputText
+                          placeholder="Search user"
+                          style={{ width: "inherit" }}
+                          onChange={handleSearching}
+                        />
+                      </span>
+                    </div>
+                    <div className="mt-2">
+                      {rooms.length > 0 ? (
+                        <>
+                          {rooms.map((chat, index) => (
+                            <div
+                              className="card"
+                              style={{ cursor: "pointer" }}
+                              key={index}
+                              onClick={() => setSelectedRoom(chat)}
+                            >
+                              <div className="card-body d-flex align-items-center">
+                                <img
+                                  src={
+                                    PROFILE_PATH +
+                                    getSenderFull(userData, chat.users)
+                                      .profileImg
+                                  }
+                                  alt=""
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: "50%",
+                                    marginRight: "10px", // Add margin-right for spacing
+                                  }}
+                                />
+                                <div className="details">
+                                  <h6 className="mb-0">
+                                    {!chat.isGroupChat
+                                      ? getSender(userData, chat.users)
+                                      : chat.chatName}
+                                  </h6>
+                                  <p className="mb-0">
+                                    {chat.latestMessage &&
+                                      `${
+                                        chat.latestMessage.sender.firstName +
+                                        " " +
+                                        chat.latestMessage.sender.lastName
+                                      } : ${truncateText(
+                                        chat.latestMessage.content
+                                      )}`}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {connections.map((connection, index) => (
+                            <div
+                              className="card"
+                              style={{ cursor: "pointer" }}
+                              key={index}
+                              onClick={() => createChat(connection.user[0]._id)}
+                            >
+                              <div className="card-body d-flex align-items-center">
+                                <img
+                                  src={
+                                    PROFILE_PATH + connection.user[0].profileImg
+                                  }
+                                  alt=""
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: "50%",
+                                    marginRight: "10px", // Add margin-right for spacing
+                                  }}
+                                />
+                                <div className="details">
+                                  <h6 className="mb-0">
+                                    {connection.user[0].firstName}{" "}
+                                    {connection.user[0].lastName}
+                                  </h6>
+                                  <p className="mb-0">say hi</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -380,9 +422,13 @@ export default function UserChat() {
                                       ? "me-3 text-white bg-primary rounded-3 user-message"
                                       : "ms-3 rounded-3 guide-message"
                                   }`}
-                                >
-                                  {chat.content}
-                                </p>
+                                  dangerouslySetInnerHTML={{
+                                    __html: breakTextIntoLines(
+                                      chat.content,
+                                      12
+                                    ),
+                                  }} // Use dangerouslySetInnerHTML to render the HTML with line breaks
+                                ></p>
                                 <p className="small text-muted m-0">
                                   {formatTime(chat.createdAt)}
                                 </p>
@@ -436,6 +482,7 @@ export default function UserChat() {
                             e.preventDefault(); // Prevents a newline character from being inserted
                           }
                         }}
+                        style={{border:'none'}}
                       ></input>
 
                       <a
