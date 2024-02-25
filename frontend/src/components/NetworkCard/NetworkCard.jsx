@@ -97,54 +97,61 @@ function NetworkCard({ users, requests, reFetchusers }) {
             ))}
           </div>
         </div>
-        <div className="row gutters mt-4 pt-3">
-          <p>People you may know based on your recent activity</p>
-          {users.map((user, index) => (
-            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4" key={index}>
-              <figure className="user-card green">
-                <figcaption>
-                  <div
-                    onClick={() => navigate(`/visitProfile/${user._id}`)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      src={
-                        user.profileImg
-                          ? PROFILE_PATH + user.profileImg
-                          : defualtProfile
-                      }
-                      alt="profile image"
-                      className="profile"
-                    />
-                    <h5>
-                      {user.firstName} {user.lastName}
-                    </h5>
-                    <h6>{user.title}</h6>
-                  </div>
-                  <div className="clearfix">
-                    <Button
-                      type="button"
-                      label={
-                        pendingUsers.includes(user._id) ? "Pending" : "Connect"
-                      }
-                      icon={
-                        pendingUsers.includes(user._id)
-                          ? "pi pi-clock"
-                          : "pi pi-user-plus"
-                      }
-                      outlined
-                      onClick={
-                        pendingUsers.includes(user._id)
-                          ? null
-                          : () => ConnectUser(user._id, index)
-                      }
-                    />
-                  </div>
-                </figcaption>
-              </figure>
-            </div>
-          ))}
-        </div>
+
+        {users.length > 0 ? (
+          <div className="row gutters mt-4 pt-3">
+            <p>People you may know based on your recent activity</p>
+            {users.map((user, index) => (
+              <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4" key={index}>
+                <figure className="user-card green">
+                  <figcaption>
+                    <div
+                      onClick={() => navigate(`/visitProfile/${user._id}`)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={
+                          user.profileImg
+                            ? PROFILE_PATH + user.profileImg
+                            : defualtProfile
+                        }
+                        alt="profile image"
+                        className="profile"
+                      />
+                      <h5>
+                        {user.firstName} {user.lastName}
+                      </h5>
+                      <h6>{user.title}</h6>
+                    </div>
+                    <div className="clearfix">
+                      <Button
+                        type="button"
+                        label={
+                          pendingUsers.includes(user._id)
+                            ? "Pending"
+                            : "Connect"
+                        }
+                        icon={
+                          pendingUsers.includes(user._id)
+                            ? "pi pi-clock"
+                            : "pi pi-user-plus"
+                        }
+                        outlined
+                        onClick={
+                          pendingUsers.includes(user._id)
+                            ? null
+                            : () => ConnectUser(user._id, index)
+                        }
+                      />
+                    </div>
+                  </figcaption>
+                </figure>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center mt-3">No Users for you :(</p>
+        )}
       </div>
     </>
   );

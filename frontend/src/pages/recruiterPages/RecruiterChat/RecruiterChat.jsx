@@ -44,6 +44,7 @@ import animationData from "../../../components/typing.json";
 import EmojiPicker from "emoji-picker-react";
 import Loader from "../../../components/Loader";
 import ListSkeleton from "../../../components/ListSkeleton";
+import RecruiterChatScreen from "../../../components/recruiterComponents/ChatScreens/RecruiterChatScreen";
 
 export default function RecruiterChat() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
@@ -143,7 +144,6 @@ export default function RecruiterChat() {
       let res = await recruiterGetMessages({ chatId: selectedRoom._id });
 
       if (res) {
-        console.log("messages", res);
         setChats(res.data);
         setMessageSent(false);
         socket.emit("join chat", selectedRoom._id);
@@ -168,7 +168,6 @@ export default function RecruiterChat() {
       });
 
       if (responseFromApiCall.data) {
-        console.log(responseFromApiCall.data);
         setContent("");
         setMessageSent(true);
         socket.emit("new message", responseFromApiCall.data);
@@ -199,6 +198,14 @@ export default function RecruiterChat() {
   }, [selectedRoom, messageSent]);
 
   useEffect(() => {
+    const scrollToBottom = () => {
+      const chatBody = document.getElementById("chat-body");
+      if (chatBody) {
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    };
+
+    scrollToBottom();
     socket.on("message recieved", (newMessageRecieved) => {
       if (
         !selectedChatCompare ||
@@ -212,6 +219,7 @@ export default function RecruiterChat() {
       } else {
         setChats([...chats, newMessageRecieved]);
         fetchChats();
+        scrollToBottom();
       }
     });
   });
@@ -250,12 +258,18 @@ export default function RecruiterChat() {
     setContent((prev) => prev + emoji.emoji);
   };
 
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       <RecruiterNavbar></RecruiterNavbar>
       <div className="container" style={{ marginTop: "135px" }}>
         <div className="row">
-          <div className="col-lg-4">
+          {
+            selectedRoom && isMobile ?
+            <RecruiterChatScreen selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom}></RecruiterChatScreen>
+            :
+            <div className="col-lg-4">
             <div className="card">
               <div className="card-body">
                 {isChatsLoading ? (
@@ -309,9 +323,13 @@ export default function RecruiterChat() {
                                   <p className="mb-0">
                                     {chat.latestMessage &&
                                       `${
-                                        chat.latestMessage.sender.firstName +
-                                        " " +
-                                        chat.latestMessage.sender.lastName
+                                        chat.latestMessage.sender._id ===
+                                        recruiterData._id
+                                          ? "you"
+                                          : chat.latestMessage.sender
+                                              .firstName +
+                                            " " +
+                                            chat.latestMessage.sender.lastName
                                       } : ${truncateText(
                                         chat.latestMessage.content
                                       )}`}
@@ -361,6 +379,7 @@ export default function RecruiterChat() {
               </div>
             </div>
           </div>
+          }
           <div className="col-lg-8 d-none d-md-block">
             {selectedRoom !== null ? (
               <>
@@ -483,7 +502,7 @@ export default function RecruiterChat() {
                       <input
                         type="text"
                         value={content}
-                        class="form-control form-control-lg"
+                        className="form-control form-control-lg"
                         id="exampleFormControlInput1"
                         placeholder="Type message"
                         onChange={(e) => typingHandler(e)}
