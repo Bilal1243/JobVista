@@ -40,22 +40,32 @@ function ApplicantView({ selectedApplicant, changeStatus, handleChange }) {
                     {selectedApplicant.ownerDetails.title && (
                       <p>{selectedApplicant.ownerDetails.title}</p>
                     )}
-                    <Link to={`/visitsProfile/${selectedApplicant.ownerDetails._id}`}>visit applicant</Link>
+                    <Link
+                      to={`/visitsProfile/${selectedApplicant.ownerDetails._id}`}
+                    >
+                      visit applicant
+                    </Link>
                   </div>
                 </div>
                 <div>
-                  <Dropdown
-                    optionLabel="name"
-                    placeholder="change status"
-                    className="w-full md:w-15rem"
-                    onChange={(e) =>
-                      handleChange(e.value.name, selectedApplicant._id)
-                    }
-                    options={changeStatus}
-                  />
-                  <p className="pt-3">
-                    Current Application Status :{" "}
-                    {selectedApplicant.applicationStatus}
+                  {selectedApplicant.applicationStatus !== "selected" &&
+                  selectedApplicant.applicationStatus !== "rejected" ? (
+                    <Dropdown
+                      optionLabel="name"
+                      placeholder="change status"
+                      className="w-full md:w-15rem"
+                      onChange={(e) =>
+                        handleChange(e.value.name, selectedApplicant._id)
+                      }
+                      options={changeStatus}
+                    />
+                  ) : null}
+                  <p className="pt-2">
+                    {selectedApplicant.applicationStatus !== "selected" &&
+                    selectedApplicant.applicationStatus !== "rejected"
+                      ? "Current Application Status: " +
+                        selectedApplicant.applicationStatus
+                      : `you have been ${selectedApplicant.applicationStatus}`}
                   </p>
                 </div>
               </div>

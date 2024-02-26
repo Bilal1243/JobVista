@@ -15,9 +15,16 @@ import {
   useRecruiterListJobsMutation,
   useRecruiterFilterLocationMutation,
   useRecruiterSearchJobMutation,
+  useRecruitereditJobMutation,
 } from "../../../redux/recruiterSlices/recruiterApiSlices";
 import Loader from "../../../components/Loader";
 import countrydata from "../../../Utils/Countries";
+import { Dialog } from "primereact/dialog";
+import { InputNumber } from "primereact/inputnumber";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Chip } from "primereact/chip";
+import { toast } from "react-toastify";
+import { RadioButton } from "primereact/radiobutton";
 
 function MyJobs() {
   const navigate = useNavigate();
@@ -26,12 +33,21 @@ function MyJobs() {
   const [searchTerm, setSearchTerm] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [position, setPosition] = useState("top");
+
+  const [selectedJob, setSelectedJob] = useState("");
+  const [jobRole, setJobRole] = useState("");
+  const [openings, setOpenings] = useState();
+  const [description, setDescription] = useState("");
+  const [checked, setChecked] = useState("No");
 
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
 
   const [recruiterListJobs] = useRecruiterListJobsMutation();
   const [recruiterSearchJob] = useRecruiterSearchJobMutation();
   const [recruiterFilterLocation] = useRecruiterFilterLocationMutation();
+  const [recruitereditJob] = useRecruitereditJobMutation();
 
   useEffect(() => {
     fetchJobs();
@@ -76,6 +92,36 @@ function MyJobs() {
       }
     } catch (error) {
       console.log(error?.message || error?.data?.message);
+    }
+  };
+
+  const handleJobClick = (id) => {
+    const findJob = myJobs.filter((job) => {
+      return job._id === id;
+    });
+    setSelectedJob(findJob[0]._id);
+    setJobRole(findJob[0].jobRole);
+    setOpenings(findJob[0].openings);
+    setDescription(findJob[0].description);
+    setShowModal(true);
+  };
+
+  const editJob = async (id) => {
+    try {
+      const responseData = await recruitereditJob({
+        id: id,
+        jobRole: jobRole,
+        openings: openings,
+        description: description,
+        checked : checked
+      }).unwrap();
+      console.log(responseData);
+      if (responseData.status) {
+        toast.success("job post edited successfully");
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.log(error?.data?.message || error?.data);
     }
   };
 
@@ -130,11 +176,24 @@ function MyJobs() {
         {myJobs?.length > 0 ? (
           <>
             {myJobs.map((job, index) => (
-              <div className="col-lg-12 col-md-12 col-12 mt-4 pt-2" key={index}>
+              <div
+                className="col-lg-12 col-md-12 col-12 mt-4 pt-2"
+                key={index}
+                onClick={() => (job.recruited ? null : handleJobClick(job._id))}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="card border-0 bg-light rounded shadow">
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div>
-                      <h5>{job.jobRole}</h5>
+                      <span className="d-flex align-items-center">
+                        <h5 className="me-2">{job.jobRole}</h5>
+                        {new Date(job.deadline) <= new Date() &&
+                        job.recruited ? (
+                          <Chip label="recruiting ended" />
+                        ) : (
+                          <Chip label="still recruiting" />
+                        )}
+                      </span>
                       <div className="mt-3">
                         <span className="text-muted d-block">
                           <i className="fa fa-home" aria-hidden="true"></i>{" "}
@@ -161,7 +220,9 @@ function MyJobs() {
                           className="me-3"
                           raised
                           style={{ borderRadius: "10px" }}
-                          onClick={()=>navigate(`/viewApplications/${job._id}`)}
+                          onClick={() =>
+                            navigate(`/viewApplications/${job._id}`)
+                          }
                         />
                       </div>
                     </div>
@@ -185,6 +246,78 @@ function MyJobs() {
           </>
         )}
       </div>
+
+      <Dialog
+        header="edit job"
+        visible={showModal}
+        position={position}
+        style={{ width: "50vw" }}
+        onHide={() => setShowModal(false)}
+        draggable={false}
+        resizable={false}
+      >
+        <div className="card d-flex align-items-center justify-content-center p-3">
+          <div className="row">
+            <div className="col-lg-6">
+              <InputText
+                value={jobRole}
+                onChange={(e) => setJobRole(e.target.value)}
+              />
+            </div>
+            <div className="col-lg-6">
+              <InputNumber
+                inputId="integeronly"
+                value={openings}
+                onValueChange={(e) => setOpenings(e.value)}
+              />
+            </div>
+            <div className="col-lg-12 mt-3">
+              <InputTextarea
+                id="username"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={5}
+                cols={30}
+                style={{ border: "1px solid #b3b3b3" }}
+              />
+            </div>
+            <div className="col-lg-12 mb-2 d-flex flex-column">
+              do you want to end recruiting
+              <div className="flex align-items-center">
+                <RadioButton
+                  inputId="ingredient1"
+                  name="Yes"
+                  value="Yes"
+                  onChange={(e) => setChecked(e.value)}
+                  checked={checked === "Yes"}
+                />
+                <label htmlFor="ingredient1" className="ml-2">
+                  Yes
+                </label>
+              </div>
+              <div className="flex align-items-center">
+                <RadioButton
+                  inputId="ingredient2"
+                  name="No"
+                  value="No"
+                  onChange={(e) => setChecked(e.value)}
+                  checked={checked === "No"}
+                />
+                <label htmlFor="ingredient2" className="ml-2">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+          <Button
+            label="submit"
+            type="button"
+            onClick={() => {
+              editJob(selectedJob);
+            }}
+          ></Button>
+        </div>
+      </Dialog>
     </>
   );
 }

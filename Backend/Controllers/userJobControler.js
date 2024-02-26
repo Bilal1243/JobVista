@@ -29,7 +29,7 @@ const listJobs = asyncHandler(async (req, res) => {
     );
 
     // Find all jobs
-    const allJobs = await Jobs.find().sort({ createdAt: -1 });
+    const allJobs = await Jobs.find({ recruited: false }).sort({ createdAt: -1 });
 
     // Check if each job is saved by the user
     const jobsWithSavedStatus = allJobs.map((job) => {
@@ -140,7 +140,7 @@ const listJobsHelper = async (userId) => {
     );
 
     // Find all jobs
-    const allJobs = await Jobs.find().sort({ createdAt: -1 });
+    const allJobs = await Jobs.find({ recruited: false }).sort({ createdAt: -1 });
 
     // Check if each job is saved by the user
     const jobsWithSavedStatus = allJobs.map((job) => {

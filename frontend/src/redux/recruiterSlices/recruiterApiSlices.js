@@ -108,6 +108,13 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })
         }),
+        recruitereditJob: builder.mutation({
+            query: (data) => ({
+                url: `${RECRUITER_URL}/editJob`,
+                method: 'PUT',
+                body : data
+            })
+        }),
         recruiterLogout: builder.mutation({
             query: () => ({
                 url: `${RECRUITER_URL}/logout`,
@@ -286,6 +293,7 @@ export const {
     useRecruiterGetIndustryTypesMutation,
     useRecruiterGetSkillsMutation,
     useRecruiterPostJobMutation,
+    useRecruitereditJobMutation,
     useRecruiterListJobsMutation,
     useRecruiterSearchJobMutation,
     useRecruiterFilterLocationMutation,

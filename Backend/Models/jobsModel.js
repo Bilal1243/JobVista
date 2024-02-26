@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const jobSchema = mongoose.Schema({
-    recruiterId : {
-        type : mongoose.Types.ObjectId,
-        required : true
+    recruiterId: {
+        type: mongoose.Types.ObjectId,
+        required: true
     },
     jobRole: {
         type: String,
@@ -21,9 +21,9 @@ const jobSchema = mongoose.Schema({
         type: Array,
         required: true
     },
-    openings : {
-        type : Number,
-        required : true
+    openings: {
+        type: Number,
+        required: true
     },
     description: {
         type: String,
@@ -37,9 +37,9 @@ const jobSchema = mongoose.Schema({
             type: Number
         }
     },
-    rate : {
-        type : String,
-        required : true
+    rate: {
+        type: String,
+        required: true
     },
     qualification: {
         type: String,
@@ -61,7 +61,7 @@ const jobSchema = mongoose.Schema({
     },
     deadline: {
         type: Date,
-        default : null
+        default: null
     },
     recruited: {
         type: Boolean,
@@ -79,10 +79,10 @@ const jobSchema = mongoose.Schema({
     }
 },
     {
-        timestamps : true
+        timestamps: true
     }
 )
 
-const Jobs = mongoose.model('Jobs',jobSchema)
+const Jobs = mongoose.model('Jobs', jobSchema)
 
 export default Jobs

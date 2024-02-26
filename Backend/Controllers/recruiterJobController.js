@@ -124,6 +124,10 @@ const changeStatus = asyncHandler(async (req, res) => {
 
     const updateStatus = await jobApplications.findByIdAndUpdate({ _id: applicationId }, { applicationStatus: status })
 
+    if (status === 'selected') {
+        const updateJob = await Jobs.findByIdAndUpdate({ _id: updateStatus.jobId }, { recruited: true })
+    }
+
     const jobDetails = await Jobs.findOne({ _id: updateStatus.jobId })
 
     const findUser = await Users.findOne({ _id: updateStatus.userId })
@@ -232,10 +236,33 @@ const getResume = asyncHandler(async (req, res) => {
     res.json(applicationWithOwnerDetails);
 })
 
+const editJob = asyncHandler(async (req, res) => {
+    const { id, jobRole, openings, description, checked } = req.body
+
+    let updateJob
+
+    if (checked === 'Yes') {
+        updateJob = await Jobs.findByIdAndUpdate(id, { jobRole: jobRole, openings: openings, description: description, recruited: true })
+    }
+    else {
+        updateJob = await Jobs.findByIdAndUpdate(id, { jobRole: jobRole, openings: openings, description: description })
+    }
+
+    if (updateJob) {
+        res.status(200).json({ status: true })
+    }
+    else {
+        res.status(400)
+        throw new Error('server error')
+    }
+
+})
+
 
 export {
     createJob,
     viewApplications,
     changeStatus,
-    getResume
+    getResume,
+    editJob
 }
