@@ -4,6 +4,7 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import connectDb from './config/db.js'
 import cors from 'cors'
+import path from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
 
 const app = express()
@@ -27,9 +28,20 @@ import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 import recruiterRoute from './Routes/recruiterRoutes.js';
 
+
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/recruiter', recruiterRoute)
+
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve()
+  app.use(express.static(path.join(__dirname, 'frontend/dist')))
+
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')))
+}
+else {
+  app.get('/', (req, res) => res.send('server is ready'))
+}
 
 app.use(notFound);
 app.use(errorHandler);
@@ -61,8 +73,8 @@ io.on('connection', (Socket) => {
     console.log("User Joined Room: " + room);
   });
 
-  Socket.on('typing',(room)=>Socket.in(room).emit('typing'))
-  Socket.on('stop typing',(room)=>Socket.in(room).emit('stop typing'))
+  Socket.on('typing', (room) => Socket.in(room).emit('typing'))
+  Socket.on('stop typing', (room) => Socket.in(room).emit('stop typing'))
 
   Socket.on("new message", (newMessageRecieved) => {
     var chat = newMessageRecieved.chat;
@@ -76,7 +88,7 @@ io.on('connection', (Socket) => {
     });
   });
 
-  Socket.off('setup',()=>{
+  Socket.off('setup', () => {
     console.log('user disconnected')
     Socket.leave(userData._id)
   })
