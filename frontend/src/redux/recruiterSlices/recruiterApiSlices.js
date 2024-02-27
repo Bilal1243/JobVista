@@ -280,6 +280,13 @@ export const recruiterSlice = userApiSlice.injectEndpoints({
                 params
             })
         }),
+        recruiterChangePassword: builder.mutation({
+            query: (params) => ({
+                url: `${RECRUITER_URL}/recruiterChangePassword`,
+                method: 'PUT',
+                params
+            })
+        }),
     }),
 })
 
@@ -323,5 +330,6 @@ export const {
     useRecruiterGetMessagesMutation,
     useRecruitersendMessageMutation,
     useRecruiterVisitProfileMutation,
+    useRecruiterChangePasswordMutation,
     useRecruiterLogoutMutation
 } = recruiterSlice

@@ -382,6 +382,34 @@ const recruiterEditProfile = asyncHandler(async (req, res) => {
 
 })
 
+const recruiterchangePassword = asyncHandler(async (req, res) => {
+    const oldPass = req.query.oldPass
+    const newPass = req.query.newPass
+    const userId = req.recruiter._id; // Assuming you have middleware to extract user information from the request
+    // Fetch user by ID
+    const user = await Users.findById(userId);
+
+    // Check if the user exists
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
+
+    // Check if the old password is correct
+    const isPasswordMatch = await user.matchPassword(oldPass);
+
+
+    if (!isPasswordMatch) {
+        return res.status(400).json({ success: false, message: 'Old password is incorrect' });
+    }
+
+    // Set the new password and save the user
+    user.password = newPass;
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Password changed successfully' });
+})
+
 const logoutRecruiter = asyncHandler(async (req, res) => {
 
     res.cookie("jwt", "", {
@@ -409,5 +437,6 @@ export {
     filterJobByLocation,
     recruiterloadMyProfile,
     recruiterEditProfile,
+    recruiterchangePassword,
     logoutRecruiter
 }

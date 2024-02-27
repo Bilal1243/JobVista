@@ -8,7 +8,7 @@ import PostUpload from '../config/createPostMulter.js'
 
 
 import { protect } from '../Middlewares/recruiterAuthMiddleware.js'
-import { filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecruiter, recruiterAddnewPassword, recruiterAuth, recruiterEditProfile, recruiterforgotPassVerify, recruiterloadMyProfile, recruiterverifyOtp, registerRecruiter, searchJob, verifyRecruiter } from '../Controllers/recruiterController.js'
+import { filterJobByLocation, listIndustries, listJobs, listSkills, logoutRecruiter, recruiterAddnewPassword, recruiterAuth, recruiterEditProfile, recruiterchangePassword, recruiterforgotPassVerify, recruiterloadMyProfile, recruiterverifyOtp, registerRecruiter, searchJob, verifyRecruiter } from '../Controllers/recruiterController.js'
 import { changeStatus, createJob, editJob, getResume, viewApplications } from '../Controllers/recruiterJobController.js'
 import { recruiterCreatePost, recruiterMyPosts, recruiterdeleteComment, recruiterdeletePost, recruitereditPost, recruiterlikePost, recruiterlistAllPosts, recruiterlistSavedPosts, recruiterpostComment, recruitersavePost, recruiterunsavePost } from '../Controllers/recruiterPostController.js'
 import { ListConnections, acceptRequest, connectUser, listRequests, listUsers, visitProfile } from '../Controllers/MyNetworkController.js'
@@ -66,6 +66,9 @@ recruiterRoute.get('/getChats', protect, getRooms)
 recruiterRoute.post('/createChat', protect, createRoom)
 recruiterRoute.post('/sendMessage', protect, chatSend)
 recruiterRoute.post('/getMessages', protect, getMessages)
+
+
+recruiterRoute.put('/recruiterChangePassword', protect, recruiterchangePassword)
 
 recruiterRoute.get('/logout', protect, logoutRecruiter)
 

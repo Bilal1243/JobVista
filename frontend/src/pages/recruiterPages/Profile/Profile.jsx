@@ -32,6 +32,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/recruiterSlices/recruiterAuthSlice.js";
 import { PROFILE_PATH } from "../../../Utils/URL.js";
 import SavedPosts from "./SavedPosts.jsx";
+import Settings from "./Settings.jsx";
 
 function RecruiterProfile() {
   const { recruiterData } = useSelector((state) => state.recruiterAuth);
@@ -256,6 +257,9 @@ function RecruiterProfile() {
                 )}
                 {activeTab === "saved-posts" && (
                   <SavedPosts activeTab={activeTab}></SavedPosts>
+                )}
+                {activeTab === "settings" && (
+                  <Settings activeTab={activeTab}></Settings>
                 )}
               </div>
             </div>
