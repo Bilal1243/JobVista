@@ -8,7 +8,6 @@ import path from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
-console.log(parentDir)
 
 const app = express()
 
@@ -20,11 +19,7 @@ app.use(express.static("Backend/Public"));
 const port = process.env.PORT || 2000
 connectDb()
 
-app.use(cors({
-  origin: 'http://localhost:3000', // Update with your frontend port
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-}));
+app.use(cors());
 
 
 import userRoutes from './Routes/userRoutes.js';
@@ -64,7 +59,7 @@ import { Server, Socket } from "socket.io";
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["https://muhammedbilal.online"],
   },
 });
 
