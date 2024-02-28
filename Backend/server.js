@@ -8,6 +8,7 @@ import path from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
+console.log(parentDir)
 
 const app = express()
 
@@ -37,13 +38,16 @@ app.use('/api/recruiter', recruiterRoute)
 
 
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve()
-  app.use(express.static(path.join(__dirname, 'frontend/dist')))
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(parentDir, "/frontend/dist")));
 
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')))
-}
-else {
-  app.get('/', (req, res) => res.send('server is ready'))
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(parentDir, "frontend", "dist", "index.html"))
+  );
+
+} else {
+
+  app.get("/", (req, res) => res.send("server is ready "));
 }
 
 
