@@ -59,7 +59,7 @@ import { Server, Socket } from "socket.io";
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["https://muhammedbilal.online"],
+    origin: ["http://localhost:3000"],
   },
 });
 
