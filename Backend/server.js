@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 app.use(express.static("Backend/Public"));
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 2000
 connectDb()
 
 app.use(cors());
@@ -59,7 +59,7 @@ import { Server, Socket } from "socket.io";
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["https://muhammedbilal.online/"],
+    origin: ["http://localhost:3000/"],
   },
 });
 

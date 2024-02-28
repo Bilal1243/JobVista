@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://muhammedbilal.online',
+        target: 'https://localhost:2000',
         changeOrigin: true,
       },
     },
