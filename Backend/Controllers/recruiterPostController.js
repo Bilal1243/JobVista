@@ -1,5 +1,5 @@
 import Industries from '../Models/industriesModel.js'
-import userSkills from '../Models/userskillsModel.js'
+import userSkills from '../Models/userSkillsModel.js'
 import Skills from '../Models/skillsModel.js'
 import JobPreference from '../Models/JobPreferenceModel.js'
 import Posts from '../Models/postsModel.js'

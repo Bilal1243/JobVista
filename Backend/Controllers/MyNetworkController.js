@@ -11,7 +11,7 @@ import SavedPosts from '../Models/SavedPostsModel.js'
 import asyncHandler from 'express-async-handler'
 import { ObjectId } from 'mongodb'
 import Skills from '../Models/skillsModel.js'
-import userSkills from '../Models/userskillsModel.js'
+import userSkills from '../Models/userSkillsModel.js'
 
 
 const listUsers = asyncHandler(async (req, res) => {
