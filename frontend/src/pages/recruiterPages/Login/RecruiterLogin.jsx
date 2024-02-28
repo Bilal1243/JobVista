@@ -12,7 +12,7 @@ import {
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import loginBg from '../../../assets/recruiteloginBg.png'; // Import the image
-import logo from '../../../assets/jobVista.png'; // Import the image
+import logo from '../../../assets/JobVista.png'; // Import the image
 import './RecruiterLogin.css'
 import { Link, useNavigate } from 'react-router-dom';
 import { setCredentials } from '../../../redux/recruiterSlices/recruiterAuthSlice'

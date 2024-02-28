@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from 'primereact/badge';
 
 import "primeicons/primeicons.css";
-import jobVistaLogo from "../../../assets/jobVista.png";
+import jobVistaLogo from "../../../assets/JobVista.png";
 
 import "./RecruiterNavbar.css";
 import { PROFILE_PATH } from "../../../Utils/URL";

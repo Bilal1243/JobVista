@@ -11,7 +11,7 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 import "primeicons/primeicons.css";
 import defualtProfile from "../../assets/defualtProfile.jpg";
-import jobVistaLogo from "../../assets/jobVista.png";
+import jobVistaLogo from "../../assets/JobVista.png";
 import { PROFILE_PATH } from "../../Utils/URL"; 
 
 import "./Navbar.css";

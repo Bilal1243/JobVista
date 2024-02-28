@@ -10,7 +10,7 @@ import {
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import loginBg from "../../../assets/login-bg.png"; // Import the image
-import logo from "../../../assets/jobVista.png"; // Import the image
+import logo from "../../../assets/JobVista.png"; // Import the image
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import {

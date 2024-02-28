@@ -23,7 +23,7 @@ import {
 } from "../../../redux/recruiterSlices/recruiterApiSlices";
 
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import logo from "../../../assets/jobVista.png"; // Import the image
+import logo from "../../../assets/JobVista.png"; // Import the image
 import "./RecruiterRegister.css";
 import countrydata from "../../../Utils/Countries.js";
 import HighestEducations from "../../../Utils/Educations.js";

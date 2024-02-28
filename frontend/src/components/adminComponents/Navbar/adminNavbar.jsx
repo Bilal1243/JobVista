@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom'
 
 import './adminNavbar.css'
-import logo from '../../../assets/jobVista.png'
+import logo from '../../../assets/JobVista.png'
 import AdminSidebar from '../sidebar/Sidebar';
 
 export default function adminNavbar() {
