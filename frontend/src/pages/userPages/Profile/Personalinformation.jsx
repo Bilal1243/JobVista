@@ -2,7 +2,7 @@ import { MDBInput, MDBValidation } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "primeicons/primeicons.css"; 
-import "./actions.css";
+import "./Actions.css";
 import Select from "react-select";
 import {
   useGetSkillsMutation,
