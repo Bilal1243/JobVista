@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 app.use(express.static("Backend/Public"));
 
-const port = process.env.PORT || 2000
+const port = process.env.PORT || 3000
 connectDb()
 
 app.use(cors());
