@@ -1,6 +1,6 @@
 import users from "../Models/userModel.js";
 import Industries from '../Models/industriesModel.js'
-import userSkills from '../Models/userskillsModel.js'
+import userSkills from '../Models/userSkillsModel.js'
 import Skills from '../Models/skillsModel.js'
 import JobPreference from '../Models/JobPreferenceModel.js'
 import jobApplications from '../Models/applicationModel.js'
