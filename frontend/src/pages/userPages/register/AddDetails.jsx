@@ -21,7 +21,7 @@ import {
 } from "../../../redux/userSlices/userApiSlice";
 
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import logo from "../../../assets/jobVista.png"; // Import the image
+import logo from "../../../assets/JobVista.png"; // Import the image
 import "./Register.css";
 import countrydata from "../../../Utils/Countries";
 import highestEducation from "../../../Utils/Educations";
