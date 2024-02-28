@@ -461,6 +461,7 @@ const loadMyProfile = asyncHandler(async (req, res) => {
 
 
 const editProfile = asyncHandler(async (req, res) => {
+    console.log(req.body)
     const userId = req.body.userId;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
