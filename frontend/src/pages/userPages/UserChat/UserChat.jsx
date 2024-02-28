@@ -274,7 +274,11 @@ export default function UserChat() {
       <div className="container" style={{ marginTop: "135px" }}>
         <div className="row">
           {selectedRoom && isMobile ? (
-            <ChatScreen selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} userData={userData}></ChatScreen>
+            <ChatScreen
+              selectedRoom={selectedRoom}
+              setSelectedRoom={setSelectedRoom}
+              userData={userData}
+            ></ChatScreen>
           ) : (
             <div className="col-lg-4">
               <div className="card">
@@ -309,9 +313,12 @@ export default function UserChat() {
                                 <div className="card-body d-flex align-items-center">
                                   <img
                                     src={
-                                      PROFILE_PATH +
                                       getSenderFull(userData, chat.users)
                                         .profileImg
+                                        ? PROFILE_PATH +
+                                          getSenderFull(userData, chat.users)
+                                            .profileImg
+                                        : "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
                                     }
                                     alt=""
                                     style={{
@@ -360,8 +367,10 @@ export default function UserChat() {
                                 <div className="card-body d-flex align-items-center">
                                   <img
                                     src={
-                                      PROFILE_PATH +
                                       connection.user[0].profileImg
+                                        ? PROFILE_PATH +
+                                          connection.user[0].profileImg
+                                        : "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
                                     }
                                     alt=""
                                     style={{

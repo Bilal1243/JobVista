@@ -265,121 +265,133 @@ export default function RecruiterChat() {
       <RecruiterNavbar></RecruiterNavbar>
       <div className="container" style={{ marginTop: "135px" }}>
         <div className="row">
-          {
-            selectedRoom && isMobile ?
-            <RecruiterChatScreen selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom}></RecruiterChatScreen>
-            :
+          {selectedRoom && isMobile ? (
+            <RecruiterChatScreen
+              selectedRoom={selectedRoom}
+              setSelectedRoom={setSelectedRoom}
+            ></RecruiterChatScreen>
+          ) : (
             <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                {isChatsLoading ? (
-                  <ListSkeleton></ListSkeleton>
-                ) : (
-                  <>
-                    <div style={{ width: "100%" }}>
-                      <span
-                        className="p-input-icon-left"
-                        style={{ width: "inherit" }}
-                      >
-                        <i className="pi pi-search" />
-                        <InputText
-                          placeholder="Search user"
+              <div className="card">
+                <div className="card-body">
+                  {isChatsLoading ? (
+                    <ListSkeleton></ListSkeleton>
+                  ) : (
+                    <>
+                      <div style={{ width: "100%" }}>
+                        <span
+                          className="p-input-icon-left"
                           style={{ width: "inherit" }}
-                          onChange={handleSearching}
-                        />
-                      </span>
-                    </div>
-                    <div className="mt-2">
-                      {rooms.length > 0 ? (
-                        <>
-                          {rooms.map((chat, index) => (
-                            <div
-                              className="card"
-                              style={{ cursor: "pointer" }}
-                              key={index}
-                              onClick={() => setSelectedRoom(chat)}
-                            >
-                              <div className="card-body d-flex align-items-center">
-                                <img
-                                  src={
-                                    PROFILE_PATH +
-                                    getSenderFull(recruiterData, chat.users)
-                                      .profileImg
-                                  }
-                                  alt=""
-                                  style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: "50%",
-                                    marginRight: "10px", // Add margin-right for spacing
-                                  }}
-                                />
-                                <div className="details">
-                                  <h6 className="mb-0">
-                                    {!chat.isGroupChat
-                                      ? getSender(recruiterData, chat.users)
-                                      : chat.chatName}
-                                  </h6>
-                                  <p className="mb-0">
-                                    {chat.latestMessage &&
-                                      `${
-                                        chat.latestMessage.sender._id ===
-                                        recruiterData._id
-                                          ? "you"
-                                          : chat.latestMessage.sender
-                                              .firstName +
-                                            " " +
-                                            chat.latestMessage.sender.lastName
-                                      } : ${truncateText(
-                                        chat.latestMessage.content
-                                      )}`}
-                                  </p>
+                        >
+                          <i className="pi pi-search" />
+                          <InputText
+                            placeholder="Search user"
+                            style={{ width: "inherit" }}
+                            onChange={handleSearching}
+                          />
+                        </span>
+                      </div>
+                      <div className="mt-2">
+                        {rooms.length > 0 ? (
+                          <>
+                            {rooms.map((chat, index) => (
+                              <div
+                                className="card"
+                                style={{ cursor: "pointer" }}
+                                key={index}
+                                onClick={() => setSelectedRoom(chat)}
+                              >
+                                <div className="card-body d-flex align-items-center">
+                                  <img
+                                    src={
+                                      getSenderFull(recruiterData, chat.users)
+                                        .profileImg
+                                        ? PROFILE_PATH +
+                                          getSenderFull(
+                                            recruiterData,
+                                            chat.users
+                                          ).profileImg
+                                        : "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                                    }
+                                    alt=""
+                                    style={{
+                                      width: 50,
+                                      height: 50,
+                                      borderRadius: "50%",
+                                      marginRight: "10px", // Add margin-right for spacing
+                                    }}
+                                  />
+                                  <div className="details">
+                                    <h6 className="mb-0">
+                                      {!chat.isGroupChat
+                                        ? getSender(recruiterData, chat.users)
+                                        : chat.chatName}
+                                    </h6>
+                                    <p className="mb-0">
+                                      {chat.latestMessage &&
+                                        `${
+                                          chat.latestMessage.sender._id ===
+                                          recruiterData._id
+                                            ? "you"
+                                            : chat.latestMessage.sender
+                                                .firstName +
+                                              " " +
+                                              chat.latestMessage.sender.lastName
+                                        } : ${truncateText(
+                                          chat.latestMessage.content
+                                        )}`}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        <>
-                          {connections.map((connection, index) => (
-                            <div
-                              className="card"
-                              style={{ cursor: "pointer" }}
-                              key={index}
-                              onClick={() => createChat(connection.user[0]._id)}
-                            >
-                              <div className="card-body d-flex align-items-center">
-                                <img
-                                  src={
-                                    PROFILE_PATH + connection.user[0].profileImg
-                                  }
-                                  alt=""
-                                  style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: "50%",
-                                    marginRight: "10px", // Add margin-right for spacing
-                                  }}
-                                />
-                                <div className="details">
-                                  <h6 className="mb-0">
-                                    {connection.user[0].firstName}{" "}
-                                    {connection.user[0].lastName}
-                                  </h6>
-                                  <p className="mb-0">say hi</p>
+                            ))}
+                          </>
+                        ) : (
+                          <>
+                            {connections.map((connection, index) => (
+                              <div
+                                className="card"
+                                style={{ cursor: "pointer" }}
+                                key={index}
+                                onClick={() =>
+                                  createChat(connection.user[0]._id)
+                                }
+                              >
+                                <div className="card-body d-flex align-items-center">
+                                  <img
+                                    src={
+                                      connection.user[0].profileImg
+                                        ? PROFILE_PATH +
+                                          connection.user[0].profileImg
+                                        : "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                                    }
+                                    alt=""
+                                    style={{
+                                      width: 50,
+                                      height: 50,
+                                      borderRadius: "50%",
+                                      marginRight: "10px", // Add margin-right for spacing
+                                    }}
+                                  />
+                                  <div className="details">
+                                    <h6 className="mb-0">
+                                      {connection.user[0].firstName}{" "}
+                                      {connection.user[0].lastName}
+                                    </h6>
+                                    <p className="mb-0">say hi</p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </>
-                      )}
-                    </div>
-                  </>
-                )}
+                            ))}
+                          </>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          }
+          )}
           <div className="col-lg-8 d-none d-md-block">
             {selectedRoom !== null ? (
               <>

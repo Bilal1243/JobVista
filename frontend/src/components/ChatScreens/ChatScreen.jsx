@@ -124,7 +124,7 @@ function ChatScreen({ selectedRoom, setSelectedRoom }) {
       setIsTyping(false);
     });
   }, []);
-
+  
   useEffect(() => {
     fetchMessages();
 
