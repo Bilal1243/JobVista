@@ -40,7 +40,7 @@ import {
 import Lottie from "react-lottie";
 
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:2000";
+const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 import animationData from "../typing.json";
 import Loader from "../Loader";

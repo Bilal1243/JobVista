@@ -27,6 +27,8 @@ dotenv.config();
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
+    console.log('entered')
+
     const user = await users.findOne({ email })
 
     if (!user) {
