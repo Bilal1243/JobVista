@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import logo from '../../../assets/jobVista.png'
+import logo from '../../../assets/JobVista.png'
 
 import { setCredentials } from '../../../redux/adminSlices/adminAuthSlice'
 import { useAdminloginMutation } from '../../../redux/adminSlices/adminApiSlice'
