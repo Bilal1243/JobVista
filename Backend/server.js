@@ -35,18 +35,17 @@ app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/recruiter', recruiterRoute)
 
+
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(parentDir, "/frontend/dist")));
+  const __dirname = path.resolve()
+  app.use(express.static(path.join(__dirname, 'frontend/dist')))
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(parentDir, "frontend", "dist", "index.html"))
-  );
-
-} else {
-
-  app.get("/", (req, res) => res.send("server is ready "));
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')))
 }
+else {
+  app.get('/', (req, res) => res.send('server is ready'))
+}
+
 
 app.use(notFound);
 app.use(errorHandler);
