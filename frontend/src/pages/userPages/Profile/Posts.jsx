@@ -76,6 +76,7 @@ function Posts({ activeTab }) {
         formData.append(`mediaItems`, image);
       });
 
+      console.log(formData)
       const response = await createPost(formData);
       if (response.data.success) {
         setIsloading(false);
