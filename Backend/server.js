@@ -21,10 +21,14 @@ app.use(cookieParser())
 
 app.use(express.static('Backend/Public'));
 
-app.use(cors())
-
 const port = process.env.PORT || 5000
 connectDb()
+
+app.use(cors({
+  origin: 'https://muhammedbilal.online', // Update with your frontend port
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
