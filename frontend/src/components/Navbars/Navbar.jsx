@@ -21,9 +21,6 @@ function NavbarUi() {
   const { userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  console.log(PROFILE_PATH + userData.image)
-
-
   const items = [
     {
       label: (

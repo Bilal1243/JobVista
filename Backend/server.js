@@ -21,7 +21,10 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
-app.use(express.static('Backend/Public'));
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+console.log('server Console :' + __dirname)
+// Serve static files from the Public directory
+app.use(express.static(path.join(__dirname, 'Backend/Public')));
 
 app.use(cors());
 
@@ -50,6 +53,7 @@ const server = app.listen(port, () => {
 })
 
 import { Server, Socket } from "socket.io";
+import { dirname } from 'path';
 
 const io = new Server(server, {
   pingTimeout: 60000,
