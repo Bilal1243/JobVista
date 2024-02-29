@@ -1,6 +1,8 @@
 import multer from 'multer';
 import path from 'path';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.resolve(__dirname, '../Public/Profiles'));
