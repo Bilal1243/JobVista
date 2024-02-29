@@ -22,7 +22,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
 
-app.use(express.static('Backend/Public'));
+app.use(express.static('Public'));
 
 app.use(cors());
 
