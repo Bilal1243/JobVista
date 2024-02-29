@@ -20,7 +20,9 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
 const __dirname = path.resolve();
-app.use(express.static(path.resolve(__dirname, 'Backend/Public')));
+app.use('/Profiles', express.static(path.resolve(__dirname, 'Backend/Public/Profiles')));
+app.use('/Posts', express.static(path.resolve(__dirname, 'Backend/Public/Posts')));
+app.use('/Resume', express.static(path.resolve(__dirname, 'Backend/Public/Resume')));
 
 
 const port = process.env.PORT || 5000
