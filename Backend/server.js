@@ -24,7 +24,7 @@ app.use(cookieParser())
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 console.log('server Console :' + __dirname)
 // Serve static files from the Public directory
-app.use(express.static(path.join(__dirname, 'Backend/Public')));
+app.use(express.static(path.join(__dirname, './Public')));
 
 app.use(cors());
 
