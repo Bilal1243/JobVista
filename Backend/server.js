@@ -21,10 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-console.log('server Console :' + __dirname)
-// Serve static files from the Public directory
-app.use(express.static(path.join(__dirname, './Public')));
+
+app.use(express.static('Backend/Public'));
 
 app.use(cors());
 
@@ -58,7 +56,7 @@ import { dirname } from 'path';
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["https://muhammedbilal.online"],
+    origin: ["http://localhost:3000"],
   },
 });
 

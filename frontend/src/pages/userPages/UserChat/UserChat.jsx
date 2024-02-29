@@ -38,7 +38,7 @@ import {
 import Lottie from "react-lottie";
 
 import io from "socket.io-client";
-const ENDPOINT = "https://muhammedbilal.online"; 
+const ENDPOINT = "http://localhost:6000"; 
 var socket, selectedChatCompare;
 import animationData from "../../../components/typing.json";
 import Loader from "../../../components/Loader";

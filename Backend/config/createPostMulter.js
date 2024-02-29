@@ -5,12 +5,10 @@ const __dirname = path.resolve();
 
 const storage = multer.diskStorage({
 
-  destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, "./Public/Posts"));
-  },
+  destination: (req, file, cb) => { cb(null, "Backend/Public/Posts") },
 
-  filename: (req, file, cb) => { cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname)) }
-
+  filename: (req, file, cb) => { cb( null, file.fieldname + "_" + Date.now() + path.extname(file.originalname) ) }
+  
 });
 
 
