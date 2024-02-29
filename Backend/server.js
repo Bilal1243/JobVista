@@ -26,11 +26,10 @@ const port = process.env.PORT || 5000
 connectDb()
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Update with your frontend port
+  origin: 'https://muhammedbilal.online', // Update with your website URL
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
-
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
@@ -61,7 +60,7 @@ import { Server, Socket } from "socket.io";
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["https://muhammedbilal.online"],
   },
 });
 
@@ -94,7 +93,7 @@ io.on('connection', (Socket) => {
   });
 
   // Handle disconnection
-  Socket.off('setup', () => {
+  Socket.on('disconnect', () => {
     console.log('user disconnected')
     Socket.leave(userData._id)
   })
