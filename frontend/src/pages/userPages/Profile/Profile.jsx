@@ -70,7 +70,6 @@ function Profile() {
   const fetchProfileData = async () => {
     try {
       const responseData = await getProfile({ userId: userData._id }).unwrap();
-      console.log(responseData);
       setProfileData(responseData.data);
       if (responseData.followers.length === 0) {
         setFollowers(0);

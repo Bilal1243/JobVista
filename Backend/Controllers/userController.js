@@ -27,8 +27,6 @@ dotenv.config();
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    console.log('entered')
-
     const user = await users.findOne({ email })
 
     if (!user) {
@@ -463,7 +461,6 @@ const loadMyProfile = asyncHandler(async (req, res) => {
 
 
 const editProfile = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const userId = req.body.userId;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;

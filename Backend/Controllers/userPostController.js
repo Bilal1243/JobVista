@@ -86,10 +86,6 @@ const MyPosts = asyncHandler(async (req, res) => {
 
 const CreatePost = asyncHandler(async (req, res) => {
 
-    console.log('req body'+req.body)
-
-    console.log('req files' + req.files)
-
     const { userId, description } = req.body
 
     const mediaItems = req.files && Array.isArray(req.files) ? req.files.map(file => file.filename) : [];

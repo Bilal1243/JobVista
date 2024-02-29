@@ -84,7 +84,7 @@ function PostCard({ postDetails, loadPosts }) {
   };
 
   const isVideo =
-    post.mediaItems.length > 0 &&
+    post?.mediaItems.length > 0 &&
     post?.mediaItems[currentImageIndex].endsWith(".mp4"); // Assuming videos end with '.mp4'
 
   const addComment = async () => {
@@ -159,7 +159,7 @@ function PostCard({ postDetails, loadPosts }) {
           </div>
         </div>
         <p style={{ whiteSpace: "pre-line" }}>{post?.description}</p>
-        {post.mediaItems.length > 0 && (
+        {post?.mediaItems.length > 0 && (
           <div className="ui-rect ui-bg-cover position-relative">
             {isVideo ? (
               <video
@@ -175,7 +175,7 @@ function PostCard({ postDetails, loadPosts }) {
                 style={{ width: "100%", height: "100%" }}
               />
             )}
-            {post.mediaItems.length > 1 && (
+            {post?.mediaItems.length > 1 && (
               <>
                 <button onClick={prevImage} className="carousel-arrow left">
                   <i className="pi pi-chevron-left"></i>

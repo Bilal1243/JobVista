@@ -30,6 +30,7 @@ function SavedPosts({ activeTab }) {
   }, []);
 
   const loadPosts = () => {
+    setIsloading(true)
     fetchPosts();
   };
 
