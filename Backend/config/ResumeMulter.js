@@ -1,12 +1,16 @@
 import multer from 'multer';
 import path from 'path';
 
+const __dirname = path.resolve();
+
 
 const storage = multer.diskStorage({
 
-  destination: (req, file, cb) => { cb(null, "Backend/Public/Resume") },
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(__dirname, "./Public/Resume"));
+  },
 
-  filename: (req, file, cb) => { cb( null, file.fieldname + "_" + Date.now() + path.extname(file.originalname) ) }
+  filename: (req, file, cb) => { cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname)) }
 
 });
 

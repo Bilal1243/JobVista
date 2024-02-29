@@ -25,7 +25,8 @@ app.use(express.static('Backend/Public'));
 const port = process.env.PORT || 5000
 connectDb()
 
-app.use(cors());
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'Backend/Public')));
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
