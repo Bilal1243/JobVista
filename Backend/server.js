@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
+const __dirname = path.resolve();
 app.use(express.static(path.resolve(__dirname, 'Backend/Public')));
 
 
