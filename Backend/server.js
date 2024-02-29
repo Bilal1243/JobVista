@@ -4,7 +4,7 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import connectDb from './config/db.js'
 import cors from 'cors'
-import path from 'path';
+import path, { dirname } from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
 import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
@@ -26,7 +26,7 @@ const port = process.env.PORT || 5000
 connectDb()
 
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'Backend/Public')));
+app.use(express.static(path.join(__dirname, "/Backend/Public")));
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
