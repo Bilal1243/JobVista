@@ -25,11 +25,7 @@ app.use(express.static("Backend/Public"));
 const port = process.env.PORT || 5000
 connectDb()
 
-app.use(cors({
-  origin: 'https://muhammedbilal.online', // Update with your website URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-}));
+app.use(cors());
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
@@ -97,5 +93,5 @@ io.on('connection', (Socket) => {
     console.log('user disconnected')
     Socket.leave(userData._id)
   })
-  
+
 })
