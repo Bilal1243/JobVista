@@ -25,7 +25,11 @@ app.use(express.static("Backend/Public"));
 const port = process.env.PORT || 5000
 connectDb()
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Update with your frontend port
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 
 app.use('/api/users', userRoutes)
