@@ -10,7 +10,7 @@ import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 import recruiterRoute from './Routes/recruiterRoutes.js';
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 4000
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
 
@@ -51,7 +51,6 @@ const server = app.listen(port, () => {
 })
 
 import { Server, Socket } from "socket.io";
-import { dirname } from 'path';
 
 const io = new Server(server, {
   pingTimeout: 60000,

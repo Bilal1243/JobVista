@@ -37,7 +37,7 @@ import {
 } from "../../../components/ChatLogic";
 
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:6000"; 
+const ENDPOINT = "http://localhost:4000"; 
 var socket, selectedChatCompare;
 import Lottie from "react-lottie";
 import animationData from "../../../components/typing.json";
