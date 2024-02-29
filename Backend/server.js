@@ -6,6 +6,9 @@ import connectDb from './config/db.js'
 import cors from 'cors'
 import path from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
+import userRoutes from './Routes/userRoutes.js';
+import adminRoutes from './Routes/adminRoutes.js';
+import recruiterRoute from './Routes/recruiterRoutes.js';
 
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
@@ -24,9 +27,6 @@ connectDb()
 
 app.use(cors());
 
-import userRoutes from './Routes/userRoutes.js';
-import adminRoutes from './Routes/adminRoutes.js';
-import recruiterRoute from './Routes/recruiterRoutes.js';
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
