@@ -6,6 +6,7 @@ import connectDb from './config/db.js'
 import cors from 'cors'
 import path from 'path';
 import { notFound, errorHandler } from './Middlewares/errorHandlers.js';
+
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
 
@@ -14,6 +15,8 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
+
+// Serve static files before defining routes
 app.use(express.static("Backend/Public"));
 
 const port = process.env.PORT || 5000
@@ -21,34 +24,29 @@ connectDb()
 
 app.use(cors());
 
-
 import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 import recruiterRoute from './Routes/recruiterRoutes.js';
-
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/recruiter', recruiterRoute)
 
-
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
   app.use(express.static(path.join(parentDir, "/frontend/dist")));
 
+  // For any other route, serve the index.html file
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(parentDir, "frontend", "dist", "index.html"))
   );
-
 } else {
-
   app.get("/", (req, res) => res.send("server is ready "));
 }
 
-
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
-
 
 const server = app.listen(port, () => {
   console.log(`server started on port ${port}`)
@@ -91,9 +89,9 @@ io.on('connection', (Socket) => {
     });
   });
 
+  // Handle disconnection
   Socket.off('setup', () => {
     console.log('user disconnected')
     Socket.leave(userData._id)
   })
-
 })
