@@ -21,12 +21,10 @@ app.use(cookieParser())
 
 app.use(express.static('Backend/Public'));
 
+app.use(cors())
 
 const port = process.env.PORT || 5000
 connectDb()
-
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/Backend/Public")));
 
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
