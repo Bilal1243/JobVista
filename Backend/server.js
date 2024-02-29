@@ -25,7 +25,7 @@ const port = process.env.PORT || 5000
 connectDb()
 
 app.use(cors({
-  origin: 'https://muhammedbilal.online', // Update with your frontend port
+  origin: 'http://localhost:3000', // Update with your frontend port
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
