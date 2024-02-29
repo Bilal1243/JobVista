@@ -19,8 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
-// Serve static files before defining routes
-app.use(express.static("Backend/Public"));
+app.use(express.static(path.resolve(__dirname, 'Backend/Public')));
+
 
 const port = process.env.PORT || 5000
 connectDb()
