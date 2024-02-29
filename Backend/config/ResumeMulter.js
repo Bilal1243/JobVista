@@ -1,7 +1,9 @@
 import multer from 'multer';
+import { fileURLToPath } from 'url';
 import path from 'path';
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
 
