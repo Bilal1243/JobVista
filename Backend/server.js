@@ -93,8 +93,9 @@ io.on('connection', (Socket) => {
   });
 
   // Handle disconnection
-  Socket.on('disconnect', () => {
+  Socket.off('setup', () => {
     console.log('user disconnected')
     Socket.leave(userData._id)
   })
+  
 })
