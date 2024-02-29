@@ -10,19 +10,18 @@ import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 import recruiterRoute from './Routes/recruiterRoutes.js';
 
+const port = process.env.PORT || 5000
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir);
 
 const app = express()
+connectDb()
 
 app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cookieParser())
 
-app.use(express.static('Public'));
-
-const port = process.env.PORT || 5000
-connectDb()
+app.use(express.static('Backend/Public'));
 
 app.use(cors());
 
