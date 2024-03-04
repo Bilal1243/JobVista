@@ -54,6 +54,7 @@ function Experience({ activeTab }) {
         role: "",
         period: "",
       });
+      setIsLoading(true);
       fetchExperiences();
     } catch (error) {
       console.log(error?.data?.message || error?.data);
@@ -63,8 +64,6 @@ function Experience({ activeTab }) {
   useEffect(() => {
     fetchExperiences();
   }, []);
-
-  console.log(experiences);
 
   return (
     <>
