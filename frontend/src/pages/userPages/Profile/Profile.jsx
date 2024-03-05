@@ -37,6 +37,7 @@ import countrydata from "../../../Utils/Countries.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/userSlices/userAuthSlice.js";
 import { PROFILE_PATH } from "../../../Utils/URL.js";
+import { toast } from "react-toastify";
 
 function Profile() {
   const { userData } = useSelector((state) => state.auth);
@@ -117,26 +118,32 @@ function Profile() {
 
   const editProfileHandler = async () => {
     try {
-      const formData = new FormData();
-      formData.append("userId", profileData._id);
-      formData.append("firstName", firstName);
-      formData.append("lastName", lastName);
+      if (firstName.trim().length === 0 || firstName.length < 3) {
+        toast.error("add firstName");
+      } else if (lastName.trim().length === 0) {
+        toast.error("add proper lastName");
+      } else {
+        const formData = new FormData();
+        formData.append("userId", profileData._id);
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
 
-      if (title) {
-        formData.append("title", title);
-      }
+        if (title) {
+          formData.append("title", title);
+        }
 
-      if (location?.name !== undefined) {
-        formData.append("location", location?.name);
-      }
+        if (location?.name !== undefined) {
+          formData.append("location", location?.name);
+        }
 
-      formData.append("profileImg", profileImg);
+        formData.append("profileImg", profileImg);
 
-      const response = await editProfile(formData).unwrap();
-      if (response) {
-        dispatch(setCredentials(response)); // Ensure response is the expected user data
-        setShowEdit(false);
-        fetchProfileData();
+        const response = await editProfile(formData).unwrap();
+        if (response) {
+          dispatch(setCredentials(response)); // Ensure response is the expected user data
+          setShowEdit(false);
+          fetchProfileData();
+        }
       }
     } catch (error) {
       console.error("Error editing profile:", error);

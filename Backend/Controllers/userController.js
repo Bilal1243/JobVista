@@ -117,43 +117,49 @@ const googleRegister = asyncHandler(async (req, res) => {
     const images = req.file && req.file.filename;
 
     const userExists = await users.findOne({ email });
-    if (userExists) {
+    if (userExists.isBlocked) {
+        res.status(400);
+        throw new Error("you are blocked by admin");
+    }
+    else {
+        if (userExists) {
 
-        generateToken(res, userExists._id);
+            generateToken(res, userExists._id);
 
-        res.json({
-            _id: userExists._id,
-            firstName: userExists.firstName,
-            lastName: userExists.lastName,
-            email: userExists.email,
-            mobile: userExists.mobile,
-            isBlocked: userExists.isBlocked,
-            image: (userExists.profileImg ? userExists.profileImg : null),
-        });
-    } else {
-        const user = await users.create({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            profileImg: images,
-        });
-
-        if (user) {
-
-            generateToken(res, user._id);
-
-            res.status(201).json({
-                status: true,
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                mobile: user.mobile,
-                email: user.email,
-                image: (user.profileImg ? user.profileImg : null),
+            res.json({
+                _id: userExists._id,
+                firstName: userExists.firstName,
+                lastName: userExists.lastName,
+                email: userExists.email,
+                mobile: userExists.mobile,
+                isBlocked: userExists.isBlocked,
+                image: (userExists.profileImg ? userExists.profileImg : null),
             });
         } else {
-            res.status(400);
-            throw new Error("Invalid user data");
+            const user = await users.create({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                profileImg: images,
+            });
+
+            if (user) {
+
+                generateToken(res, user._id);
+
+                res.status(201).json({
+                    status: true,
+                    _id: user._id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    mobile: user.mobile,
+                    email: user.email,
+                    image: (user.profileImg ? user.profileImg : null),
+                });
+            } else {
+                res.status(400);
+                throw new Error("Invalid user data");
+            }
         }
     }
 })

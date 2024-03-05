@@ -117,6 +117,13 @@ function RecruiterProfile() {
 
   const editProfileHandler = async () => {
     try {
+      if (firstName.trim().length === 0 || firstName.length < 3) {
+        toast.error("add firstName");
+      } else if (lastName.trim().length === 0) {
+        toast.error("add proper lastName");
+      } else if (company.trim().length === 0) {
+        toast.error("add proper company Name");
+      } else {
       const formData = new FormData();
       formData.append("recruiterId", profileData._id);
       formData.append("firstName", firstName);
@@ -137,6 +144,7 @@ function RecruiterProfile() {
         setShowEdit(false);
         fetchProfileData();
       }
+    }
     } catch (error) {
       console.error("Error editing profile:", error);
     }
