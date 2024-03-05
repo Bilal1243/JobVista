@@ -21,6 +21,7 @@ import {
   MDBCardBody,
   MDBBtn,
 } from "mdb-react-ui-kit";
+import {toast} from 'react-toastify'
 
 import Posts from "./Posts.jsx";
 import QuickActions from "./QuickActions.jsx";
