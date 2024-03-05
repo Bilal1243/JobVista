@@ -49,7 +49,6 @@ function Login() {
     } else {
       try {
         const responseFromApiCall = await login({ email, password }).unwrap();
-        console.log(responseFromApiCall)
         if (responseFromApiCall.status) {
           dispatch(setCredentials({ ...responseFromApiCall }));
           toast.success("Login Sucessfull");
@@ -89,8 +88,12 @@ function Login() {
       formData.append("profileImg", profileImageFile);
 
       const res = await googleRegister(formData).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate("/");
+      if (res.status) {
+        dispatch(setCredentials({ ...res }));
+        navigate("/");
+      } else {
+        toast.error("you are blocked by admin");
+      }
     } catch (err) {
       console.error("Error downloading image:", err);
     }
@@ -149,7 +152,9 @@ function Login() {
                 </MDBBtn>
               </MDBValidation>
               <p className="small mb-2 pb-lg-3 ms-l-5 ms-0">
-                <Link className="text-muted" to='/forgotPassword'>Forgot password?</Link>
+                <Link className="text-muted" to="/forgotPassword">
+                  Forgot password?
+                </Link>
               </p>
               <Link to="/signup">
                 <p className="ms-l-5 ms-0">
