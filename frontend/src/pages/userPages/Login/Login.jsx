@@ -49,12 +49,12 @@ function Login() {
     } else {
       try {
         const responseFromApiCall = await login({ email, password }).unwrap();
-        if (responseFromApiCall) {
+        if (responseFromApiCall.status) {
           dispatch(setCredentials({ ...responseFromApiCall }));
           toast.success("Login Sucessfull");
           navigate("/");
         } else {
-          toast.error("no details found");
+          toast.error("you are blocked by admin");
         }
       } catch (err) {
         if (err.data && err.data.message) {

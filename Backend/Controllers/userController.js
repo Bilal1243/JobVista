@@ -118,8 +118,7 @@ const googleRegister = asyncHandler(async (req, res) => {
 
     const userExists = await users.findOne({ email });
     if (userExists.isBlocked) {
-        res.status(400);
-        throw new Error("you are blocked by admin");
+        res.status(400).json({status : false})
     }
     else {
         if (userExists) {
@@ -127,6 +126,7 @@ const googleRegister = asyncHandler(async (req, res) => {
             generateToken(res, userExists._id);
 
             res.json({
+                status: true,
                 _id: userExists._id,
                 firstName: userExists.firstName,
                 lastName: userExists.lastName,
