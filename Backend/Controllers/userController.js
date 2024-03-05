@@ -118,7 +118,7 @@ const googleRegister = asyncHandler(async (req, res) => {
 
     const userExists = await users.findOne({ email });
     if (userExists.isBlocked) {
-        res.json({status : false})
+        return res.json({status : false})
     }
     else {
         if (userExists) {
