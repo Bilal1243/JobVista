@@ -49,6 +49,7 @@ function Login() {
     } else {
       try {
         const responseFromApiCall = await login({ email, password }).unwrap();
+        console.log(responseFromApiCall)
         if (responseFromApiCall.status) {
           dispatch(setCredentials({ ...responseFromApiCall }));
           toast.success("Login Sucessfull");
