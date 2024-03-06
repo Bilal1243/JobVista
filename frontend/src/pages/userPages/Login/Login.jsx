@@ -49,7 +49,7 @@ function Login() {
     } else {
       try {
         const responseFromApiCall = await login({ email, password }).unwrap();
-        if (responseFromApiCall.status) {
+        if (responseFromApiCall) {
           dispatch(setCredentials({ ...responseFromApiCall }));
           toast.success("Login Sucessfull");
           navigate("/");
