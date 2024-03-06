@@ -131,7 +131,7 @@ function FormThree({
     if (experience.maximum.trim() === "") {
       errors.push("give valid input");
     }
-    if (parseInt(experience.minimum) > parseInt(experience.maximum)) {
+    if (parseInt(experience.minimum) >= parseInt(experience.maximum)) {
       errors.push("minimum experience must be lesser than maximum");
     }
     if (parseInt(experience.minimum) < 0) {
