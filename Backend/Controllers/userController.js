@@ -275,7 +275,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         const otpDocument = await OTP.findOne({ email, otp });
 
         if (!otpDocument) {
-            return res.status(400).json({ success: false, message: "Invalid OTP" });
+            return res.status(500).json({ success: false, message: "Invalid OTP" });
         }
         else {
             res.status(200).json({ success: true })

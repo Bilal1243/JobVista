@@ -74,12 +74,12 @@ const VerifyOtp = () => {
                 <div className="col-md-12">
                   <MDBValidationItem
                     className="col-md-12"
-                    feedback="Please Enter yout OTP"
+                    feedback="Please Enter the OTP"
                     invalid
                   >
                     <MDBInput
                       label=" OTP"
-                      type="password"
+                      type="number"
                       name="password"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}

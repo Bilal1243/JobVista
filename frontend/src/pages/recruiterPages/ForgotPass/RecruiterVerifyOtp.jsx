@@ -32,10 +32,13 @@ const RecruiterVerifyOtp = () => {
       if (!otp) {
         toast.error(" enter otp");
       } else {
-        const responseFromApiCall = await recruiterVerifyOtp({ otp, email });
+        const responseFromApiCall = await recruiterVerifyOtp({ otp, email }).unwrap()
 
         if (responseFromApiCall) {
           navigate("/recruiterChangePassword");
+        }
+        else {
+          toast.error("invalid otp");
         }
       }
     } catch (err) {
@@ -71,12 +74,12 @@ const RecruiterVerifyOtp = () => {
                 <div className="col-md-12">
                   <MDBValidationItem
                     className="col-md-12"
-                    feedback="Please Enter yout OTP"
+                    feedback="Please Enter the OTP"
                     invalid
                   >
                     <MDBInput
                       label=" OTP"
-                      type="password"
+                      type="number"
                       name="password"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
