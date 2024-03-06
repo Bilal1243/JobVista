@@ -262,6 +262,8 @@ const Register = () => {
     }
   };
 
+  const isMobile = window.innerWidth <= 767
+
   return (
     <div>
       <div style={{ display: "flex" }} className="character">
@@ -472,7 +474,7 @@ const Register = () => {
           <Dialog
             header="Verify OTP"
             visible={visible}
-            style={{ width: "50vw" }}
+            style={isMobile ? {width : '100%'} : {width: "50vw" }}
             onHide={() => setVisible(false)}
           >
             <div
