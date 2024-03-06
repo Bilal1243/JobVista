@@ -33,10 +33,12 @@ const VerifyOtp = () => {
       if (!otp) {
         toast.error(" enter otp");
       } else {
-        const responseFromApiCall = await verifyOtp({ otp, email });
-
-        if (responseFromApiCall) {
+        const responseFromApiCall = await verifyOtp({ otp, email }).unwrap();
+        console.log('forgot otp console : ' + responseFromApiCall)
+        if (responseFromApiCall.status) {
           navigate("/changePassword");
+        } else {
+          toast.error("invalid otp");
         }
       }
     } catch (err) {
