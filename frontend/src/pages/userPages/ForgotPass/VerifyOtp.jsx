@@ -34,7 +34,7 @@ const VerifyOtp = () => {
         toast.error(" enter otp");
       } else {
         const responseFromApiCall = await verifyOtp({ otp, email }).unwrap()
-        console.log('forgot otp console : ' + responseFromApiCall)
+        console.log('forgot otp console : ', responseFromApiCall)
         if (responseFromApiCall.status) {
           navigate("/changePassword");
         } else {

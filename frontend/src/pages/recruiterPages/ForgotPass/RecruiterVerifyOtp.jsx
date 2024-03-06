@@ -33,11 +33,10 @@ const RecruiterVerifyOtp = () => {
         toast.error(" enter otp");
       } else {
         const responseFromApiCall = await recruiterVerifyOtp({ otp, email }).unwrap()
-
-        if (responseFromApiCall) {
+        console.log('recruiter forgot otp console : ', responseFromApiCall)
+        if (responseFromApiCall.status) {
           navigate("/recruiterChangePassword");
-        }
-        else {
+        } else {
           toast.error("invalid otp");
         }
       }
