@@ -49,6 +49,7 @@ function Login() {
     } else {
       try {
         const responseFromApiCall = await login({ email, password }).unwrap();
+        console.log(responseFromApiCall);
         if (responseFromApiCall) {
           dispatch(setCredentials({ ...responseFromApiCall }));
           toast.success("Login Sucessfull");
@@ -57,11 +58,7 @@ function Login() {
           toast.error("you are blocked by admin");
         }
       } catch (err) {
-        if (err.data && err.data.message) {
-          toast.error(err.data.message);
-        } else {
-          toast.error("An error occurred. Please try again.");
-        }
+        toast.error(err?.data || err?.data?.message);
       }
     }
   };

@@ -36,7 +36,7 @@ const recruiterAuth = asyncHandler(async (req, res) => {
     if (findRecruiter && (await findRecruiter.matchPassword(password))) {
         recruitergenerateToken(res, findRecruiter._id);
 
-        res.json({
+        res.status(200).json({
             _id: findRecruiter._id,
             firstName: findRecruiter.firstName,
             lastName: findRecruiter.lastName,
