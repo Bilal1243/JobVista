@@ -172,7 +172,7 @@ const RecruiterRegister = () => {
           formData
         );
 
-        if (responseFromApiCall.data.success) {
+        if (responseFromApiCall) {
           toast.success("Registration successful");
           navigate("/recruiterLogin");
         } else {

@@ -156,6 +156,7 @@ const Register = () => {
         navigate(`/jobPreference/${responseFromApiCall._id}`);
       }
     } catch (error) {
+      console.log('error',error)
       toast.error(
         error.data?.message || "An error occurred. Please try again."
       );
