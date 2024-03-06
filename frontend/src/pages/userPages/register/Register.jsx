@@ -137,22 +137,28 @@ const Register = () => {
   };
 
   const otpHandler = async () => {
-    const responseFromApiCall = await verify({
-      firstName,
-      lastName,
-      mobile,
-      email,
-      gender,
-      industry,
-      location,
-      education,
-      title,
-      password,
-      otp,
-    }).unwrap();
-    if (responseFromApiCall) {
-      toast.success("registration sucessfull");
-      navigate(`/jobPreference/${responseFromApiCall._id}`);
+    try {
+      const responseFromApiCall = await verify({
+        firstName,
+        lastName,
+        mobile,
+        email,
+        gender,
+        industry,
+        location,
+        education,
+        title,
+        password,
+        otp,
+      }).unwrap();
+      if (responseFromApiCall) {
+        toast.success("registration sucessfull");
+        navigate(`/jobPreference/${responseFromApiCall._id}`);
+      }
+    } catch (error) {
+      toast.error(
+        error.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
@@ -244,11 +250,10 @@ const Register = () => {
       formData.append("profileImg", profileImageFile);
 
       const res = await googleRegister(formData).unwrap();
-      if(res?.status){
-        navigate(`/addDetails/${res._id}`)
-      }
-      else{
-        dispatch(setCredentials({...res}))
+      if (res?.status) {
+        navigate(`/addDetails/${res._id}`);
+      } else {
+        dispatch(setCredentials({ ...res }));
         navigate("/");
       }
     } catch (err) {

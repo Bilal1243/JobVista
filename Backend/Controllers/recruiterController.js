@@ -144,7 +144,6 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
     });
     if (recruiter) {
         res.status(201).json({
-            success: true,
             _id: recruiter._id,
             firstName: recruiter.firstName,
             email: recruiter.email,

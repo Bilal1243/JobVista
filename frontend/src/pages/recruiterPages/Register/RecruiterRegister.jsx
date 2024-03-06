@@ -181,7 +181,9 @@ const RecruiterRegister = () => {
         }
       }
     } catch (error) {
-      toast.error(error?.data?.message || error?.data);
+      toast.error(
+        error.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
