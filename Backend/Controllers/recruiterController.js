@@ -203,10 +203,10 @@ const recruiterverifyOtp = asyncHandler(async (req, res) => {
         const otpDocument = await OTP.findOne({ email, otp });
 
         if (!otpDocument) {
-            return res.status(400).json({ success: false, message: "Invalid OTP" });
+            return res.status(400).json({ status: false, message: "Invalid OTP" });
         }
         else {
-            res.status(200).json({ success: true })
+            res.status(200).json({ status: true })
         }
     } catch (error) {
         console.error("Error updating password:", error);
