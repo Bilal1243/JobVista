@@ -104,7 +104,6 @@ function FormThree({
   };
 
   const load = async () => {
-
     let errors = [];
 
     if (parseInt(salaryRange.minimum) > parseInt(salaryRange.maximum)) {
@@ -131,6 +130,12 @@ function FormThree({
     if (experience.maximum.trim() === "") {
       errors.push("give valid input");
     }
+    if (parseInt(experience.minimum) > 25) {
+      errors.push("give valid minimum experience");
+    }
+    if (parseInt(experience.maximum) > 25) {
+      errors.push("give valid maximum experience");
+    }
     if (parseInt(experience.minimum) >= parseInt(experience.maximum)) {
       errors.push("minimum experience must be lesser than maximum");
     }
@@ -147,7 +152,7 @@ function FormThree({
       errors.push("select any skills, it boosts your post");
     }
 
-    console.log(errors)
+    console.log(errors);
 
     if (errors.length > 0) {
       setNotFilled(errors);
