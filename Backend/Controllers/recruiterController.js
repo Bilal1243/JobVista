@@ -109,7 +109,7 @@ const verifyRecruiter = asyncHandler(async (req, res) => {
     const otpDocument = await OTP.findOne({ email, otp });
 
 
-    if (otpDocument === null) {
+    if (!otpDocument) {
         res.status(400)
         throw new Error('invalid OTP')
     }

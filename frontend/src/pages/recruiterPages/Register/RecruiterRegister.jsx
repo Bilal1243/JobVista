@@ -170,17 +170,15 @@ const RecruiterRegister = () => {
 
         const responseFromApiCall = await recruiterVerifyregisteration(
           formData
-        );
+        ).unwrap();
 
         if (responseFromApiCall) {
           toast.success("Registration successful");
           navigate("/recruiterLogin");
-        } else {
-          // Handle the case where registration failed due to incorrect OTP
-          toast.error("Invalid OTP");
         }
       }
     } catch (error) {
+      console.log("error", error);
       toast.error(
         error.data?.message || "An error occurred. Please try again."
       );
