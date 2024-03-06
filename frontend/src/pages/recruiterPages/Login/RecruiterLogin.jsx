@@ -54,8 +54,7 @@ function RecruiterLogin() {
           toast.error("no details found");
         }
       } catch (err) {
-        console.log(err)
-        toast.error(err.response?.data?.message || "An error occurred. Please try again.");
+        toast.error(err.data?.message || "An error occurred. Please try again.");
       }
     }
   };
