@@ -43,7 +43,7 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       toast.error("Both email and password are required.");
     } else {
@@ -52,16 +52,18 @@ function Login() {
         console.log(responseFromApiCall);
         if (responseFromApiCall) {
           dispatch(setCredentials({ ...responseFromApiCall }));
-          toast.success("Login Sucessfull");
+          toast.success("Login Successful");
           navigate("/");
         } else {
-          toast.error("you are blocked by admin");
+          toast.error("You are blocked by admin");
         }
       } catch (err) {
-        toast.error(err.response.data.message);
+        console.log(err)
+        toast.error(err.response?.data?.message || "An error occurred. Please try again.");
       }
     }
   };
+  
 
   const googelAuth = async (data) => {
     try {
