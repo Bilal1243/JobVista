@@ -397,17 +397,20 @@ function JobListing() {
                             <FaSuitcase className="me-2 text-muted" />
                             job type
                           </div>
-                          <div
-                            className="d-flex align-items-center badge badge-light p-3"
-                            style={{
-                              borderRadius: "10px",
-                              color: "black",
-                              fontWeight: "500",
-                              width: "200px",
-                            }}
-                          >
-                            {selectedJob.jobType}
-                          </div>
+                          {selectedJob.jobType.map((jobType, index) => (
+                            <div
+                              className="d-flex align-items-center badge badge-light p-3"
+                              style={{
+                                borderRadius: "10px",
+                                color: "black",
+                                fontWeight: "500",
+                                width: "200px",
+                              }}
+                              key={index}
+                            >
+                              {jobType}
+                            </div>
+                          ))}
                           <div
                             className="d-flex align-items-center mt-3"
                             style={{ fontWeight: "600" }}
