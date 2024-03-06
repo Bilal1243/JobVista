@@ -25,7 +25,8 @@ const recruiterAuth = asyncHandler(async (req, res) => {
     }
 
     if (findRecruiter.isBlocked) {
-        res.status(400).json({ message: false })
+        res.status(400)
+        throw new Error("you are blocked by admin");
     }
 
     if (!findRecruiter.isAccepted) {

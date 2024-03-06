@@ -54,7 +54,7 @@ function RecruiterLogin() {
           toast.error("no details found");
         }
       } catch (err) {
-        toast.error(err?.data || err?.data?.message);
+        toast.error(err.response.data.message);
       }
     }
   };
