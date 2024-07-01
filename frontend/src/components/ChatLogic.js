@@ -1,0 +1,71 @@
+export const isSameSenderMargin = (messages, m, i, userId) => {
+    // console.log(i === messages.length - 1);
+
+    if (
+        i < messages.length - 1 &&
+        messages[i + 1].sender._id === m.sender._id &&
+        messages[i].sender._id !== userId
+    )
+        return 33;
+    else if (
+        (i < messages.length - 1 &&
+            messages[i + 1].sender._id !== m.sender._id &&
+            messages[i].sender._id !== userId) ||
+        (i === messages.length - 1 && messages[i].sender._id !== userId)
+    )
+        return 0;
+    else return "auto";
+};
+
+export const isSameSender = (messages, m, i, userId) => {
+    return (
+        i < messages.length - 1 &&
+        (messages[i + 1].sender._id !== m.sender._id ||
+            messages[i + 1].sender._id === undefined) &&
+        messages[i].sender._id !== userId
+    );
+};
+
+export const isLastMessage = (messages, i, userId) => {
+    return (
+        i === messages.length - 1 &&
+        messages[messages.length - 1].sender._id !== userId &&
+        messages[messages.length - 1].sender._id
+    );
+};
+
+export const isSameUser = (messages, m, i) => {
+    return i > 0 && messages[i - 1].sender._id === m.sender._id;
+};
+
+export const getSender = (loggedUser, users) => {
+    return users[0]?._id === loggedUser?._id ? (users[1].firstName + ' ' + users[1].lastName) : (users[0].firstName + ' ' + users[0].lastName);
+};
+
+export const getSenderFull = (loggedUser, users) => {
+    return users[0]._id === loggedUser._id ? users[1] : users[0];
+};
+
+const MAX_LENGTH = 10; // Maximum number of characters to display
+
+// Function to truncate text
+export const truncateText = (text) => {
+    if (text.length <= MAX_LENGTH) {
+        return text;
+    }
+    return text.slice(0, MAX_LENGTH) + "...";
+};
+
+export const breakTextIntoLines = (text, wordsPerLine) => {
+    const words = text.split(" ");
+    const lines = [];
+    let currentLine = "";
+    for (let i = 0; i < words.length; i++) {
+        currentLine += words[i] + " ";
+        if ((i + 1) % wordsPerLine === 0 || i === words.length - 1) {
+            lines.push(currentLine.trim());
+            currentLine = "";
+        }
+    }
+    return lines.join("<br />");
+};

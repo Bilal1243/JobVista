@@ -1,0 +1,126 @@
+body {
+    background: #f5f5f5;
+}
+
+.theme-bg-white {
+    background-color: #fff !important;
+}
+
+.ui-w-100 {
+    width: 150px !important;
+    height: 150px;
+}
+
+.ui-w-40 {
+    width: 40px !important;
+    height: 40px;
+}
+
+.row-bordered>.col::before,
+.row-bordered>[class^="col-"]::before,
+.row-bordered>[class*=" col-"]::before,
+.row-bordered>[class^="col "]::before,
+.row-bordered>[class*=" col "]::before,
+.row-bordered>[class$=" col"]::before,
+.row-bordered>[class="col"]::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    display: block;
+    height: 0;
+    border-top: 1px solid rgba(24, 28, 33, 0.06);
+}
+
+.row-bordered>.col::after,
+.row-bordered>[class^="col-"]::after,
+.row-bordered>[class*=" col-"]::after,
+.row-bordered>[class^="col "]::after,
+.row-bordered>[class*=" col "]::after,
+.row-bordered>[class$=" col"]::after,
+.row-bordered>[class="col"]::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+    display: block;
+    width: 0;
+    border-left: 1px solid rgba(24, 28, 33, 0.06);
+}
+
+.ui-bg-cover {
+    background-color: rgba(0, 0, 0, 0);
+    background-position: center center;
+    background-size: cover;
+}
+
+.ui-square {
+    padding-top: 100% !important;
+}
+
+.ui-square,
+.ui-rect-30,
+.ui-rect-60,
+.ui-rect-67,
+.ui-rect-75 {
+    position: relative !important;
+    display: block !important;
+    padding-top: 100% !important;
+    width: 100% !important;
+}
+
+.ui-rect {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.5);
+    /* Adjust background color */
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-arrow.left {
+    left: 10px;
+    /* Adjust left position */
+}
+
+.carousel-arrow.right {
+    right: 10px;
+    /* Adjust right position */
+}
+
+/* Add this CSS to your existing styles or create a new CSS file */
+
+.hover-info {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Add transform transition property */
+  }
+  
+  /* Add the :hover state for the zooming effect */
+  .hovered .hover-info:hover {
+    transform: translate(-50%, -50%) scale(1.1); /* Adjust the scale factor as needed */
+  }
+  

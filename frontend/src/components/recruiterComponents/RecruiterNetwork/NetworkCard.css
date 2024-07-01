@@ -1,0 +1,109 @@
+figure.user-card {
+    background: #ffffff;
+    padding: 20px;
+    border-top: 3px solid #f2f2f2;
+    border: 1px solid #e1e5f1;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow .5s ease-in-out;
+}
+
+figure.user-card:hover {
+    box-shadow: 0px 10px 7px -6px rgba(0, 0, 0, 0.1);
+}
+
+
+figure.user-card .profile {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    max-width: 80px;
+    max-height: 80px;
+    margin-bottom: 20px;
+}
+
+figure.user-card h5 {
+    margin: 0 0 5px 0;
+}
+
+figure.user-card h6 {
+    margin: 0 0 15px 0;
+    color: #8796af;
+    font-size: 14px;
+}
+
+figure.user-card p {
+    margin: 0;
+    padding: 0 0 15px 0;
+    color: #8796af;
+    line-height: 150%;
+    font-size: .85rem;
+}
+
+figure.user-card ul.contacts {
+    margin: 0;
+    padding: 0 0 15px 0;
+    line-height: 150%;
+    font-size: .85rem;
+}
+
+figure.user-card ul.contacts li {
+    padding: .2rem 0;
+}
+
+figure.user-card ul.contacts li a {
+    color: #5a99ee;
+}
+
+figure.user-card ul.contacts li a i {
+    min-width: 36px;
+    float: left;
+    font-size: 1rem;
+}
+
+figure.user-card ul.contacts li:last-child a {
+    color: #ff5000;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+.request-list {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.request-header {
+    margin-bottom: 20px;
+}
+
+.request-item {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    flex: 1;
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user-details h6 {
+    margin-bottom: 5px;
+}
+
+.user-details p {
+    margin-bottom: 0;
+}
