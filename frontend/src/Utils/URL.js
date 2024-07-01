@@ -1,3 +1,3 @@
-export const PROFILE_PATH = 'https://jobvista-backend-i9w6.onrender.com/Profiles/';
-export const POST_IMAGES_PATH = 'https://jobvista-backend-i9w6.onrender.com/Posts/';
-export const RESUME_PATH = "https://jobvista-backend-i9w6.onrender.com/Resume/";
+export const PROFILE_PATH = 'http://localhost:4000/Profiles/';
+export const POST_IMAGES_PATH = 'http://localhost:4000/Posts/';
+export const RESUME_PATH = "http://localhost:4000/Resume/";
